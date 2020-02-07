@@ -24,10 +24,8 @@ namespace DAL.Models
         public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual DbSet<Charact> Charact { get; set; }
         public virtual DbSet<Goods> Goods { get; set; }
-        public virtual DbSet<GoodsHprop> GoodsHprop { get; set; }
         public virtual DbSet<GoodsImage> GoodsImage { get; set; }
         public virtual DbSet<Group> Group { get; set; }
-        public virtual DbSet<Hproduct> Hproduct { get; set; }
         public virtual DbSet<Image> Image { get; set; }
         public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<OrderGoods> OrderGoods { get; set; }
@@ -205,30 +203,7 @@ namespace DAL.Models
                     .HasConstraintName("FK_goods_price");
             });
 
-            modelBuilder.Entity<GoodsHprop>(entity =>
-            {
-                entity.HasKey(e => new { e.GoodsId, e.ProdId });
-
-                entity.ToTable("Goods_Hprop");
-
-                entity.HasIndex(e => new { e.GoodsId, e.ProdId })
-                    .HasName("UK_goods_hprop")
-                    .IsUnique();
-
-                entity.Property(e => e.Amount).HasDefaultValueSql("((1))");
-
-                entity.HasOne(d => d.Goods)
-                    .WithMany(p => p.GoodsHprop)
-                    .HasForeignKey(d => d.GoodsId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_goods_hprop_goods");
-
-                entity.HasOne(d => d.Prod)
-                    .WithMany(p => p.GoodsHprop)
-                    .HasForeignKey(d => d.ProdId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_goods_hprop_hproduct");
-            });
+          
 
             modelBuilder.Entity<GoodsImage>(entity =>
             {
@@ -272,14 +247,7 @@ namespace DAL.Models
                 entity.Property(e => e.ShortDescript).HasMaxLength(200);
             });
 
-            modelBuilder.Entity<Hproduct>(entity =>
-            {
-                entity.Property(e => e.DataEnd).HasColumnType("datetime");
-
-                entity.Property(e => e.DataStart).HasColumnType("datetime");
-
-                entity.Property(e => e.Name).IsRequired();
-            });
+         
 
             modelBuilder.Entity<Image>(entity =>
             {

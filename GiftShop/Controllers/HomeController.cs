@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GiftShop.Models;
 using BLL;
-using PresentationLayer.Services;
-using PresentationLayer.Models;
+using BLL.Services;
+using BLL.Models;
 
 namespace GiftShop.Controllers
 {
@@ -21,6 +21,7 @@ namespace GiftShop.Controllers
 
         public IActionResult Index()
         {
+            ViewData["Categories"] = groupService.GetAll();
             return View(groupService.GetAll());
         }
 

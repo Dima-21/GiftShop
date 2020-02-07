@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Товары";
+}
+
+@using BLL.Models;
+
+@model GiftShop.Areas.ProductList.Models.ProductListViewModel
+<!DOCTYPE html>
+
+<div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">@Html.DisplayNameFor(model=>model.ProductList.First().Id)</th>
+                <th scope="col">@Html.DisplayNameFor(model=>model.ProductList.First().ImagePath)</th>
+                <th scope="col">@Html.DisplayNameFor(model=>model.ProductList.First().Name)</th>
+                <th scope="col">@Html.DisplayNameFor(model=>model.ProductList.First().Price)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (FilteredGoodsDTO item in Model.ProductList)
+            {
+                <tr>
+                    <th scope="row">@item.Id</th>
+                    <td><img src="~/goods_image/@Url.Content(item.ImagePath)" alt="Image"></td>
+                    <td>@item.Name</td>
+                    <td>@item.Price</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

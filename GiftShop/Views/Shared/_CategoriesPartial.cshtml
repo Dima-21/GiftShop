@@ -1,0 +1,20 @@
+﻿@inject BLL.Services.IService<BLL.Models.GroupDTO> Groups
+
+<div>
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+           
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Категории
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                @foreach (BLL.Models.GroupDTO group in Groups.GetAll().ToList())
+                {
+                <a class="nav-link" asp-action="Index" asp-controller="Goods" asp-route-area="ProductList" asp-route-groupId="@group.Id">
+                    @group.Name
+                </a>
+                }
+            </div>
+        </li>
+    </ul>
+</div>

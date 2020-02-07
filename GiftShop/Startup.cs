@@ -12,10 +12,10 @@ using Microsoft.EntityFrameworkCore;
 using GiftShop.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PresentationLayer.Services;
-using PresentationLayer.Models;
-using BLL.Repositories;
 using DAL.Models;
+using BLL.Services;
+using DAL.Repositories;
+using BLL.Models;
 
 namespace GiftShop
 {
@@ -39,11 +39,13 @@ namespace GiftShop
             });
 
             services.AddScoped<IService<GroupDTO>, GroupService>();
+            services.AddScoped<IService<GoodsDTO>, GoodsService>();
+            services.AddScoped<IRepository<Goods>, GoodsRepository>();
             services.AddScoped<IRepository<Group>, GroupRepository>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("GiftShopConnection")));
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -70,8 +72,12 @@ namespace GiftShop
 
             app.UseAuthentication();
 
+
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller=Home}/{action=Index}");
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

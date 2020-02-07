@@ -8,7 +8,6 @@ namespace DAL.Models
         public Goods()
         {
             Charact = new HashSet<Charact>();
-            GoodsHprop = new HashSet<GoodsHprop>();
             GoodsImage = new HashSet<GoodsImage>();
             OrderGoods = new HashSet<OrderGoods>();
         }
@@ -23,10 +22,9 @@ namespace DAL.Models
         public DateTime PublishData { get; set; }
         public DateTime DataStart { get; set; }
         public DateTime? DataEnd { get; set; }
-
+        public short Amount { get; set; }
         public Price Price { get; set; }
         public ICollection<Charact> Charact { get; set; }
-        public ICollection<GoodsHprop> GoodsHprop { get; set; }
         public ICollection<GoodsImage> GoodsImage { get; set; }
         public ICollection<OrderGoods> OrderGoods { get; set; }
     }

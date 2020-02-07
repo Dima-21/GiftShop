@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLL", "BLL\BLL.csproj", "{5060092F-A995-455E-8BE0-BB49570F6F5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresentationLayer", "PresentationLayer\PresentationLayer.csproj", "{CB2A767D-0D40-43DE-A895-89712FFBE257}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{5060092F-A995-455E-8BE0-BB49570F6F5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5060092F-A995-455E-8BE0-BB49570F6F5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5060092F-A995-455E-8BE0-BB49570F6F5A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CB2A767D-0D40-43DE-A895-89712FFBE257}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CB2A767D-0D40-43DE-A895-89712FFBE257}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CB2A767D-0D40-43DE-A895-89712FFBE257}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CB2A767D-0D40-43DE-A895-89712FFBE257}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
