@@ -23,6 +23,7 @@ namespace DAL.Models
         public DateTime DataStart { get; set; }
         public DateTime? DataEnd { get; set; }
         public short Amount { get; set; }
+
         public Price Price { get; set; }
         public ICollection<Charact> Charact { get; set; }
         public ICollection<GoodsImage> GoodsImage { get; set; }

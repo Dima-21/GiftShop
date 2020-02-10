@@ -41,7 +41,9 @@ namespace BLL.Services
             List<GroupDTO> result = repo.GetAll().Select(x => new GroupDTO
             {
                 Id = x.Id,
-                Name = x.Name
+                Name = x.Name,
+                Icon = x.Icon,
+                Image = x.Image
             }).ToList();
 
             return result;

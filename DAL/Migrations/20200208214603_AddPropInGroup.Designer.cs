@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(GiftShopContext))]
-    [Migration("20200130211407_migration_001")]
-    partial class migration_001
+    [Migration("20200208214603_AddPropInGroup")]
+    partial class AddPropInGroup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -207,7 +207,9 @@ namespace DAL.Migrations
                 {
                     b.Property<int>("Id");
 
-                    b.Property<short>("Amount");
+                    b.Property<short>("Amount")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("(CONVERT([smallint],(0)))");
 
                     b.Property<int>("Code")
                         .ValueGeneratedOnAdd()
@@ -279,6 +281,8 @@ namespace DAL.Migrations
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("(getdate())");
 
+                    b.Property<string>("ImageName");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(70);
@@ -332,8 +336,7 @@ namespace DAL.Migrations
                     b.Property<int>("Sum");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasMaxLength(450);
+                        .IsRequired();
 
                     b.HasKey("Id");
 

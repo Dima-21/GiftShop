@@ -37,7 +37,7 @@ namespace DAL.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DIMA-PC\\SQLEXPRESS;Initial Catalog=GiftShop;Integrated Security=True;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=GiftShop;Trusted_Connection=True;");
             }
         }
 
@@ -149,6 +149,10 @@ namespace DAL.Models
             {
                 entity.HasKey(e => new { e.GoodsId, e.PropId, e.GroupId });
 
+                entity.HasIndex(e => e.GroupId);
+
+                entity.HasIndex(e => e.PropId);
+
                 entity.Property(e => e.Value)
                     .IsRequired()
                     .HasMaxLength(100);
@@ -178,7 +182,11 @@ namespace DAL.Models
                     .HasName("UK_goods_name")
                     .IsUnique();
 
+                entity.HasIndex(e => e.PriceId);
+
                 entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Amount).HasDefaultValueSql("(CONVERT([smallint],(0)))");
 
                 entity.Property(e => e.Code).ValueGeneratedOnAdd();
 
@@ -203,13 +211,13 @@ namespace DAL.Models
                     .HasConstraintName("FK_goods_price");
             });
 
-          
-
             modelBuilder.Entity<GoodsImage>(entity =>
             {
                 entity.HasKey(e => new { e.GoodsId, e.ImageId });
 
                 entity.ToTable("Goods_Image");
+
+                entity.HasIndex(e => e.ImageId);
 
                 entity.HasIndex(e => new { e.GoodsId, e.ImageId })
                     .HasName("UK_goods_image")
@@ -247,8 +255,6 @@ namespace DAL.Models
                 entity.Property(e => e.ShortDescript).HasMaxLength(200);
             });
 
-         
-
             modelBuilder.Entity<Image>(entity =>
             {
                 entity.Property(e => e.Fext)
@@ -262,6 +268,8 @@ namespace DAL.Models
 
             modelBuilder.Entity<Order>(entity =>
             {
+                entity.HasIndex(e => e.UserId);
+
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.OrdCloseDate).HasColumnType("datetime");
@@ -270,9 +278,7 @@ namespace DAL.Models
 
                 entity.Property(e => e.OrderNum).ValueGeneratedOnAdd();
 
-                entity.Property(e => e.UserId)
-                    .IsRequired()
-                    .HasMaxLength(450);
+                entity.Property(e => e.UserId).IsRequired();
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Order)
@@ -286,6 +292,8 @@ namespace DAL.Models
                 entity.HasKey(e => new { e.OrderId, e.GoodsId });
 
                 entity.ToTable("Order_Goods");
+
+                entity.HasIndex(e => e.GoodsId);
 
                 entity.Property(e => e.Amount).HasDefaultValueSql("((1))");
 
@@ -327,6 +335,94 @@ namespace DAL.Models
                     .IsRequired()
                     .HasMaxLength(100);
             });
+
+            modelBuilder.Entity<Group>().HasData(new Group { Id = 1, Name = "Подарочные наборы", Icon = "group-icon-gift.png" });
+            modelBuilder.Entity<Group>().HasData(new Group { Id = 2, Name = "Сладости", Icon = "group-icon-sweets.png" });
+            modelBuilder.Entity<Group>().HasData(new Group { Id = 3, Name = "Всё для праздника", Icon = "group-icon-allToParty.png" });
+
+            modelBuilder.Entity<Price>().HasData(new Models.Price { Id = 1, OrigPrice = 550, ValidFrom = DateTime.Now });
+            modelBuilder.Entity<Price>().HasData(new Models.Price { Id = 2, OrigPrice = 340, ValidFrom = DateTime.Now, PercentDisc = 20 });
+            modelBuilder.Entity<Price>().HasData(new Models.Price { Id = 3, OrigPrice = 450, ValidFrom = DateTime.Now, SumDisc = 100 });
+            modelBuilder.Entity<Price>().HasData(new Models.Price { Id = 4, OrigPrice = 220, ValidFrom = DateTime.Now });
+
+            modelBuilder.Entity<Property>().HasData(new Property { Id = 1, Name = "Вес", IsFilter = false });
+            modelBuilder.Entity<Property>().HasData(new Property { Id = 2, Name = "Категория людей", IsFilter = true });
+
+
+            modelBuilder.Entity<Goods>().HasData(new Goods
+            {
+                Id = 1,
+                Name = "Подарочный набор 1",
+                GroupId = 1,
+                Code = 100000,
+                Amount = 10,
+                ShortDescript = "Подарочный набор 1. Описание",
+                Descript = "Подарочный набор 1. Полное описание",
+                PriceId = 1,
+            });
+
+            modelBuilder.Entity<Goods>().HasData(new Goods
+            {
+                Id = 2,
+                Name = "Подарочный набор 2",
+                GroupId = 1,
+                Code = 100001,
+                Amount = 0,
+                ShortDescript = "Подарочный набор 2. Описание",
+                Descript = "Подарочный набор 2. Полное описание",
+                PriceId = 2,
+            });
+
+            modelBuilder.Entity<Goods>().HasData(new Goods
+            {
+                Id = 3,
+                Name = "Подарочный набор 1",
+                GroupId = 1,
+                Code = 100002,
+                Amount = 2,
+                ShortDescript = "Подарочный набор 2. Описание",
+                Descript = "Подарочный набор 2. Полное описание",
+                PriceId = 3,
+            });
+
+            modelBuilder.Entity<Goods>().HasData(new Goods
+            {
+                Id = 4,
+                Name = "Конфеты Raffaello",
+                GroupId = 2,
+                Code = 200000,
+                Amount = 15,
+                ShortDescript = "Конфеты Raffaello 240г",
+                Descript = "Конфеты Raffaello. Полное описание",
+                PriceId = 4,
+            });
+
+            modelBuilder.Entity<Charact>().HasData(new Charact { GoodsId = 1, PropId = 1, Value = "780г" });
+            modelBuilder.Entity<Charact>().HasData(new Charact { GoodsId = 2, PropId = 1, Value = "560г" });
+            modelBuilder.Entity<Charact>().HasData(new Charact { GoodsId = 1, PropId = 2, Value = "Для детей" });
+            modelBuilder.Entity<Charact>().HasData(new Charact { GoodsId = 2, PropId = 3, Value = "Для мужчин" });
+            modelBuilder.Entity<Charact>().HasData(new Charact { GoodsId = 3, PropId = 2, Value = "Для девушек" });
+
+
+            modelBuilder.Entity<Image>().HasData(new Image { Id = 1, Name = "good1_001.jpg" });
+            modelBuilder.Entity<Image>().HasData(new Image { Id = 2, Name = "good1_002.jpg" });
+            modelBuilder.Entity<Image>().HasData(new Image { Id = 3, Name = "good1_003.jpg" });
+
+            modelBuilder.Entity<Image>().HasData(new Image { Id = 4, Name = "good2_001.jpg" });
+            modelBuilder.Entity<Image>().HasData(new Image { Id = 5, Name = "good2_002.jpg" });
+            modelBuilder.Entity<Image>().HasData(new Image { Id = 6, Name = "good2_003.jpg" });
+
+            modelBuilder.Entity<Image>().HasData(new Image { Id = 7, Name = "good3_001.jpg" });
+
+            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 1, ImageId= 1});
+            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 1, ImageId= 2});
+            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 1, ImageId= 3});
+            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 2, ImageId= 4});
+            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 2, ImageId= 5});
+            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 2, ImageId= 6});
+            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 3, ImageId= 7});
+
+
         }
     }
 }

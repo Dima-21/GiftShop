@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DAL.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -61,27 +61,6 @@ namespace DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Group", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Hproduct",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: false),
-                    Weight = table.Column<int>(nullable: true),
-                    Length = table.Column<double>(nullable: true),
-                    Width = table.Column<double>(nullable: true),
-                    Height = table.Column<double>(nullable: true),
-                    ValInBox = table.Column<int>(nullable: true),
-                    ImageId = table.Column<int>(nullable: true),
-                    DataStart = table.Column<DateTime>(type: "datetime", nullable: false),
-                    DataEnd = table.Column<DateTime>(type: "datetime", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Hproduct", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -240,7 +219,7 @@ namespace DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
-                    UserId = table.Column<string>(maxLength: 450, nullable: false),
+                    UserId = table.Column<string>(nullable: false),
                     OrderNum = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     OrderDate = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -272,7 +251,8 @@ namespace DAL.Migrations
                     GroupId = table.Column<int>(nullable: false),
                     PublishData = table.Column<DateTime>(type: "datetime", nullable: false),
                     DataStart = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getdate())"),
-                    DataEnd = table.Column<DateTime>(type: "datetime", nullable: true)
+                    DataEnd = table.Column<DateTime>(type: "datetime", nullable: true),
+                    Amount = table.Column<short>(nullable: false, defaultValueSql: "(CONVERT([smallint],(0)))")
                 },
                 constraints: table =>
                 {
@@ -313,31 +293,6 @@ namespace DAL.Migrations
                         name: "FK_charact_property",
                         column: x => x.PropId,
                         principalTable: "Property",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Goods_Hprop",
-                columns: table => new
-                {
-                    GoodsId = table.Column<int>(nullable: false),
-                    ProdId = table.Column<int>(nullable: false),
-                    Amount = table.Column<short>(nullable: false, defaultValueSql: "((1))")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Goods_Hprop", x => new { x.GoodsId, x.ProdId });
-                    table.ForeignKey(
-                        name: "FK_goods_hprop_goods",
-                        column: x => x.GoodsId,
-                        principalTable: "Goods",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_goods_hprop_hproduct",
-                        column: x => x.ProdId,
-                        principalTable: "Hproduct",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -453,17 +408,6 @@ namespace DAL.Migrations
                 column: "PriceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Goods_Hprop_ProdId",
-                table: "Goods_Hprop",
-                column: "ProdId");
-
-            migrationBuilder.CreateIndex(
-                name: "UK_goods_hprop",
-                table: "Goods_Hprop",
-                columns: new[] { "GoodsId", "ProdId" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Goods_Image_ImageId",
                 table: "Goods_Image",
                 column: "ImageId");
@@ -524,9 +468,6 @@ namespace DAL.Migrations
                 name: "Charact");
 
             migrationBuilder.DropTable(
-                name: "Goods_Hprop");
-
-            migrationBuilder.DropTable(
                 name: "Goods_Image");
 
             migrationBuilder.DropTable(
@@ -540,9 +481,6 @@ namespace DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Property");
-
-            migrationBuilder.DropTable(
-                name: "Hproduct");
 
             migrationBuilder.DropTable(
                 name: "Image");

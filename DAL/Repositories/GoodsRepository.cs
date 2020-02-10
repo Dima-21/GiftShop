@@ -39,6 +39,8 @@ namespace DAL.Repositories
                 c => c.Id, // свойство-селектор объекта из второго набора
                 (p, c) => new Goods()// результат
                 {
+                    Id = p.Id,
+                    GroupId = p.GroupId,
                     Name = p.Name,
                     Price = p.Price
                 });

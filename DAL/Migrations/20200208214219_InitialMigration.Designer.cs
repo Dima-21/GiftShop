@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(GiftShopContext))]
-    [Migration("20191212202954_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20200208214219_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846")
+                .HasAnnotation("ProductVersion", "2.1.14-servicing-32113")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -207,6 +207,10 @@ namespace DAL.Migrations
                 {
                     b.Property<int>("Id");
 
+                    b.Property<short>("Amount")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("(CONVERT([smallint],(0)))");
+
                     b.Property<int>("Code")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -244,27 +248,6 @@ namespace DAL.Migrations
                     b.HasIndex("PriceId");
 
                     b.ToTable("Goods");
-                });
-
-            modelBuilder.Entity("DAL.Models.GoodsHprop", b =>
-                {
-                    b.Property<int>("GoodsId");
-
-                    b.Property<int>("ProdId");
-
-                    b.Property<short>("Amount")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("((1))");
-
-                    b.HasKey("GoodsId", "ProdId");
-
-                    b.HasIndex("ProdId");
-
-                    b.HasIndex("GoodsId", "ProdId")
-                        .IsUnique()
-                        .HasName("UK_goods_hprop");
-
-                    b.ToTable("Goods_Hprop");
                 });
 
             modelBuilder.Entity("DAL.Models.GoodsImage", b =>
@@ -314,38 +297,6 @@ namespace DAL.Migrations
                     b.ToTable("Group");
                 });
 
-            modelBuilder.Entity("DAL.Models.Hproduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime?>("DataEnd")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime>("DataStart")
-                        .HasColumnType("datetime");
-
-                    b.Property<double?>("Height");
-
-                    b.Property<int?>("ImageId");
-
-                    b.Property<double?>("Length");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.Property<int?>("ValInBox");
-
-                    b.Property<int?>("Weight");
-
-                    b.Property<double?>("Width");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Hproduct");
-                });
-
             modelBuilder.Entity("DAL.Models.Image", b =>
                 {
                     b.Property<int>("Id")
@@ -383,8 +334,7 @@ namespace DAL.Migrations
                     b.Property<int>("Sum");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasMaxLength(450);
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -531,19 +481,6 @@ namespace DAL.Migrations
                         .WithMany("Goods")
                         .HasForeignKey("PriceId")
                         .HasConstraintName("FK_goods_price");
-                });
-
-            modelBuilder.Entity("DAL.Models.GoodsHprop", b =>
-                {
-                    b.HasOne("DAL.Models.Goods", "Goods")
-                        .WithMany("GoodsHprop")
-                        .HasForeignKey("GoodsId")
-                        .HasConstraintName("FK_goods_hprop_goods");
-
-                    b.HasOne("DAL.Models.Hproduct", "Prod")
-                        .WithMany("GoodsHprop")
-                        .HasForeignKey("ProdId")
-                        .HasConstraintName("FK_goods_hprop_hproduct");
                 });
 
             modelBuilder.Entity("DAL.Models.GoodsImage", b =>
