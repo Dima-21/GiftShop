@@ -63,7 +63,7 @@ namespace BLL.Services
                     Code = x.Code,
                     ShortDescript = x.ShortDescript,
                     GroupId = x.GroupId,
-                    ImagePath = x.GoodsImage.Count == 0 ? "without-photo.png" : $"{ x.GoodsImage.First().Image.Name}.{x.GoodsImage.First().Image.Fext}",
+                    ImagePath = x.GoodsImage.Count == 0 ? "without-photo.png" : $"{x.GoodsImage.First().Image.Name}",
                     Price = x.Price?.OrigPrice ?? 0,
                     PriceId = x.PriceId
                 }).ToList();

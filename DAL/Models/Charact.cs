@@ -7,11 +7,9 @@ namespace DAL.Models
     {
         public int GoodsId { get; set; }
         public int PropId { get; set; }
-        public int GroupId { get; set; }
         public string Value { get; set; }
 
         public Goods Goods { get; set; }
-        public Group Group { get; set; }
         public Property Prop { get; set; }
     }
 }

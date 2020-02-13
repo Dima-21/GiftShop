@@ -4,14 +4,16 @@ using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Migrations
 {
     [DbContext(typeof(GiftShopContext))]
-    partial class GiftShopContextModelSnapshot : ModelSnapshot
+    [Migration("20200210213418_Migration_004")]
+    partial class Migration_004
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -186,23 +188,19 @@ namespace DAL.Migrations
 
                     b.Property<int>("PropId");
 
+                    b.Property<int>("GroupId");
+
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.HasKey("GoodsId", "PropId");
+                    b.HasKey("GoodsId", "PropId", "GroupId");
+
+                    b.HasIndex("GroupId");
 
                     b.HasIndex("PropId");
 
                     b.ToTable("Charact");
-
-                    b.HasData(
-                        new { GoodsId = 1, PropId = 1, Value = "780г" },
-                        new { GoodsId = 2, PropId = 1, Value = "560г" },
-                        new { GoodsId = 1, PropId = 2, Value = "Для детей" },
-                        new { GoodsId = 2, PropId = 2, Value = "Для мужчин" },
-                        new { GoodsId = 3, PropId = 2, Value = "Для девушек" }
-                    );
                 });
 
             modelBuilder.Entity("DAL.Models.Goods", b =>
@@ -217,11 +215,17 @@ namespace DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime?>("DataEnd")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("DataStart")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
                     b.Property<string>("Descript");
 
                     b.Property<int>("GroupId");
-
-                    b.Property<bool>("IsHidden");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -230,16 +234,12 @@ namespace DAL.Migrations
                     b.Property<int>("PriceId");
 
                     b.Property<DateTime>("PublishData")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("ShortDescript")
                         .HasMaxLength(200);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
 
                     b.HasIndex("Name")
                         .IsUnique()
@@ -248,13 +248,6 @@ namespace DAL.Migrations
                     b.HasIndex("PriceId");
 
                     b.ToTable("Goods");
-
-                    b.HasData(
-                        new { Id = 1, Amount = (short)10, Code = 100000, Descript = "Подарочный набор 1. Полное описание", GroupId = 1, IsHidden = false, Name = "Подарочный набор 1", PriceId = 1, PublishData = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), ShortDescript = "Подарочный набор 1. Описание" },
-                        new { Id = 2, Amount = (short)0, Code = 100001, Descript = "Подарочный набор 2. Полное описание", GroupId = 1, IsHidden = false, Name = "Подарочный набор 2", PriceId = 2, PublishData = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), ShortDescript = "Подарочный набор 2. Описание" },
-                        new { Id = 3, Amount = (short)2, Code = 100002, Descript = "Подарочный набор 3. Полное описание", GroupId = 1, IsHidden = false, Name = "Подарочный набор 3", PriceId = 3, PublishData = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), ShortDescript = "Подарочный набор 3. Описание" },
-                        new { Id = 4, Amount = (short)15, Code = 200000, Descript = "Конфеты Raffaello. Полное описание", GroupId = 2, IsHidden = false, Name = "Конфеты Raffaello", PriceId = 4, PublishData = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), ShortDescript = "Конфеты Raffaello 240г" }
-                    );
                 });
 
             modelBuilder.Entity("DAL.Models.GoodsImage", b =>
@@ -272,16 +265,6 @@ namespace DAL.Migrations
                         .HasName("UK_goods_image");
 
                     b.ToTable("Goods_Image");
-
-                    b.HasData(
-                        new { GoodsId = 1, ImageId = 1 },
-                        new { GoodsId = 1, ImageId = 2 },
-                        new { GoodsId = 1, ImageId = 3 },
-                        new { GoodsId = 2, ImageId = 4 },
-                        new { GoodsId = 2, ImageId = 5 },
-                        new { GoodsId = 2, ImageId = 6 },
-                        new { GoodsId = 3, ImageId = 7 }
-                    );
                 });
 
             modelBuilder.Entity("DAL.Models.Group", b =>
@@ -290,11 +273,17 @@ namespace DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime?>("DataEnd")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("DataStart")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
                     b.Property<string>("Icon");
 
                     b.Property<string>("Image");
-
-                    b.Property<bool>("IsHidden");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -312,9 +301,9 @@ namespace DAL.Migrations
                     b.ToTable("Group");
 
                     b.HasData(
-                        new { Id = 1, Icon = "group-icon-gift.png", IsHidden = false, Name = "Подарочные наборы" },
-                        new { Id = 2, Icon = "group-icon-sweets.png", IsHidden = false, Name = "Сладости" },
-                        new { Id = 3, Icon = "group-icon-allToParty.png", IsHidden = false, Name = "Всё для праздника" }
+                        new { Id = 1, DataStart = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Icon = "group-icon-gift.png", Name = "Подарочные наборы" },
+                        new { Id = 2, DataStart = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Icon = "group-icon-sweets.png", Name = "Сладости" },
+                        new { Id = 3, DataStart = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Icon = "group-icon-allToParty.png", Name = "Всё для праздника" }
                     );
                 });
 
@@ -330,16 +319,6 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Image");
-
-                    b.HasData(
-                        new { Id = 1, Name = "good1_001.jpg" },
-                        new { Id = 2, Name = "good1_002.jpg" },
-                        new { Id = 3, Name = "good1_003.jpg" },
-                        new { Id = 4, Name = "good2_001.jpg" },
-                        new { Id = 5, Name = "good2_002.jpg" },
-                        new { Id = 6, Name = "good2_003.jpg" },
-                        new { Id = 7, Name = "good3_001.jpg" }
-                    );
                 });
 
             modelBuilder.Entity("DAL.Models.Order", b =>
@@ -416,10 +395,10 @@ namespace DAL.Migrations
                     b.ToTable("Price");
 
                     b.HasData(
-                        new { Id = 1, OrigPrice = 550m, PercentDisc = (byte)0, SpecPrice = 0m, SumDisc = 0m, ValidFrom = new DateTime(2020, 2, 12, 23, 31, 38, 132, DateTimeKind.Local) },
-                        new { Id = 2, OrigPrice = 340m, PercentDisc = (byte)20, SpecPrice = 0m, SumDisc = 0m, ValidFrom = new DateTime(2020, 2, 12, 23, 31, 38, 134, DateTimeKind.Local) },
-                        new { Id = 3, OrigPrice = 450m, PercentDisc = (byte)0, SpecPrice = 0m, SumDisc = 100m, ValidFrom = new DateTime(2020, 2, 12, 23, 31, 38, 135, DateTimeKind.Local) },
-                        new { Id = 4, OrigPrice = 220m, PercentDisc = (byte)0, SpecPrice = 0m, SumDisc = 0m, ValidFrom = new DateTime(2020, 2, 12, 23, 31, 38, 135, DateTimeKind.Local) }
+                        new { Id = 1, OrigPrice = 550m, PercentDisc = (byte)0, SpecPrice = 0m, SumDisc = 0m, ValidFrom = new DateTime(2020, 2, 10, 23, 34, 18, 470, DateTimeKind.Local) },
+                        new { Id = 2, OrigPrice = 340m, PercentDisc = (byte)20, SpecPrice = 0m, SumDisc = 0m, ValidFrom = new DateTime(2020, 2, 10, 23, 34, 18, 473, DateTimeKind.Local) },
+                        new { Id = 3, OrigPrice = 450m, PercentDisc = (byte)0, SpecPrice = 0m, SumDisc = 100m, ValidFrom = new DateTime(2020, 2, 10, 23, 34, 18, 473, DateTimeKind.Local) },
+                        new { Id = 4, OrigPrice = 220m, PercentDisc = (byte)0, SpecPrice = 0m, SumDisc = 0m, ValidFrom = new DateTime(2020, 2, 10, 23, 34, 18, 473, DateTimeKind.Local) }
                     );
                 });
 
@@ -442,11 +421,6 @@ namespace DAL.Migrations
                         .HasName("UK_property_name");
 
                     b.ToTable("Property");
-
-                    b.HasData(
-                        new { Id = 1, IsFilter = false, Name = "Вес" },
-                        new { Id = 2, IsFilter = true, Name = "Категория людей" }
-                    );
                 });
 
             modelBuilder.Entity("DAL.Models.AspNetRoleClaims", b =>
@@ -501,6 +475,11 @@ namespace DAL.Migrations
                         .HasForeignKey("GoodsId")
                         .HasConstraintName("FK_charact_goods");
 
+                    b.HasOne("DAL.Models.Group", "Group")
+                        .WithMany("Charact")
+                        .HasForeignKey("GroupId")
+                        .HasConstraintName("FK_charact_group");
+
                     b.HasOne("DAL.Models.Property", "Prop")
                         .WithMany("Charact")
                         .HasForeignKey("PropId")
@@ -509,11 +488,6 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Models.Goods", b =>
                 {
-                    b.HasOne("DAL.Models.Group", "Group")
-                        .WithMany("Goods")
-                        .HasForeignKey("GroupId")
-                        .HasConstraintName("FK_Goods_Group");
-
                     b.HasOne("DAL.Models.Price", "Price")
                         .WithMany("Goods")
                         .HasForeignKey("PriceId")

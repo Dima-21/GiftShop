@@ -7,7 +7,7 @@ namespace DAL.Models
     {
         public Group()
         {
-            Charact = new HashSet<Charact>();
+            Goods = new HashSet<Goods>();
         }
 
         public int Id { get; set; }
@@ -15,9 +15,7 @@ namespace DAL.Models
         public string ShortDescript { get; set; }
         public string Image { get; set; }
         public string Icon { get; set; }
-        public DateTime DataStart { get; set; }
-        public DateTime? DataEnd { get; set; }
-
-        public ICollection<Charact> Charact { get; set; }
+        public bool IsHidden { get; set; }
+        public ICollection<Goods> Goods { get; set; }
     }
 }

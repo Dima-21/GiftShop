@@ -12,7 +12,6 @@ namespace DAL.Models
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Fext { get; set; }
 
         public ICollection<GoodsImage> GoodsImage { get; set; }
     }

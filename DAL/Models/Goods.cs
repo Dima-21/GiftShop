@@ -20,11 +20,11 @@ namespace DAL.Models
         public string ShortDescript { get; set; }
         public int GroupId { get; set; }
         public DateTime PublishData { get; set; }
-        public DateTime DataStart { get; set; }
-        public DateTime? DataEnd { get; set; }
+        public bool IsHidden { get; set; }
         public short Amount { get; set; }
 
         public Price Price { get; set; }
+        public Group Group { get; set; }
         public ICollection<Charact> Charact { get; set; }
         public ICollection<GoodsImage> GoodsImage { get; set; }
         public ICollection<OrderGoods> OrderGoods { get; set; }

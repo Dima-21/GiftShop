@@ -147,9 +147,7 @@ namespace DAL.Models
 
             modelBuilder.Entity<Charact>(entity =>
             {
-                entity.HasKey(e => new { e.GoodsId, e.PropId, e.GroupId });
-
-                entity.HasIndex(e => e.GroupId);
+                entity.HasKey(e => new { e.GoodsId, e.PropId });
 
                 entity.HasIndex(e => e.PropId);
 
@@ -163,11 +161,13 @@ namespace DAL.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_charact_goods");
 
-                entity.HasOne(d => d.Group)
-                    .WithMany(p => p.Charact)
-                    .HasForeignKey(d => d.GroupId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_charact_group");
+
+
+                //entity.HasOne(d => d.Group)
+                //    .WithMany(p => p.Charact)
+                //    .HasForeignKey(d => d.GroupId)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("FK_charact_group");
 
                 entity.HasOne(d => d.Prop)
                     .WithMany(p => p.Charact)
@@ -184,25 +184,30 @@ namespace DAL.Models
 
                 entity.HasIndex(e => e.PriceId);
 
+                entity.HasIndex(e => e.GroupId);
+
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Amount).HasDefaultValueSql("(CONVERT([smallint],(0)))");
 
                 entity.Property(e => e.Code).ValueGeneratedOnAdd();
 
-                entity.Property(e => e.DataEnd).HasColumnType("datetime");
-
-                entity.Property(e => e.DataStart)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(100);
 
-                entity.Property(e => e.PublishData).HasColumnType("datetime");
+                entity.Property(e => e.PublishData).HasColumnType("datetime").HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.ShortDescript).HasMaxLength(200);
+
+                entity.HasOne(d => d.Group)
+                   .WithMany(p => p.Goods)
+                   .HasForeignKey(d => d.GroupId)
+                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .HasConstraintName("FK_Goods_Group");
+
+                
 
                 entity.HasOne(d => d.Price)
                     .WithMany(p => p.Goods)
@@ -242,12 +247,6 @@ namespace DAL.Models
                     .HasName("UK_group")
                     .IsUnique();
 
-                entity.Property(e => e.DataEnd).HasColumnType("datetime");
-
-                entity.Property(e => e.DataStart)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
-
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(70);
@@ -257,12 +256,6 @@ namespace DAL.Models
 
             modelBuilder.Entity<Image>(entity =>
             {
-                entity.Property(e => e.Fext)
-                    .IsRequired()
-                    .HasColumnName("FExt")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.Name).IsRequired();
             });
 
@@ -345,8 +338,6 @@ namespace DAL.Models
             modelBuilder.Entity<Price>().HasData(new Models.Price { Id = 3, OrigPrice = 450, ValidFrom = DateTime.Now, SumDisc = 100 });
             modelBuilder.Entity<Price>().HasData(new Models.Price { Id = 4, OrigPrice = 220, ValidFrom = DateTime.Now });
 
-            modelBuilder.Entity<Property>().HasData(new Property { Id = 1, Name = "Вес", IsFilter = false });
-            modelBuilder.Entity<Property>().HasData(new Property { Id = 2, Name = "Категория людей", IsFilter = true });
 
 
             modelBuilder.Entity<Goods>().HasData(new Goods
@@ -356,8 +347,10 @@ namespace DAL.Models
                 GroupId = 1,
                 Code = 100000,
                 Amount = 10,
+                IsHidden=false,
                 ShortDescript = "Подарочный набор 1. Описание",
                 Descript = "Подарочный набор 1. Полное описание",
+                PublishData = new DateTime(2020, 1, 1),
                 PriceId = 1,
             });
 
@@ -367,21 +360,25 @@ namespace DAL.Models
                 Name = "Подарочный набор 2",
                 GroupId = 1,
                 Code = 100001,
+                IsHidden = false,
                 Amount = 0,
                 ShortDescript = "Подарочный набор 2. Описание",
                 Descript = "Подарочный набор 2. Полное описание",
+                PublishData = new DateTime(2020, 1, 1),
                 PriceId = 2,
             });
 
             modelBuilder.Entity<Goods>().HasData(new Goods
             {
                 Id = 3,
-                Name = "Подарочный набор 1",
+                Name = "Подарочный набор 3",
                 GroupId = 1,
                 Code = 100002,
+                IsHidden = false,
                 Amount = 2,
-                ShortDescript = "Подарочный набор 2. Описание",
-                Descript = "Подарочный набор 2. Полное описание",
+                ShortDescript = "Подарочный набор 3. Описание",
+                Descript = "Подарочный набор 3. Полное описание",
+                PublishData = new DateTime(2020, 1, 1),
                 PriceId = 3,
             });
 
@@ -394,15 +391,18 @@ namespace DAL.Models
                 Amount = 15,
                 ShortDescript = "Конфеты Raffaello 240г",
                 Descript = "Конфеты Raffaello. Полное описание",
+                PublishData = new DateTime(2020, 1, 1),
                 PriceId = 4,
             });
+
+            modelBuilder.Entity<Property>().HasData(new Property { Id = 1, Name = "Вес", IsFilter = false });
+            modelBuilder.Entity<Property>().HasData(new Property { Id = 2, Name = "Категория людей", IsFilter = true });
 
             modelBuilder.Entity<Charact>().HasData(new Charact { GoodsId = 1, PropId = 1, Value = "780г" });
             modelBuilder.Entity<Charact>().HasData(new Charact { GoodsId = 2, PropId = 1, Value = "560г" });
             modelBuilder.Entity<Charact>().HasData(new Charact { GoodsId = 1, PropId = 2, Value = "Для детей" });
-            modelBuilder.Entity<Charact>().HasData(new Charact { GoodsId = 2, PropId = 3, Value = "Для мужчин" });
+            modelBuilder.Entity<Charact>().HasData(new Charact { GoodsId = 2, PropId = 2, Value = "Для мужчин" });
             modelBuilder.Entity<Charact>().HasData(new Charact { GoodsId = 3, PropId = 2, Value = "Для девушек" });
-
 
             modelBuilder.Entity<Image>().HasData(new Image { Id = 1, Name = "good1_001.jpg" });
             modelBuilder.Entity<Image>().HasData(new Image { Id = 2, Name = "good1_002.jpg" });
@@ -414,13 +414,13 @@ namespace DAL.Models
 
             modelBuilder.Entity<Image>().HasData(new Image { Id = 7, Name = "good3_001.jpg" });
 
-            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 1, ImageId= 1});
-            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 1, ImageId= 2});
-            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 1, ImageId= 3});
-            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 2, ImageId= 4});
-            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 2, ImageId= 5});
-            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 2, ImageId= 6});
-            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 3, ImageId= 7});
+            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 1, ImageId = 1 });
+            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 1, ImageId = 2 });
+            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 1, ImageId = 3 });
+            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 2, ImageId = 4 });
+            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 2, ImageId = 5 });
+            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 2, ImageId = 6 });
+            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 3, ImageId = 7 });
 
 
         }

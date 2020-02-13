@@ -17,6 +17,46 @@
     <Compile Remove="Migrations\20191211211114_migr1.Designer.cs" />
     <Compile Remove="Migrations\20191211211506_migration1.cs" />
     <Compile Remove="Migrations\20191211211506_migration1.Designer.cs" />
+    <Compile Remove="Migrations\20200210213600_Migration_005.cs" />
+    <Compile Remove="Migrations\20200210213600_Migration_005.Designer.cs" />
+    <Compile Remove="Migrations\20200210214607_Migration_007.cs" />
+    <Compile Remove="Migrations\20200210214607_Migration_007.Designer.cs" />
+    <Compile Remove="Migrations\20200210215144_Migration_008.cs" />
+    <Compile Remove="Migrations\20200210215144_Migration_008.Designer.cs" />
+    <Compile Remove="Migrations\20200210215838_Migration_009.cs" />
+    <Compile Remove="Migrations\20200210215838_Migration_009.Designer.cs" />
+    <Compile Remove="Migrations\20200210220734_Migration_010.cs" />
+    <Compile Remove="Migrations\20200210220734_Migration_010.Designer.cs" />
+    <Compile Remove="Migrations\20200212190048_Migration_011.cs" />
+    <Compile Remove="Migrations\20200212190048_Migration_011.Designer.cs" />
+    <Compile Remove="Migrations\20200212190604_Migration_012.cs" />
+    <Compile Remove="Migrations\20200212190604_Migration_012.Designer.cs" />
+    <Compile Remove="Migrations\20200212191115_Migration_013.cs" />
+    <Compile Remove="Migrations\20200212191115_Migration_013.Designer.cs" />
+    <Compile Remove="Migrations\20200212200945_Migration_005.cs" />
+    <Compile Remove="Migrations\20200212200945_Migration_005.Designer.cs" />
+    <Compile Remove="Migrations\20200212201443_Migration_005.cs" />
+    <Compile Remove="Migrations\20200212201443_Migration_005.Designer.cs" />
+    <Compile Remove="Migrations\20200212201916_Migration_006.cs" />
+    <Compile Remove="Migrations\20200212201916_Migration_006.Designer.cs" />
+    <Compile Remove="Migrations\20200212205241_Migration_006.cs" />
+    <Compile Remove="Migrations\20200212205241_Migration_006.Designer.cs" />
+    <Compile Remove="Migrations\20200212205318_Migration_007.cs" />
+    <Compile Remove="Migrations\20200212205318_Migration_007.Designer.cs" />
+    <Compile Remove="Migrations\20200212205458_Migration_006.cs" />
+    <Compile Remove="Migrations\20200212205458_Migration_006.Designer.cs" />
+    <Compile Remove="Migrations\20200212205607_Migration_007.cs" />
+    <Compile Remove="Migrations\20200212205607_Migration_007.Designer.cs" />
+    <Compile Remove="Migrations\20200212210051_Migration_007.cs" />
+    <Compile Remove="Migrations\20200212210051_Migration_007.Designer.cs" />
+    <Compile Remove="Migrations\20200212210112_Migration_008.cs" />
+    <Compile Remove="Migrations\20200212210112_Migration_008.Designer.cs" />
+    <Compile Remove="Migrations\20200212210254_Migration_008.cs" />
+    <Compile Remove="Migrations\20200212210254_Migration_008.Designer.cs" />
+    <Compile Remove="Migrations\20200212210920_Migration_007.cs" />
+    <Compile Remove="Migrations\20200212210920_Migration_007.Designer.cs" />
+    <Compile Remove="Migrations\20200212211131_Migration_007.cs" />
+    <Compile Remove="Migrations\20200212211131_Migration_007.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
