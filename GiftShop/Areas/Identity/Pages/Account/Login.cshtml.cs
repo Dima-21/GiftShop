@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace GiftShop.Areas.Identity.Pages.Account
+namespace GiftShop.Areas.Identity.Pages.CustomerAccount
 {
     [AllowAnonymous]
     public class LoginModel : PageModel

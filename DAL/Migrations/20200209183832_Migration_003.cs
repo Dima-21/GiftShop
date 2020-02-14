@@ -17,20 +17,6 @@ namespace DAL.Migrations
                 table: "Group",
                 nullable: true);
 
-            migrationBuilder.InsertData(
-                table: "Group",
-                columns: new[] { "Id", "DataEnd", "DataStart", "Icon", "Image", "Name", "ShortDescript" },
-                values: new object[] { 1, null, DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"), "group-icon-gift.png", null, "Подарочные наборы", null });
-
-            migrationBuilder.InsertData(
-                table: "Group",
-                columns: new[] { "Id", "DataEnd", "DataStart", "Icon", "Image", "Name", "ShortDescript" },
-                values: new object[] { 2, null, DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"), "group-icon-sweets.png", null, "Сладости", null });
-
-            migrationBuilder.InsertData(
-                table: "Group",
-                columns: new[] { "Id", "DataEnd", "DataStart", "Icon", "Image", "Name", "ShortDescript" },
-                values: new object[] { 3, null, DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"), "group-icon-allToParty.png", null, "Всё для праздника", null });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
