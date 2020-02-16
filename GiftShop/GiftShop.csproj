@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Identity\Pages\AdminAccount\**" />
+    <Content Remove="Areas\Identity\Pages\AdminAccount\**" />
+    <EmbeddedResource Remove="Areas\Identity\Pages\AdminAccount\**" />
+    <None Remove="Areas\Identity\Pages\AdminAccount\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.1" PrivateAssets="All" />
@@ -13,14 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\StoreManage\Data\" />
     <Folder Include="Areas\Identity\Data\" />
-    <Folder Include="Areas\Identity\Pages\AdminAccount\" />
     <Folder Include="Areas\ProductList\Data\" />
     <Folder Include="Areas\Identity\Services\" />
     <Folder Include="Data\" />
     <Folder Include="Pages\" />
-    <Folder Include="wwwroot\css\" />
-    <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
   <ItemGroup>

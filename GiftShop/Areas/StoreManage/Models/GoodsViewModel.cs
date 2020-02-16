@@ -1,12 +1,12 @@
-﻿using System;
+﻿using BLL.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BLL.Models;
 
-namespace GiftShop.Areas.ProductList.Models
+namespace GiftShop.Areas.StoreManage.Models
 {
-    public class ProductListViewModel
+    public class GoodsViewModel
     {
         public List<GoodsDTO> Goods { get; set; }
     }

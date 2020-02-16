@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using BLL.Models;
 using BLL.Services;
 using GiftShop.Areas.ProductList.Models;
-using GiftShop.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GiftShop.Areas.Goods.Controllers
+namespace GiftShop.Areas.ProductList.Controllers
 {
     public class GoodsController : Controller
     {
@@ -17,14 +17,16 @@ namespace GiftShop.Areas.Goods.Controllers
         {
             this.goodsService = goodsService;
         }
+
         [Area("ProductList")]
         public IActionResult Index(int? groupId)
         {
             ProductListViewModel model = new ProductListViewModel();
-
-            model.ProductList = (goodsService as GoodsService).GetAllFiltered(null).ToList();
+            
+            model.Goods = goodsService.GetAll().ToList();
 
             return View(model);
         }
+
     }
 }

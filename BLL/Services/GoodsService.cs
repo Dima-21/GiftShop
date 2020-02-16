@@ -35,40 +35,55 @@ namespace BLL.Services
         public IEnumerable<GoodsDTO> GetAll()
         {
             List<GoodsDTO> result = new List<GoodsDTO>();
+
+            List<string> pict = new List<string>();
+            pict.Add("without-photo.png");
+
             result = repo.GetAll().Select(x => new GoodsDTO
             {
                 Id = x.Id,
                 Name = x.Name,
                 Code = x.Code,
                 ShortDescript = x.ShortDescript,
-                GroupId = x.GroupId,
-                //ImagePath = $"{ x.GoodsImage.First().Image.Name} . {x.GoodsImage.First().Image.Fext}",
+                //GroupId = x.GroupId,
+                ImagePath = pict,
                 Price = x.Price?.OrigPrice ?? 0,
                 PriceId = x.PriceId
             }).ToList();
 
+            //context.Goods.Join(context.Price, // второй набор
+            //    p => p.PriceId, // свойство-селектор объекта из первого набора
+            //    c => c.Id, // свойство-селектор объекта из второго набора
+            //    (p, c) => new Goods()// результат
+            //    {
+            //        Id = p.Id,
+            //        GroupId = p.GroupId,
+            //        Name = p.Name,
+            //        Price = p.Price
+            //    });
+
             return result;
 
         }
 
-        public IEnumerable<FilteredGoodsDTO> GetAllFiltered(int? groupId)
-        {
-            List<FilteredGoodsDTO> result = new List<FilteredGoodsDTO>();
+        //public IEnumerable<FilteredGoodsDTO> GetAllFiltered(int? groupId)
+        //{
+        //    List<FilteredGoodsDTO> result = new List<FilteredGoodsDTO>();
             
-            if (groupId is null)
-                result = repo.GetAll().Select(x => new FilteredGoodsDTO
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Code = x.Code,
-                    ShortDescript = x.ShortDescript,
-                    GroupId = x.GroupId,
-                    ImagePath = x.GoodsImage.Count == 0 ? "without-photo.png" : $"{x.GoodsImage.First().Image.Name}",
-                    Price = x.Price?.OrigPrice ?? 0,
-                    PriceId = x.PriceId
-                }).ToList();
+        //    if (groupId is null)
+        //        result = repo.GetAll().Select(x => new FilteredGoodsDTO
+        //        {
+        //            Id = x.Id,
+        //            Name = x.Name,
+        //            Code = x.Code,
+        //            ShortDescript = x.ShortDescript,
+        //            GroupId = x.GroupId,
+        //            ImagePath = x.GoodsImage.Count == 0 ? "without-photo.png" : $"{x.GoodsImage.First().Image.Name}",
+        //            Price = x.Price?.OrigPrice ?? 0,
+        //            PriceId = x.PriceId
+        //        }).ToList();
 
-            return result;
-        }
+        //    return result;
+        //}
     }
 }

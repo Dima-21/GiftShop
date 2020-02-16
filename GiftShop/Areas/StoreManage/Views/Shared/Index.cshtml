@@ -1,0 +1,24 @@
+﻿@model GoodsViewModel
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">@Html.DisplayNameFor(model => model.Goods.First().Code)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Goods.First().ImagePath)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Goods.First().Name)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Goods.First().Price)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (GoodsDTO item in Model.Goods)
+            {
+                <tr>
+                    <th scope="row">@item.Id</th>
+                    <td><img src="~/goods_image/@Url.Content(item.ImagePath.First())" alt="Image" height="48" width="48"></td>
+                    <td>@item.Name</td>
+                    <td>@item.Price</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

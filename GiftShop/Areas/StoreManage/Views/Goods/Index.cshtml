@@ -1,10 +1,8 @@
-﻿@using GiftShop.Areas.ProductList.Models
-@model ProductListViewModel
+﻿@model GoodsViewModel
 
-<div>
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+@*<p>
+    <a asp-page="~/Create">Create New</a>
+</p>*@
 <table class="table">
     <thead>
         <tr>
@@ -36,7 +34,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Goods) {
+        @foreach (var item in Model.Goods) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Code)
@@ -50,25 +48,23 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ShortDescript)
             </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.IsHidden)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Amount)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.Group.Name)
             </td>
             <td>
-                @*<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>*@
+                <a asp-action="Edit" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@item.Id" class="btn"><img src="~/images/icons/edit.png"/></a> 
+                <a asp-action="Details" asp-controller="Goods" asp-route-area="StoreManage"  asp-route-id="@item.Id" class="btn"><img src="~/images/icons/info.png" /></a> 
+                <a asp-action="Delete" asp-controller="Goods" asp-route-area="StoreManage"  asp-route-id="@item.Id" class="btn"><img src="~/images/icons/delete.png" /></a>
             </td>
         </tr>
 }
     </tbody>
 </table>
-</div>

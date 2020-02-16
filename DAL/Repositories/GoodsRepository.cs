@@ -33,20 +33,7 @@ namespace DAL.Repositories
 
         public IEnumerable<Goods> GetAll()
         {
-
-            IQueryable<Goods> goods = context.Goods.Join(context.Price, // второй набор
-                p => p.PriceId, // свойство-селектор объекта из первого набора
-                c => c.Id, // свойство-селектор объекта из второго набора
-                (p, c) => new Goods()// результат
-                {
-                    Id = p.Id,
-                    GroupId = p.GroupId,
-                    Name = p.Name,
-                    Price = p.Price
-                });
-
-            return goods;
-            //return context.Goods;
+            return context.Goods;
         }
 
         public void Save()
