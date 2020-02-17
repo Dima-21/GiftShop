@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using BLL.Models;
 using BLL.Services;
 using GiftShop.Areas.StoreManage.Models;
@@ -13,20 +14,22 @@ namespace GiftShop.Areas.StoreManage.Controllers
     [Area("StoreManage")]
     public class GoodsController : Controller
     {
-        IService<GoodsDTO> goodsService;
+        private readonly IMapper _mapper;
+        private readonly IService<GoodsDTO> goodsService;
 
-        public GoodsController(IService<GoodsDTO> goodsService)
+        public GoodsController(IService<GoodsDTO> goodsService, IMapper mapper)
         {
+            this._mapper = mapper;
             this.goodsService = goodsService;
         }
 
         
         public ActionResult Index()
         {
-            GoodsViewModel goodsVM = new GoodsViewModel();
+            GoodsListViewModel goodsVM = new GoodsListViewModel();
 
-            goodsVM.Goods = goodsService.GetAll().ToList();
-
+            goodsVM.Goods = _mapper.Map<List<GoodsViewModel>>(goodsService.GetAll().ToList());
+            
             return View(goodsVM);
         }
         // GET: Goods/Details/5
@@ -44,7 +47,7 @@ namespace GiftShop.Areas.StoreManage.Controllers
         // POST: Goods/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(GoodsDTO createModel)
         {
             try
             {
@@ -87,21 +90,21 @@ namespace GiftShop.Areas.StoreManage.Controllers
             return View();
         }
 
-        // POST: Goods/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
+        //// POST: Goods/Delete/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Delete(int id, IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        // TODO: Add delete logic here
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
     }
 }

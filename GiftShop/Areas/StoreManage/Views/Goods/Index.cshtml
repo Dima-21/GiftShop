@@ -1,11 +1,16 @@
-﻿@model GoodsViewModel
+﻿@model GoodsListViewModel
 
-@*<p>
-    <a asp-page="~/Create">Create New</a>
-</p>*@
-<table class="table">
-    <thead>
-        <tr>
+<p class="mt-4 mx-2">
+    <a asp-action="Create" asp-controller="Goods" asp-route-area="StoreManage"><img src="~/images/icons/add-icon.png" width="32" height="32" /></a>
+</p>
+<table class="table table-hover">
+    <thead class="thead-light">
+        <tr class="text-center">
+            <th>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Goods[0].Image)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Goods[0].Code)
             </th>
@@ -13,58 +18,66 @@
                 @Html.DisplayNameFor(model => model.Goods[0].Name)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Goods[0].Group)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Goods[0].Descript)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Goods[0].ShortDescript)
             </th>
-            <th>
+            @*<th class="text-center">
                 @Html.DisplayNameFor(model => model.Goods[0].IsHidden)
-            </th>
-            <th>
+            </th>*@
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Goods[0].Amount)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Goods[0].Price)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].Group)
-            </th>
+
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Goods) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descript)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShortDescript)
-            </td>
+        @foreach (var item in Model.Goods)
+        {
+            <tr class="text-center">
+                <td >
+                    <input asp-for="@item.IsHidden" />
+                    @*@Html.DisplayFor(modelItem => item.IsHidden)*@
+                </td>
+                <td>
+                    <img src="~/goods_image/@Url.Content(item.Image)" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Group)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descript)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShortDescript)
+                </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.IsHidden)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.Group.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@item.Id" class="btn"><img src="~/images/icons/edit.png"/></a> 
-                <a asp-action="Details" asp-controller="Goods" asp-route-area="StoreManage"  asp-route-id="@item.Id" class="btn"><img src="~/images/icons/info.png" /></a> 
-                <a asp-action="Delete" asp-controller="Goods" asp-route-area="StoreManage"  asp-route-id="@item.Id" class="btn"><img src="~/images/icons/delete.png" /></a>
-            </td>
-        </tr>
-}
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@item.Id" class="btn"><img src="~/images/icons/edit.png" /></a>
+                    <a asp-action="Details" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@item.Id" class="btn"><img src="~/images/icons/info.png" /></a>
+                    <a asp-action="Delete" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@item.Id" class="btn"><img src="~/images/icons/delete.png" /></a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

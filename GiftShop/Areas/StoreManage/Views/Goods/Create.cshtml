@@ -1,25 +1,21 @@
-﻿@model GoodsDTO
+﻿@model CreateGoodsViewModel
 
 
-<h4>Goods</h4>
+<h4 class="mt-4 mb-2">Добавление товара</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
+                <label asp-for="Code" class="control-label"></label>
+                <input asp-for="Code" class="form-control" />
+                <span asp-validation-for="Code" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PriceId" class="control-label"></label>
-                <select asp-for="PriceId" class="form-control" asp-items="ViewBag.PriceId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Descript" class="control-label"></label>
@@ -32,18 +28,25 @@
                 <span asp-validation-for="ShortDescript" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Group.Id" class="control-label"></label>
-                <select asp-for="Group.Id" class="form-control" asp-items="ViewBag.GroupId"></select>
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="" class="control-label"></label>
+                <input asp-for="ShortDescript" class="form-control" />
+                <span asp-validation-for="ShortDescript" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="IsHidden" /> @Html.DisplayNameFor(model => model.IsHidden))
+                        <input asp-for="IsHidden" /> @Html.DisplayNameFor(model => model.IsHidden)
                     </label>
                 </div>
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Создать" class="btn btn-primary" />
             </div>
         </form>
     </div>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
 
 namespace BLL.Models
@@ -42,6 +43,41 @@ namespace BLL.Models
         public ICollection<string> ImagePath { get; set; }
 
     }
+
+    //public class GoodsForTableDTO
+    //{
+    //    private string shortDescript;
+    //    private string descript;
+
+    //    public int Id { get; set; }
+
+    //    [Display(Name = "Код")]
+    //    public int Code { get; set; }
+
+    //    [Display(Name = "Наименование")]
+    //    public string Name { get; set; }
+
+    //    [Display(Name = "Описание")]
+    //    public string Descript { get => $"{descript.Take(30).ToString()}..."; set => descript = value; }
+
+    //    [Display(Name = "Краткое описание")]
+    //    public string ShortDescript { get => $"{shortDescript.Take(30).ToString()}..."; set => shortDescript = value; }
+
+    //    [Display(Name = "Категория")]
+    //    public string Group { get; set; }
+
+    //    [Display(Name = "Цена")]
+    //    public decimal Price { get; set; }
+
+    //    [Display(Name = "Показать на сайте")]
+    //    public bool IsHidden { get; set; }
+
+    //    [Display(Name = "Кол-во")]
+    //    public short Amount { get; set; }
+
+    //    [Display(Name = "Фото")]
+    //    public string Image { get; set; }
+    //}
 
     //public class FilteredGoodsDTO
     //{

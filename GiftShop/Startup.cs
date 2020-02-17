@@ -16,6 +16,7 @@ using DAL.Models;
 using BLL.Services;
 using DAL.Repositories;
 using BLL.Models;
+using AutoMapper;
 
 namespace GiftShop
 {
@@ -37,6 +38,8 @@ namespace GiftShop
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+           
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddScoped<IService<GroupDTO>, GroupService>();
             services.AddScoped<IService<GoodsDTO>, GoodsService>();
