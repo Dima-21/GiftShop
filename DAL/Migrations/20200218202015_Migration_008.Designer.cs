@@ -4,14 +4,16 @@ using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Migrations
 {
     [DbContext(typeof(GiftShopContext))]
-    partial class GiftShopContextModelSnapshot : ModelSnapshot
+    [Migration("20200218202015_Migration_008")]
+    partial class Migration_008
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -229,6 +231,8 @@ namespace DAL.Migrations
 
                     b.Property<decimal>("Price");
 
+                    b.Property<int>("PriceId");
+
                     b.Property<DateTime>("PublishData")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
@@ -245,13 +249,15 @@ namespace DAL.Migrations
                         .IsUnique()
                         .HasName("UK_goods_name");
 
+                    b.HasIndex("PriceId");
+
                     b.ToTable("Goods");
 
                     b.HasData(
-                        new { Id = 1, Amount = (short)10, Code = 100000, Descript = "Подарочный набор 1. Полное описание", GroupId = 1, IsHidden = false, Name = "Подарочный набор 1", Price = 150m, PublishData = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), ShortDescript = "Подарочный набор 1. Описание" },
-                        new { Id = 2, Amount = (short)0, Code = 100001, Descript = "Подарочный набор 2. Полное описание", GroupId = 1, IsHidden = false, Name = "Подарочный набор 2", Price = 300m, PublishData = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), ShortDescript = "Подарочный набор 2. Описание" },
-                        new { Id = 3, Amount = (short)2, Code = 100002, Descript = "Подарочный набор 3. Полное описание", GroupId = 1, IsHidden = false, Name = "Подарочный набор 3", Price = 450m, PublishData = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), ShortDescript = "Подарочный набор 3. Описание" },
-                        new { Id = 4, Amount = (short)15, Code = 200000, Descript = "Конфеты Raffaello. Полное описание", GroupId = 2, IsHidden = false, Name = "Конфеты Raffaello", Price = 120m, PublishData = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), ShortDescript = "Конфеты Raffaello 240г" }
+                        new { Id = 1, Amount = (short)10, Code = 100000, Descript = "Подарочный набор 1. Полное описание", GroupId = 1, IsHidden = false, Name = "Подарочный набор 1", Price = 150m, PriceId = 0, PublishData = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), ShortDescript = "Подарочный набор 1. Описание" },
+                        new { Id = 2, Amount = (short)0, Code = 100001, Descript = "Подарочный набор 2. Полное описание", GroupId = 1, IsHidden = false, Name = "Подарочный набор 2", Price = 300m, PriceId = 0, PublishData = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), ShortDescript = "Подарочный набор 2. Описание" },
+                        new { Id = 3, Amount = (short)2, Code = 100002, Descript = "Подарочный набор 3. Полное описание", GroupId = 1, IsHidden = false, Name = "Подарочный набор 3", Price = 450m, PriceId = 0, PublishData = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), ShortDescript = "Подарочный набор 3. Описание" },
+                        new { Id = 4, Amount = (short)15, Code = 200000, Descript = "Конфеты Raffaello. Полное описание", GroupId = 2, IsHidden = false, Name = "Конфеты Raffaello", Price = 120m, PriceId = 0, PublishData = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), ShortDescript = "Конфеты Raffaello 240г" }
                     );
                 });
 
@@ -461,8 +467,7 @@ namespace DAL.Migrations
                     b.HasOne("DAL.Models.Goods", "Goods")
                         .WithMany("Charact")
                         .HasForeignKey("GoodsId")
-                        .HasConstraintName("FK_charact_goods")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasConstraintName("FK_charact_goods");
 
                     b.HasOne("DAL.Models.Property", "Prop")
                         .WithMany("Charact")
@@ -483,14 +488,12 @@ namespace DAL.Migrations
                     b.HasOne("DAL.Models.Goods", "Goods")
                         .WithMany("GoodsImage")
                         .HasForeignKey("GoodsId")
-                        .HasConstraintName("FK_goods_image_goods")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasConstraintName("FK_goods_image_goods");
 
                     b.HasOne("DAL.Models.Image", "Image")
                         .WithMany("GoodsImage")
                         .HasForeignKey("ImageId")
-                        .HasConstraintName("FK_goods_image")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasConstraintName("FK_goods_image");
                 });
 
             modelBuilder.Entity("DAL.Models.Order", b =>

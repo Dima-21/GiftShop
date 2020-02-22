@@ -17,13 +17,13 @@ namespace BLL.Models
         [Display(Name = "Наименование")]
         public string Name { get; set; }
 
-        public int PriceId { get; set; }
-
         [Display(Name = "Описание")]
         public string Descript { get; set; }
 
         [Display(Name = "Краткое описание")]
         public string ShortDescript { get; set; }
+
+        [Display(Name = "Категория")]
         public GroupDTO Group { get; set; }
 
         [Display(Name = "Цена")]
@@ -35,12 +35,13 @@ namespace BLL.Models
         [Display(Name = "Кол-во")]
         public short Amount { get; set; }
 
-        public OrderedDictionary PropCharact { get; set; } // Характеристика товара
-
-        public OrderedDictionary GoodsImage { get; set; } // Фото товара
+        public List<PropertyValueDTO> PropCharact { get; set; } // Характеристика товара
 
         [Display(Name = "Фото")]
-        public ICollection<string> ImagePath { get; set; }
+        public List<ImageDTO> GoodsImage { get; set; } // Фото товара
+
+        //[Display(Name = "Фото")]
+        //public ICollection<string> ImagePath { get; set; }
 
     }
 

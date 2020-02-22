@@ -17,6 +17,7 @@ using BLL.Services;
 using DAL.Repositories;
 using BLL.Models;
 using AutoMapper;
+using BLL;
 
 namespace GiftShop
 {
@@ -38,13 +39,21 @@ namespace GiftShop
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-           
+
             services.AddAutoMapper(typeof(Startup));
 
             services.AddScoped<IService<GroupDTO>, GroupService>();
             services.AddScoped<IService<GoodsDTO>, GoodsService>();
             services.AddScoped<IRepository<Goods>, GoodsRepository>();
             services.AddScoped<IRepository<Group>, GroupRepository>();
+            services.AddScoped<IRepository<GoodsImage>, GoodsImageRepository>();
+            services.AddScoped<IRepository<Image>, ImageRepository>();
+            services.AddScoped<IRepository<Charact>, CharactRepository>();
+            services.AddScoped<IRepository<OrderGoods>, OrderGoodsRepository>();
+            services.AddScoped<IRepository<Order>, OrderRepository>();
+            services.AddScoped<IRepository<Property>, PropertyRepository>();
+
+            services.AddScoped<DataManager>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
@@ -55,7 +64,7 @@ namespace GiftShop
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
-       
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {

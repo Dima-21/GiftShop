@@ -4,14 +4,16 @@ using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Migrations
 {
     [DbContext(typeof(GiftShopContext))]
-    partial class GiftShopContextModelSnapshot : ModelSnapshot
+    [Migration("20200219232023_Migration_009")]
+    partial class Migration_009
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -461,8 +463,7 @@ namespace DAL.Migrations
                     b.HasOne("DAL.Models.Goods", "Goods")
                         .WithMany("Charact")
                         .HasForeignKey("GoodsId")
-                        .HasConstraintName("FK_charact_goods")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasConstraintName("FK_charact_goods");
 
                     b.HasOne("DAL.Models.Property", "Prop")
                         .WithMany("Charact")
@@ -483,14 +484,12 @@ namespace DAL.Migrations
                     b.HasOne("DAL.Models.Goods", "Goods")
                         .WithMany("GoodsImage")
                         .HasForeignKey("GoodsId")
-                        .HasConstraintName("FK_goods_image_goods")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasConstraintName("FK_goods_image_goods");
 
                     b.HasOne("DAL.Models.Image", "Image")
                         .WithMany("GoodsImage")
                         .HasForeignKey("ImageId")
-                        .HasConstraintName("FK_goods_image")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasConstraintName("FK_goods_image");
                 });
 
             modelBuilder.Entity("DAL.Models.Order", b =>

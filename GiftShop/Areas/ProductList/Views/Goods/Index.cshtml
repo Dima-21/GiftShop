@@ -1,74 +1,26 @@
 ﻿@using GiftShop.Areas.ProductList.Models
 @model ProductListViewModel
 
-<div>
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].Code)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].Descript)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].ShortDescript)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].IsHidden)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].Amount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].Group)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Goods) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descript)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShortDescript)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsHidden)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Group.Name)
-            </td>
-            <td>
-                @*<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>*@
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-2 col-sm-1 col-md-2"></div>
+    <div class="col">
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+            @foreach (var goods in Model.Goods)
+            {
+                <div class="col my-2">
+                    <div class="card">
+                        <a asp-action="Edit" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@goods.Id">
+                            <img src="~/goods_image/@Url.Content(goods.GoodsImage.First().Name)" class="card-img-top" alt="...">
+                        </a>
+                        <div class="card-body ">
+                            <h5 class="card-title">@goods.Name</h5>
+                            <p class="card-text">@goods.ShortDescript</p>
+                                <a asp-action="Edit" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@goods.Id" class="btn btn-success">Купить</a>
+                                <span class="card-text">@goods.Price <span class="text-muted">₴</span></span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>

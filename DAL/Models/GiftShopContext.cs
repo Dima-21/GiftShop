@@ -29,7 +29,6 @@ namespace DAL.Models
         public virtual DbSet<Image> Image { get; set; }
         public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<OrderGoods> OrderGoods { get; set; }
-        public virtual DbSet<Price> Price { get; set; }
         public virtual DbSet<Property> Property { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -158,7 +157,7 @@ namespace DAL.Models
                 entity.HasOne(d => d.Goods)
                     .WithMany(p => p.Charact)
                     .HasForeignKey(d => d.GoodsId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_charact_goods");
 
 
@@ -182,7 +181,6 @@ namespace DAL.Models
                     .HasName("UK_goods_name")
                     .IsUnique();
 
-                entity.HasIndex(e => e.PriceId);
 
                 entity.HasIndex(e => e.GroupId);
 
@@ -207,13 +205,7 @@ namespace DAL.Models
                    .OnDelete(DeleteBehavior.ClientSetNull)
                    .HasConstraintName("FK_Goods_Group");
 
-                
 
-                entity.HasOne(d => d.Price)
-                    .WithMany(p => p.Goods)
-                    .HasForeignKey(d => d.PriceId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_goods_price");
             });
 
             modelBuilder.Entity<GoodsImage>(entity =>
@@ -231,13 +223,13 @@ namespace DAL.Models
                 entity.HasOne(d => d.Goods)
                     .WithMany(p => p.GoodsImage)
                     .HasForeignKey(d => d.GoodsId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_goods_image_goods");
 
                 entity.HasOne(d => d.Image)
                     .WithMany(p => p.GoodsImage)
                     .HasForeignKey(d => d.ImageId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_goods_image");
             });
 
@@ -303,20 +295,7 @@ namespace DAL.Models
                     .HasConstraintName("FK_order_goods_order");
             });
 
-            modelBuilder.Entity<Price>(entity =>
-            {
-                entity.HasIndex(e => e.Id)
-                    .HasName("UK_price")
-                    .IsUnique();
 
-                entity.Property(e => e.OrigPrice).HasColumnType("money");
-
-                entity.Property(e => e.SpecPrice).HasColumnType("money");
-
-                entity.Property(e => e.SumDisc).HasColumnType("money");
-
-                entity.Property(e => e.ValidFrom).HasColumnType("date");
-            });
 
             modelBuilder.Entity<Property>(entity =>
             {
@@ -333,10 +312,10 @@ namespace DAL.Models
             modelBuilder.Entity<Group>().HasData(new Group { Id = 2, Name = "Сладости", Icon = "group-icon-sweets.png" });
             modelBuilder.Entity<Group>().HasData(new Group { Id = 3, Name = "Всё для праздника", Icon = "group-icon-allToParty.png" });
 
-            modelBuilder.Entity<Price>().HasData(new Models.Price { Id = 1, OrigPrice = 550, ValidFrom = DateTime.Now });
-            modelBuilder.Entity<Price>().HasData(new Models.Price { Id = 2, OrigPrice = 340, ValidFrom = DateTime.Now, PercentDisc = 20 });
-            modelBuilder.Entity<Price>().HasData(new Models.Price { Id = 3, OrigPrice = 450, ValidFrom = DateTime.Now, SumDisc = 100 });
-            modelBuilder.Entity<Price>().HasData(new Models.Price { Id = 4, OrigPrice = 220, ValidFrom = DateTime.Now });
+            //modelBuilder.Entity<Price>().HasData(new Models.Price { Id = 1, OrigPrice = 550, ValidFrom = DateTime.Now });
+            //modelBuilder.Entity<Price>().HasData(new Models.Price { Id = 2, OrigPrice = 340, ValidFrom = DateTime.Now, PercentDisc = 20 });
+            //modelBuilder.Entity<Price>().HasData(new Models.Price { Id = 3, OrigPrice = 450, ValidFrom = DateTime.Now, SumDisc = 100 });
+            //modelBuilder.Entity<Price>().HasData(new Models.Price { Id = 4, OrigPrice = 220, ValidFrom = DateTime.Now });
 
 
 
@@ -347,11 +326,11 @@ namespace DAL.Models
                 GroupId = 1,
                 Code = 100000,
                 Amount = 10,
-                IsHidden=false,
+                IsHidden = false,
                 ShortDescript = "Подарочный набор 1. Описание",
                 Descript = "Подарочный набор 1. Полное описание",
                 PublishData = new DateTime(2020, 1, 1),
-                PriceId = 1,
+                Price = 150,
             });
 
             modelBuilder.Entity<Goods>().HasData(new Goods
@@ -365,7 +344,7 @@ namespace DAL.Models
                 ShortDescript = "Подарочный набор 2. Описание",
                 Descript = "Подарочный набор 2. Полное описание",
                 PublishData = new DateTime(2020, 1, 1),
-                PriceId = 2,
+                Price = 300,
             });
 
             modelBuilder.Entity<Goods>().HasData(new Goods
@@ -379,7 +358,7 @@ namespace DAL.Models
                 ShortDescript = "Подарочный набор 3. Описание",
                 Descript = "Подарочный набор 3. Полное описание",
                 PublishData = new DateTime(2020, 1, 1),
-                PriceId = 3,
+                Price = 450,
             });
 
             modelBuilder.Entity<Goods>().HasData(new Goods
@@ -392,7 +371,7 @@ namespace DAL.Models
                 ShortDescript = "Конфеты Raffaello 240г",
                 Descript = "Конфеты Raffaello. Полное описание",
                 PublishData = new DateTime(2020, 1, 1),
-                PriceId = 4,
+                Price = 120,
             });
 
             modelBuilder.Entity<Property>().HasData(new Property { Id = 1, Name = "Вес", IsFilter = false });

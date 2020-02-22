@@ -11,11 +11,11 @@ namespace BLL.Services
 {
     public class GroupService : IService<GroupDTO>
     {
-        IRepository<Group> repo;
+        private readonly DataManager dataManager;
 
-        public GroupService(IRepository<Group> repo)
+        public GroupService(DataManager dataManager)
         {
-            this.repo = repo;
+            this.dataManager = dataManager;
         }
 
         public void Add(GroupDTO item)
@@ -38,7 +38,7 @@ namespace BLL.Services
             //List<Group> result = repo.GetAll().ToList();
             //Mapper m = new Mapper()
             //m.Map(result, List<Group>, List<GroupDTO>);
-            List<GroupDTO> result = repo.GetAll().Select(x => new GroupDTO
+            List<GroupDTO> result = dataManager.RepoGroup.GetAll().Select(x => new GroupDTO
             {
                 Id = x.Id,
                 Name = x.Name,

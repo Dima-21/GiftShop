@@ -13,6 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Migrations\20200218201917_Migration_008.cs" />
+    <Compile Remove="Data\Migrations\20200218201917_Migration_008.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -25,7 +30,6 @@
     <Folder Include="Areas\Identity\Data\" />
     <Folder Include="Areas\ProductList\Data\" />
     <Folder Include="Areas\Identity\Services\" />
-    <Folder Include="Data\" />
     <Folder Include="Pages\" />
   </ItemGroup>
 

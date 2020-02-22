@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DAL.Repositories
 {
-    class OrderRepository : IRepository<Order>
+    public class OrderRepository : IRepository<Order>
     {
         GiftShopContext context = new GiftShopContext();
 

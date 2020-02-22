@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DAL.Repositories
 {
-    class ImageRepository : IRepository<Image>
+    public class ImageRepository : IRepository<Image>
     {
         GiftShopContext context = new GiftShopContext();
         public void Create(Image item)

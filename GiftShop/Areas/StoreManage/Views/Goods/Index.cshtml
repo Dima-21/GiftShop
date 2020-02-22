@@ -3,7 +3,7 @@
 <p class="mt-4 mx-2">
     <a asp-action="Create" asp-controller="Goods" asp-route-area="StoreManage"><img src="~/images/icons/add-icon.png" width="32" height="32" /></a>
 </p>
-<table class="table table-hover">
+<table class="table table-hover ">
     <thead class="thead-light">
         <tr class="text-center">
             <th>
@@ -43,33 +43,33 @@
         @foreach (var item in Model.Goods)
         {
             <tr class="text-center">
-                <td >
+                <td class="align-middle">
                     <input asp-for="@item.IsHidden" />
                     @*@Html.DisplayFor(modelItem => item.IsHidden)*@
                 </td>
-                <td>
-                    <img src="~/goods_image/@Url.Content(item.Image)" />
+                <td class="align-middle">
+                    <img src="~/goods_image/@Url.Content(item.Image)" height="40"/>
                 </td>
-                <td>
+                <td class="align-middle">
                     @Html.DisplayFor(modelItem => item.Code)
                 </td>
-                <td>
+                <td class="align-middle">
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
-                <td>
+                <td class="align-middle">
                     @Html.DisplayFor(modelItem => item.Group)
                 </td>
-                <td>
+                <td class="align-middle">
                     @Html.DisplayFor(modelItem => item.Descript)
                 </td>
-                <td>
+                <td class="align-middle">
                     @Html.DisplayFor(modelItem => item.ShortDescript)
                 </td>
 
-                <td class="text-center">
+                <td class="align-middle">
                     @Html.DisplayFor(modelItem => item.Amount)
                 </td>
-                <td class="text-center">
+                <td class="align-middle">
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>

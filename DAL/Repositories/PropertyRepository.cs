@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DAL.Repositories
 {
-    class PropertyRepository : IRepository<Property>
+    public class PropertyRepository : IRepository<Property>
     {
         GiftShopContext context = new GiftShopContext();
 

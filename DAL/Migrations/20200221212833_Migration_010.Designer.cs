@@ -4,14 +4,16 @@ using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Migrations
 {
     [DbContext(typeof(GiftShopContext))]
-    partial class GiftShopContextModelSnapshot : ModelSnapshot
+    [Migration("20200221212833_Migration_010")]
+    partial class Migration_010
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -483,14 +485,12 @@ namespace DAL.Migrations
                     b.HasOne("DAL.Models.Goods", "Goods")
                         .WithMany("GoodsImage")
                         .HasForeignKey("GoodsId")
-                        .HasConstraintName("FK_goods_image_goods")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasConstraintName("FK_goods_image_goods");
 
                     b.HasOne("DAL.Models.Image", "Image")
                         .WithMany("GoodsImage")
                         .HasForeignKey("ImageId")
-                        .HasConstraintName("FK_goods_image")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasConstraintName("FK_goods_image");
                 });
 
             modelBuilder.Entity("DAL.Models.Order", b =>

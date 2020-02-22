@@ -16,11 +16,13 @@ namespace GiftShop.Areas.StoreManage.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IService<GoodsDTO> goodsService;
+        private readonly IService<GroupDTO> groupService;
 
-        public GoodsController(IService<GoodsDTO> goodsService, IMapper mapper)
+        public GoodsController(IService<GoodsDTO> goodsService, IService<GroupDTO> groupService, IMapper mapper)
         {
             this._mapper = mapper;
             this.goodsService = goodsService;
+            this.groupService = groupService;
         }
 
         
@@ -41,7 +43,9 @@ namespace GiftShop.Areas.StoreManage.Controllers
         // GET: Goods/Create
         public ActionResult Create()
         {
-            return View();
+            CreateGoodsViewModel vm = new CreateGoodsViewModel();
+            vm.Groups = groupService.GetAll();
+            return View(vm);
         }
 
         // POST: Goods/Create
@@ -87,7 +91,8 @@ namespace GiftShop.Areas.StoreManage.Controllers
         // GET: Goods/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            goodsService.Delete(id);
+            return RedirectToAction(nameof(Index));
         }
 
         //// POST: Goods/Delete/5

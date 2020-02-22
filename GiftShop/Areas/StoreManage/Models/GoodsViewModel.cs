@@ -67,36 +67,40 @@ namespace GiftShop.Areas.StoreManage.Models
 
     public class CreateGoodsViewModel
     {
-        public int Id { get; set; }
+        public GoodsDTO Goods { get; set; }
+        public IEnumerable<GroupDTO> Groups { get; set; }
 
-        [Display(Name = "Код")]
-        public int Code { get; set; }
 
-        [Display(Name = "Наименование")]
-        public string Name { get; set; }
+        //public int Id { get; set; }
 
-        [Display(Name = "Описание")]
-        public string Descript { get; set; }
+        //[Display(Name = "Код")]
+        //public int Code { get; set; }
 
-        [Display(Name = "Краткое описание")]
-        public string ShortDescript { get; set; }
+        //[Display(Name = "Наименование")]
+        //public string Name { get; set; }
 
-        [Display(Name = "Категория")]
-        public string Group { get; set; }
+        //[Display(Name = "Описание")]
+        //public string Descript { get; set; }
 
-        [Display(Name = "Цена")]
-        public decimal Price { get; set; }
+        //[Display(Name = "Краткое описание")]
+        //public string ShortDescript { get; set; }
 
-        [Display(Name = "Показать на сайте")]
-        public bool IsHidden { get; set; }
+        //[Display(Name = "Категория")]
+        //public string Group { get; set; }
 
-        [Display(Name = "Кол-во")]
-        public short Amount { get; set; }
+        //[Display(Name = "Цена")]
+        //public decimal Price { get; set; }
 
-        [Display(Name = "Фото")]
-        public List<ImageDTO> Images { get; set; }
+        //[Display(Name = "Показать на сайте")]
+        //public bool IsHidden { get; set; }
 
-        public List<PropertyValueDTO> Properties { get; set; }
+        //[Display(Name = "Кол-во")]
+        //public short Amount { get; set; }
+
+        //[Display(Name = "Фото")]
+        //public List<ImageDTO> Images { get; set; }
+
+        //public List<PropertyValueDTO> Properties { get; set; }
     }
 
 }
