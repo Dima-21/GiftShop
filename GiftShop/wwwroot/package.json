@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "jquery": "3.4.1",
+    "uppy": "1.9.2",
     "bootstrap": "4.4.1"
   }
 }

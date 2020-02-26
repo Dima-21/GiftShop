@@ -3,33 +3,35 @@
 
 // Write your JavaScript code.
 
-  document.getElementById('files').addEventListener('change', handleFileSelect, false);
 
-  function handleFileSelect(evt) {
-    var files = evt.target.files; // FileList object
+let files = []
 
-    // Loop through the FileList and render image files as thumbnails.
-    for (var i = 0, f; f = files[i]; i++) {
+let btn = document.getElementById("button");
+let loader = document.getElementById("loader");
+btn.addEventListener('click', event => {
+    loader.click()
+})
 
-      // Only process image files.
-      if (!f.type.match('image.*')) {
-        continue;
-      }
+loader.addEventListener('change', event => {
+    for (let i = 0; i < loader.files.length; i++) {
+        let file = loader.files[i]
+        let item = document.createElement('div')
 
-      var reader = new FileReader();
+        files.push(file)
+        list.appendChild(item)
 
-      // Closure to capture the file information.
-      reader.onload = (function(theFile) {
-        return function(e) {
-          // Render thumbnail.
-          var span = document.createElement('span');
-            span.innerHTML = ['<span><div class="text-right"><button class="btn"><img src="/images/icons/close.png" /></button></div><img class="thumb mx-3 my-2 rounded float-left" Height="120"  src="', e.target.result,
-                '" title="', escape(theFile.name), '"/></span>'].join('');
-          document.getElementById('list').insertBefore(span, null);
-        };
-      })(f);
+        item.textContent = file.name
+        item.addEventListener('click', event => {
+            files = files.filter(f => f.name !== file.name)
 
-      // Read in the image file as a data URL.
-      reader.readAsDataURL(f);
+            item.remove()
+        })
     }
-  }
+
+    loader.value = ''
+})
+
+// upload photo
+var uppy = Uppy.Core()
+uppy.use(Uppy.DragDrop, { target: '#drag-drop-area' })
+uppy.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' })

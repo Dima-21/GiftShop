@@ -51,8 +51,9 @@ namespace GiftShop.Areas.StoreManage.Controllers
         // POST: Goods/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(GoodsDTO createModel)
+        public ActionResult Create(CreateGoodsViewModel createModel)
         {
+                goodsService.Add(createModel.Goods);
             try
             {
                 // TODO: Add insert logic here

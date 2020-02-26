@@ -33,12 +33,15 @@ namespace DAL.Repositories
 
         public IEnumerable<Goods> GetAll()
         {
-            return context.Goods;
+            return context.Goods.Include(x => x.Group)
+                                .Include(x => x.GoodsImage).ThenInclude(x => x.Image)
+                                .Include(x => x.Charact).ThenInclude(x => x.Prop);
+            //return context.Goods;
         }
 
         public void Save()
         {
-            context.SaveChangesAsync();
+            context.SaveChanges();
         }
 
         public void Update(Goods item)

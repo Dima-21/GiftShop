@@ -22,7 +22,9 @@ namespace BLL.Services
 
         public void Add(GoodsDTO item)
         {
-            throw new NotImplementedException();
+            Goods goods = _mapper.Map<Goods>(item);
+            dataManager.RepoGoods.Create(goods);
+            dataManager.RepoGoods.Save();
         }
 
         public void Delete(int id)
@@ -38,45 +40,50 @@ namespace BLL.Services
 
         public IEnumerable<GoodsDTO> GetAll()
         {
-            List<GoodsDTO> result = new List<GoodsDTO>();
 
-            foreach (var goods in dataManager.RepoGoods.GetAll())
-            {
-                GoodsDTO tmpGoods = new GoodsDTO();
+            List<Goods> goods = dataManager.RepoGoods.GetAll().ToList();
+            List<GoodsDTO> result =  _mapper.Map<List<GoodsDTO>>(goods);
 
-                tmpGoods.Amount = goods.Amount;
 
-                tmpGoods.Id = goods.Id;
-                tmpGoods.Code = goods.Code;
-                tmpGoods.Descript = goods.Descript;
-                tmpGoods.IsHidden = goods.IsHidden;
-                tmpGoods.Name = goods.Name;
-                tmpGoods.Price = goods.Price;
-                tmpGoods.ShortDescript = goods.ShortDescript;
+            //List <GoodsDTO> result = new List<GoodsDTO>();
 
-                tmpGoods.Group = _mapper.Map<GroupDTO>(dataManager.RepoGroup.GetAll().FirstOrDefault(x => x.Id == goods.GroupId));
-                List<GoodsImage> tmpGoodsImage = dataManager.RepoGoodsImage.GetAll().Where(x => x.GoodsId == goods.Id).ToList();
-                tmpGoods.GoodsImage = new List<ImageDTO>();
-                tmpGoodsImage.ForEach(x =>
-                {
-                    tmpGoods.GoodsImage.Add(_mapper.Map<ImageDTO>(dataManager.RepoImage.GetAll().FirstOrDefault(i => i.Id == x.ImageId)));
-                });
-                if (tmpGoods.GoodsImage.Count == 0)
-                {
-                    tmpGoods.GoodsImage.Add(new ImageDTO() { Name = "without-photo.png" });
-                }
+            //foreach (var goods in dataManager.RepoGoods.GetAll())
+            //{
+            //    GoodsDTO tmpGoods = new GoodsDTO();
 
-                tmpGoods.PropCharact = new List<PropertyValueDTO>();
-                List<Charact> tmpProp = dataManager.RepoCharact.GetAll().Where(x => x.GoodsId == goods.Id).ToList();
-                tmpProp.ForEach(x =>
-                {
-                    PropertyValueDTO prop = _mapper.Map<PropertyValueDTO>(dataManager.RepoProperty.GetAll().FirstOrDefault(p => p.Id == x.PropId));
-                    prop.Value = x.Value;
-                    tmpGoods.PropCharact.Add(prop);
-                });
+            //    tmpGoods.Amount = goods.Amount;
 
-                result.Add(tmpGoods);
-            }
+            //    tmpGoods.Id = goods.Id;
+            //    tmpGoods.Code = goods.Code;
+            //    tmpGoods.Descript = goods.Descript;
+            //    tmpGoods.IsHidden = goods.IsHidden;
+            //    tmpGoods.Name = goods.Name;
+            //    tmpGoods.Price = goods.Price;
+            //    tmpGoods.ShortDescript = goods.ShortDescript;
+
+            //    tmpGoods.Group = _mapper.Map<GroupDTO>(dataManager.RepoGroup.GetAll().FirstOrDefault(x => x.Id == goods.GroupId));
+            //    List<GoodsImage> tmpGoodsImage = dataManager.RepoGoodsImage.GetAll().Where(x => x.GoodsId == goods.Id).ToList();
+            //    tmpGoods.GoodsImage = new List<ImageDTO>();
+            //    tmpGoodsImage.ForEach(x =>
+            //    {
+            //        tmpGoods.GoodsImage.Add(_mapper.Map<ImageDTO>(dataManager.RepoImage.GetAll().FirstOrDefault(i => i.Id == x.ImageId)));
+            //    });
+            //    if (tmpGoods.GoodsImage.Count == 0)
+            //    {
+            //        tmpGoods.GoodsImage.Add(new ImageDTO() { Name = "without-photo.png" });
+            //    }
+
+            //    tmpGoods.PropCharact = new List<PropertyValueDTO>();
+            //    List<Charact> tmpProp = dataManager.RepoCharact.GetAll().Where(x => x.GoodsId == goods.Id).ToList();
+            //    tmpProp.ForEach(x =>
+            //    {
+            //        PropertyValueDTO prop = _mapper.Map<PropertyValueDTO>(dataManager.RepoProperty.GetAll().FirstOrDefault(p => p.Id == x.PropId));
+            //        prop.Value = x.Value;
+            //        tmpGoods.PropCharact.Add(prop);
+            //    });
+
+            //    result.Add(tmpGoods);
+            //}
 
             return result;
         }

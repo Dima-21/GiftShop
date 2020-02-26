@@ -1,4 +1,5 @@
 ﻿using BLL.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -69,6 +70,7 @@ namespace GiftShop.Areas.StoreManage.Models
     {
         public GoodsDTO Goods { get; set; }
         public IEnumerable<GroupDTO> Groups { get; set; }
+        public IEnumerable<IFormFile> Images { get; set; }
 
 
         //public int Id { get; set; }

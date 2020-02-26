@@ -18,6 +18,8 @@ using DAL.Repositories;
 using BLL.Models;
 using AutoMapper;
 using BLL;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace GiftShop
 {

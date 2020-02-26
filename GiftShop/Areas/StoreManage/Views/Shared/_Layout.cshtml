@@ -10,14 +10,15 @@
     <title>@ViewBag.Title</title>
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/twitter-bootstrap/css/bootstrap.css" />
-        @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />*@
         <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="https://transloadit.edgly.net/releases/uppy/v1.9.2/uppy.min.css">
         <link href="~/css/dashboard.css" rel="stylesheet">
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
               asp-fallback-href="~/lib/twitter-bootstrap/css/bootstrap.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="https://transloadit.edgly.net/releases/uppy/v1.9.2/uppy.min.css">
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         <link href="~/css/dashboard.css" rel="stylesheet">
     </environment>
@@ -29,7 +30,7 @@
         <ul class="navbar-nav px-3">
             <li class="nav-item text-nowrap">
                 <a class="nav-link" href="#">
-                    <img src="~/images/icons/exit.png" height="24" width="24"/>
+                    <img src="~/images/icons/exit.png" height="24" width="24" />
                 </a>
             </li>
 
@@ -46,7 +47,7 @@
                     </h6>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link"  href="#">
+                            <a class="nav-link" href="#">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
                                 Заказы
                             </a>
@@ -79,6 +80,10 @@
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/twitter-bootstrap/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/js/dashboard.js"></script>
+        <script src="https://transloadit.edgly.net/releases/uppy/v1.9.2/uppy.min.js"></script>
+        <script src="~/js/uppy.js"></script>
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
     </environment>
@@ -89,18 +94,24 @@
                 crossorigin="anonymous"
                 integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
         </script>
+
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
                 asp-fallback-src="~/lib/twitter-bootstrap/js/bootstrap.min.js"
                 asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
                 crossorigin="anonymous"
                 integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
         </script>
+        <script src="https://transloadit.edgly.net/releases/uppy/v1.9.2/uppy.min.js"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <script src="~/js/dashboard.js"></script>
+        <script src="~/js/uppy.js"></script>
     </environment>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script>window.jQuery || document.write('<script src="/docs/4.4/assets/js/vendor/jquery.slim.min.js"><\/script>')</script>
     <script src="/docs/4.4/dist/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
-    <script src="~/js/dashboard.js"></script>
+
+
+
     @section Scripts {
         @RenderSection("Scripts", required: false)
     }
