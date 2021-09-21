@@ -31,7 +31,7 @@
                 </div>
                 <div class="form-group col-sm-6 my-3">
                     <label asp-for="Goods.Group" class="control-label"></label>
-                    <select class="custom-select" asp-for="Goods.Group.Id" asp-items='@new SelectList(Model.Groups, "Id", "Name")'></select>
+                    <select class="custom-select"  asp-for="Goods.Group.Id" asp-items='@new SelectList(Model.Groups, "Id", "Name")'></select>
                     <span asp-validation-for="Goods.Group" class="text-danger"></span>
                 </div>
             </div>
@@ -52,39 +52,46 @@
                 <span asp-validation-for="Goods.Descript" class="text-danger"></span>
             </div>
 
+       
+
+            <div id="charact-data"></div>
+
+            @*@for (int i=0; i< Model.Properties.Count; i++)
+        {
+            <label class="control-label">@Model.Properties[@i].Name</label>
+            <input type="text" name="Properties[@i].Value" class="form-control" />
+        }*@
+
             @*<div class="form-group">
-                    <label asp-for="Properties" class="control-label"></label>
-                    <input asp-for="Properties" class="form-control" />
-                    <span asp-validation-for="Properties" class="text-danger"></span>
-                </div>*@
+            <label asp-for="Properties" class="control-label"></label>
+            <input asp-for="Properties" class="form-control" />
+            <span asp-validation-for="Properties" class="text-danger"></span>
+        </div>*@
+
+            <h5 class="mt-5 mb-2">Фото</h5>
+            <hr />
 
             <div class="form-group">
-                <div id="drag-drop-area">
 
-                </div>
-
-                @*<div class="input-group mb-3">
+                <div class="input-group my-3">
                     <div class="custom-file">
-                        <div class="mb-1">
-                            <button type="button" class="btn btn-light" id="button">Обзор...</button>
-                        </div>
-
-                        <input type="file" id="loader" multiple>
-
-                        <div>
-                            Файлы:
-                            <div id="list">
-
-                            </div>
-                        </div>*@
-                @*<input asp-for="Images" type="file" class="custom-file-input" id="files">
-                    <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Загрузить...</label>*@
-                @*</div>
+                        @*<div class="mb-1">
+                        <button type="button" class="btn btn-light" id="button">Обзор...</button>
                     </div>*@
+
+                        @*<input type="file" id="loader" multiple>*@
+
+                        <input asp-for="Images" type="file" multiple="multiple" class="custom-file-input" id="images">
+                        <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Загрузить...</label>
+
+                    </div>
+                </div>
             </div>
 
-            <output id="list"></output>
+            <output id="picture-list">
+            </output>
 
+            <div class="file-list"></div>
 
             <div class="form-group">
                 <div class="checkbox">

@@ -30,13 +30,14 @@ namespace DAL.Models
         public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<OrderGoods> OrderGoods { get; set; }
         public virtual DbSet<Property> Property { get; set; }
+        public virtual DbSet<CartItem> CartItem { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=GiftShop;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DIMA-PC\\SQLEXPRESS;Database=GiftShop;Trusted_Connection=True;");
             }
         }
 
@@ -184,11 +185,14 @@ namespace DAL.Models
 
                 entity.HasIndex(e => e.GroupId);
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                //entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                //entity.Property(e => e.GoodsId);
+
 
                 entity.Property(e => e.Amount).HasDefaultValueSql("(CONVERT([smallint],(0)))");
 
-                entity.Property(e => e.Code).ValueGeneratedOnAdd();
+                //entity.Property(e => e.Code);
 
 
                 entity.Property(e => e.Name)
@@ -255,15 +259,17 @@ namespace DAL.Models
             {
                 entity.HasIndex(e => e.UserId);
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.OrdCloseDate).HasColumnType("datetime");
 
-                entity.Property(e => e.OrderDate).HasColumnType("datetime");
+                entity.Property(e => e.OrderDate).HasColumnType("datetime").HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.OrderNum).ValueGeneratedOnAdd();
 
-                entity.Property(e => e.UserId).IsRequired();
+                entity.Property(e => e.OrderNum).ValueGeneratedNever();
+
+                entity.Property(e => e.UserId).IsRequired(false);
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Order)
@@ -303,9 +309,17 @@ namespace DAL.Models
                     .HasName("UK_property_name")
                     .IsUnique();
 
+                //entity.HasIndex(e => e.GroupId);
+
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(100);
+
+                //entity.HasOne(d => d.Group)
+                //  .WithMany(p => p.Properties)
+                //  .HasForeignKey(d => d.GroupId)
+                //  .OnDelete(DeleteBehavior.Cascade)
+                //  .HasConstraintName("FK_Property_Group");
             });
 
             modelBuilder.Entity<Group>().HasData(new Group { Id = 1, Name = "Подарочные наборы", Icon = "group-icon-gift.png" });
@@ -319,60 +333,60 @@ namespace DAL.Models
 
 
 
-            modelBuilder.Entity<Goods>().HasData(new Goods
-            {
-                Id = 1,
-                Name = "Подарочный набор 1",
-                GroupId = 1,
-                Code = 100000,
-                Amount = 10,
-                IsHidden = false,
-                ShortDescript = "Подарочный набор 1. Описание",
-                Descript = "Подарочный набор 1. Полное описание",
-                PublishData = new DateTime(2020, 1, 1),
-                Price = 150,
-            });
+            //modelBuilder.Entity<Goods>().HasData(new Goods
+            //{
+            //    //Id = 1,
+            //    Name = "Подарочный набор 1",
+            //    GroupId = 1,
+            //    //Code = 100000,
+            //    Amount = 10,
+            //    IsHidden = false,
+            //    ShortDescript = "Подарочный набор 1. Описание",
+            //    Descript = "Подарочный набор 1. Полное описание",
+            //    PublishData = new DateTime(2020, 1, 1),
+            //    Price = 150,
+            //});
 
-            modelBuilder.Entity<Goods>().HasData(new Goods
-            {
-                Id = 2,
-                Name = "Подарочный набор 2",
-                GroupId = 1,
-                Code = 100001,
-                IsHidden = false,
-                Amount = 0,
-                ShortDescript = "Подарочный набор 2. Описание",
-                Descript = "Подарочный набор 2. Полное описание",
-                PublishData = new DateTime(2020, 1, 1),
-                Price = 300,
-            });
+            //modelBuilder.Entity<Goods>().HasData(new Goods
+            //{
+            //    //Id = 2,
+            //    Name = "Подарочный набор 2",
+            //    GroupId = 1,
+            //    //Code = 100001,
+            //    IsHidden = false,
+            //    Amount = 0,
+            //    ShortDescript = "Подарочный набор 2. Описание",
+            //    Descript = "Подарочный набор 2. Полное описание",
+            //    PublishData = new DateTime(2020, 1, 1),
+            //    Price = 300,
+            //});
 
-            modelBuilder.Entity<Goods>().HasData(new Goods
-            {
-                Id = 3,
-                Name = "Подарочный набор 3",
-                GroupId = 1,
-                Code = 100002,
-                IsHidden = false,
-                Amount = 2,
-                ShortDescript = "Подарочный набор 3. Описание",
-                Descript = "Подарочный набор 3. Полное описание",
-                PublishData = new DateTime(2020, 1, 1),
-                Price = 450,
-            });
+            //modelBuilder.Entity<Goods>().HasData(new Goods
+            //{
+            //    //Id = 3,
+            //    Name = "Подарочный набор 3",
+            //    GroupId = 1,
+            //    //Code = 100002,
+            //    IsHidden = false,
+            //    Amount = 2,
+            //    ShortDescript = "Подарочный набор 3. Описание",
+            //    Descript = "Подарочный набор 3. Полное описание",
+            //    PublishData = new DateTime(2020, 1, 1),
+            //    Price = 450,
+            //});
 
-            modelBuilder.Entity<Goods>().HasData(new Goods
-            {
-                Id = 4,
-                Name = "Конфеты Raffaello",
-                GroupId = 2,
-                Code = 200000,
-                Amount = 15,
-                ShortDescript = "Конфеты Raffaello 240г",
-                Descript = "Конфеты Raffaello. Полное описание",
-                PublishData = new DateTime(2020, 1, 1),
-                Price = 120,
-            });
+            //modelBuilder.Entity<Goods>().HasData(new Goods
+            //{
+            //    //Id = 4,
+            //    Name = "Конфеты Raffaello",
+            //    GroupId = 2,
+            //    //Code = 200000,
+            //    Amount = 15,
+            //    ShortDescript = "Конфеты Raffaello 240г",
+            //    Descript = "Конфеты Raffaello. Полное описание",
+            //    PublishData = new DateTime(2020, 1, 1),
+            //    Price = 120,
+            //});
 
             modelBuilder.Entity<Property>().HasData(new Property { Id = 1, Name = "Вес", IsFilter = false });
             modelBuilder.Entity<Property>().HasData(new Property { Id = 2, Name = "Категория людей", IsFilter = true });

@@ -8,6 +8,8 @@ using GiftShop.Models;
 using BLL;
 using BLL.Services;
 using BLL.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace GiftShop.Controllers
 {

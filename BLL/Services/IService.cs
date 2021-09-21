@@ -11,5 +11,6 @@ namespace BLL.Services
         void Add(T item);
         void Delete(int id);
         void Edit(T item);
+        T GetById(int id);
     }
 }

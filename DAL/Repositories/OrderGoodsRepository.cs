@@ -1,6 +1,8 @@
 ﻿using DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DAL.Repositories
@@ -20,6 +22,11 @@ namespace DAL.Repositories
         public void Delete(int id)
         {
             context.OrderGoods.Remove(Get(id));
+        }
+
+        public IEnumerable<OrderGoods> Find(Func<OrderGoods, bool> predicate)
+        {
+            return context.OrderGoods.Include(x => x.Goods).Where(predicate);
         }
 
         public OrderGoods Get(int id)

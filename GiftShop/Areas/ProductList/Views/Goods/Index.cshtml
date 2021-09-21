@@ -1,26 +1,154 @@
 ﻿@using GiftShop.Areas.ProductList.Models
 @model ProductListViewModel
 
-<div class="row">
-    <div class="col-2 col-sm-1 col-md-2"></div>
-    <div class="col">
-        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-            @foreach (var goods in Model.Goods)
-            {
-                <div class="col my-2">
-                    <div class="card">
-                        <a asp-action="Edit" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@goods.Id">
-                            <img src="~/goods_image/@Url.Content(goods.GoodsImage.First().Name)" class="card-img-top" alt="...">
-                        </a>
-                        <div class="card-body ">
-                            <h5 class="card-title">@goods.Name</h5>
-                            <p class="card-text">@goods.ShortDescript</p>
-                                <a asp-action="Edit" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@goods.Id" class="btn btn-success">Купить</a>
-                                <span class="card-text">@goods.Price <span class="text-muted">₴</span></span>
+<main class="cd-main-content">
+    <div class="option-block-wrapper">
+        <div class="option-block">
+
+        </div> <!-- cd-tab-filter -->
+    </div> <!-- cd-tab-filter-wrapper -->
+
+    <section class="cd-gallery">
+        <div class="row">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            </div>
+            @*<div class="col-2 collapse">
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                <label class="form-check-label" for="exampleCheck1">TEST</label>
+                            </div>
                         </div>
-                    </div>
+                    </nav>
+                </div>*@
+            <div class="col">
+                <div class="row row-cols-2  row-cols-md-3 row-cols-lg-5 row-cols-xl-5">
+                    @*@for (int i = 0; i < 50; i++)
+                        {*@
+                    @foreach (var goods in Model.Goods)
+                    {
+                        <div class="col p-2">
+
+                            <div class="card card-background">
+                                <div class="img">
+                                    <a asp-action="Details" asp-controller="Goods" asp-route-area="ProductList" asp-route-goodsId="@goods.Id">
+                                        <img src="~/goods_image/@(goods.GoodsImage.Count==0?"without-photo.png":Url.Content(goods.GoodsImage.FirstOrDefault().Name))" class="card-img-top" alt="...">
+                                        @*<img src="~/goods_image/@Url.Content(goods.GoodsImage.First().Name)" class="card-img-top" alt="...">*@
+                                    </a>
+                                </div>
+
+                                <div class="card-body text-center mr-0 mt-2">
+                                    <div>
+                                        <a asp-action="Details" asp-controller="Goods" asp-route-area="ProductList" asp-route-goodsId="@goods.Id">
+                                            <h5 class="card-title">@goods.Name</h5>
+                                        </a>
+                                        @*<p class="card-text">@goods.ShortDescript</p>*@
+
+                                        <span class="card-text h6 col-sm my-2">@goods.Price ₴</span>
+                                        <div class="row mt-4">
+                                            <a asp-action="AddToCart" asp-controller="Cart" asp-route-area="ProductList" asp-route-goodsId="@goods.Id" class="btn btn-success col-sm">Купить</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*<div class="card">
+                                    <a asp-action="Edit" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@goods.Id">
+                                        <img src="~/goods_image/@Url.Content(goods.GoodsImage.First().Name)" class="card-img-top" alt="...">
+                                    </a>
+                                    <div class="card-body ">
+                                        <h5 class="card-title">@goods.Name</h5>
+                                        <p class="card-text">@goods.ShortDescript</p>
+                                        <a asp-action="Edit" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@goods.Id" class="btn btn-success">Купить</a>
+                                        <span class="card-text">@goods.Price <span class="text-muted">₴</span></span>
+                                    </div>
+                                </div>*@
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section> <!-- cd-gallery -->
+
+    <div class="cd-filter">
+        <form method="post">
+            <div class="cd-filter-block">
+                <h4>Цена</h4>
+
+                <div class="cd-filter-content">
+                    <input type="search" placeholder="Try color-1...">
+                </div> <!-- cd-filter-content -->
+            </div>
+            @*@for (var i = 1; i <= 10; i++)
+                {
+                    <input name="AreChecked" type="checkbox" value="@i" /> @i<br />
+                }*@
+            @for (var i = 0; i < Model.Filter.GroupedProperties.Count(); i++)
+            {
+                <div class="cd-filter-block">
+                    <input type="hidden" asp-for="Filter.GroupedProperties[i].PropId" />
+                    <h4>@Model.Filter.GroupedProperties[i].Name</h4>
+                    @for (var j = 0; j < Model.Filter.GroupedProperties[i].Charact.Count(); j++)
+                    {
+                        <div>
+                            <input asp-for="Filter.GroupedProperties[i].Charact[j].AreChecked" />
+                            <input type="hidden" asp-for="Filter.GroupedProperties[i].Charact[j].Value" />
+                            @Model.Filter.GroupedProperties[i].Charact[j].Value
+                        </div>
+                    }
                 </div>
             }
+
+            @*@foreach (GroupedProperties prop in Model.Filter.GroupedProperties)
+                {
+                    <div class="cd-filter-block">
+                        <h4>@prop.Name</h4>
+                        <input type="hidden" asp-for="@prop.PropId" />
+                        @foreach (CharactItem charact in prop.Charact)
+                        {
+                            <div class="cd-filter-content">
+                                <input type="checkbox" asp-for="@charact.AreChecked" />
+                                @charact.Value
+                            </div>
+                        }
+                    </div>
+                }*@
+            <button class="btn btn-success">Применить фильтр</button>
+        </form>
+        <a href="#0" class="cd-close"><</a>
+    </div> <!-- cd-filter -->
+    <a href="#0" class="cd-filter-trigger">Фильтр</a>
+</main>
+@*<div class="container-fluid py-4 ">
+
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 row-cols-fluid-6">
+            <div class="p-1">
+                <div class="card">
+
+                    <img src="https://hranim-vino.ru/blog/wp-content/uploads/2017/02/69939963_m.jpg" class="card-img-top">
+
+                    <div class="card-body">
+
+                        <h5 class="card-title">Card title</h5>
+
+                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+
+    </div>*@
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/filter-style.css" />
+}
+@section Scripts {
+    <script src="~/js/filter-left-menu.js"></script>
+}

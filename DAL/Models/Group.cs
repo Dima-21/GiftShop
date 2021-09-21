@@ -8,6 +8,7 @@ namespace DAL.Models
         public Group()
         {
             Goods = new HashSet<Goods>();
+            Properties = new HashSet<Property>();
         }
 
         public int Id { get; set; }
@@ -17,5 +18,6 @@ namespace DAL.Models
         public string Icon { get; set; }
         public bool IsHidden { get; set; }
         public ICollection<Goods> Goods { get; set; }
+        public ICollection<Property> Properties { get; set; }
     }
 }

@@ -36,6 +36,10 @@ namespace DAL.Repositories
             return context.GoodsImage;
         }
 
+        public IEnumerable<GoodsImage> Find(Func<GoodsImage, bool> predicate)
+        {
+            return context.GoodsImage.Where(predicate);
+        }
         public void Save()
         {
             context.SaveChangesAsync();

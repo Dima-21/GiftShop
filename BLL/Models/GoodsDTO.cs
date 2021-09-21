@@ -9,7 +9,7 @@ namespace BLL.Models
 {
     public class GoodsDTO
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [Display(Name = "Код")]
         public int Code { get; set; }
@@ -44,6 +44,9 @@ namespace BLL.Models
         //public ICollection<string> ImagePath { get; set; }
 
     }
+
+
+
 
     //public class GoodsForTableDTO
     //{

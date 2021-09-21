@@ -20,6 +20,7 @@ using AutoMapper;
 using BLL;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using GiftShop.Areas.ProductList.Controllers;
 
 namespace GiftShop
 {
@@ -43,9 +44,11 @@ namespace GiftShop
             });
 
             services.AddAutoMapper(typeof(Startup));
-
+            services.AddScoped<IService<OrderDTO>, OrderService>();
             services.AddScoped<IService<GroupDTO>, GroupService>();
             services.AddScoped<IService<GoodsDTO>, GoodsService>();
+            services.AddScoped<IService<PropertyDTO>, PropertyService>();
+            services.AddScoped<IService<CartGoodsDTO>, CartItemService>();
             services.AddScoped<IRepository<Goods>, GoodsRepository>();
             services.AddScoped<IRepository<Group>, GroupRepository>();
             services.AddScoped<IRepository<GoodsImage>, GoodsImageRepository>();
@@ -54,6 +57,7 @@ namespace GiftShop
             services.AddScoped<IRepository<OrderGoods>, OrderGoodsRepository>();
             services.AddScoped<IRepository<Order>, OrderRepository>();
             services.AddScoped<IRepository<Property>, PropertyRepository>();
+            services.AddScoped<IRepository<CartItem>, CartItemRepository>();
 
             services.AddScoped<DataManager>();
 
@@ -61,9 +65,32 @@ namespace GiftShop
                 options.UseSqlServer(
                     Configuration.GetConnectionString("GiftShopConnection")));
             services.AddDefaultIdentity<IdentityUser>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            //services.AddIdentity<IdentityUser, IdentityRole>()
+            //      .AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            //services.AddHttpContextAccessor();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            //services.AddScoped(sp => CartController.GetCart(sp));
+            //services.AddScoped(sp => TestSession.GetCart(sp));
+
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+            //services.AddDistributedMemoryCache();
+            //services.AddSession(options =>
+            //{
+            //    options.Cookie.HttpOnly = true;
+            //    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            //});
+
         }
 
 
@@ -87,6 +114,7 @@ namespace GiftShop
 
             app.UseAuthentication();
 
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

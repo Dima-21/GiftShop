@@ -1,0 +1,48 @@
+﻿@model GiftShop.Areas.ProductList.Models.ShippingDetails
+
+<div class="container mt-5">
+    <h3 class="text-muted">Оформление заказа</h3>
+    <hr />
+
+
+    <h5 class="mt-5">Получатель</h5>
+    <hr />
+    @using (Html.BeginForm("OrderConfirmation", "Cart", FormMethod.Post))
+    {
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label>ФИО</label>
+                @Html.TextBoxFor(m => m.RecipientName, null, new { @class="form-control" })
+                @*<input type="text" class="form-control" placeholder="Фамилия Имя Отчество">*@
+            </div>
+            <div class="form-group col-md-4">
+                <label>Електронная почта</label>
+                @Html.TextBoxFor(m => m.Email, null, new { @class = "form-control" })
+            </div>
+            <div class="form-group col-md-4">
+                <label>Мобильный телефон</label>
+                @Html.TextBoxFor(m => m.Phone, null, new { @class = "form-control" })
+            </div>
+        </div>
+
+
+        <h5 class="mt-5">Доставка</h5>
+        <hr />
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label>Город</label>
+                @Html.TextBoxFor(m => m.City, null, new { @class = "form-control" })
+            </div>
+            <div class="form-group col-md-4">
+                <label>Отделение "Новой почты"</label>
+                @Html.TextBoxFor(m => m.BranchNumber, null, new { @class = "form-control" })
+            </div>
+
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Подтвердить" class="btn btn-primary" />
+        </div>
+    }
+
+</div>
+

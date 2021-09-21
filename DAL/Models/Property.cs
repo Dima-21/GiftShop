@@ -14,6 +14,10 @@ namespace DAL.Models
         public string Name { get; set; }
         public bool IsFilter { get; set; }
 
+        public int GroupId { get; set; }
+
         public ICollection<Charact> Charact { get; set; }
+
+        public Group Group { get; set; }
     }
 }

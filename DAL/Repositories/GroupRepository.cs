@@ -1,6 +1,7 @@
 ﻿using DAL.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DAL.Repositories
@@ -30,6 +31,10 @@ namespace DAL.Repositories
         public IEnumerable<Group> GetAll()
         {
             return context.Group;
+        }
+        public IEnumerable<Group> Find(Func<Group, bool> predicate)
+        {
+            return context.Group.Where(predicate);
         }
 
         public void Save()

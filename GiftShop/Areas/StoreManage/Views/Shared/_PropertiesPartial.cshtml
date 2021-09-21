@@ -1,0 +1,16 @@
+﻿@model List<PropertyDTO>
+
+@if (Model.Count > 0)
+{
+    <h5 class="mt-5 mb-2">Характеристика</h5>
+    <hr />
+
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        <input type="hidden" name="Properties[@i].PropId" class="form-control" value="@Model[i].PropId" />
+        <input type="hidden" name="Properties[@i].Name" class="form-control" value="@Model[i].Name" />
+        <label class="control-label">@Model[@i].Name</label>
+        @*<input asp-for="@prop.Value" class="form-control" />*@
+        <input type="text" name="Properties[@i].Value" class="form-control" />
+    }
+}

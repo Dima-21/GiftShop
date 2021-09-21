@@ -8,6 +8,10 @@ namespace GiftShop.Areas.ProductList.Models
 {
     public class ProductListViewModel
     {
+        public int? GroupId { get; set; }
+
         public List<GoodsDTO> Goods { get; set; }
+
+        public FilterViewModel Filter{ get; set; }
     }
 }

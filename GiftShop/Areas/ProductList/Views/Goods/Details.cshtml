@@ -1,0 +1,38 @@
+﻿@model GoodsDTO
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h1>@Model.Name</h1>
+        @foreach (ImageDTO image in Model.GoodsImage)
+        {
+            string pathToImage = "/goods_image/" + @image.Name;
+            <img width="300" src="@pathToImage" />
+        }
+
+
+        <p>Цена: @Model.Price</p>
+        <p>Артикул: @Model.Code</p>
+        <p>Количество: @Model.Amount</p>
+        <p>Категория: @Model.Group.Name</p>
+        <p>Описание: @Model.Descript</p>
+    </div>
+
+
+    <div>
+        @foreach (PropertyValueDTO prop in Model.PropCharact)
+        {
+            <p>@prop.Name: @prop.Value</p>
+        }
+    </div>
+</body>
+</html>

@@ -180,6 +180,25 @@ namespace DAL.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("DAL.Models.CartItem", b =>
+                {
+                    b.Property<long?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<short>("Amount");
+
+                    b.Property<int>("GoodsId");
+
+                    b.Property<string>("ShopCartId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GoodsId");
+
+                    b.ToTable("CartItem");
+                });
+
             modelBuilder.Entity("DAL.Models.Charact", b =>
                 {
                     b.Property<int>("GoodsId");
@@ -207,15 +226,15 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Models.Goods", b =>
                 {
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<short>("Amount")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("(CONVERT([smallint],(0)))");
 
-                    b.Property<int>("Code")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("Code");
 
                     b.Property<string>("Descript");
 
@@ -246,13 +265,6 @@ namespace DAL.Migrations
                         .HasName("UK_goods_name");
 
                     b.ToTable("Goods");
-
-                    b.HasData(
-                        new { Id = 1, Amount = (short)10, Code = 100000, Descript = "Подарочный набор 1. Полное описание", GroupId = 1, IsHidden = false, Name = "Подарочный набор 1", Price = 150m, PublishData = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), ShortDescript = "Подарочный набор 1. Описание" },
-                        new { Id = 2, Amount = (short)0, Code = 100001, Descript = "Подарочный набор 2. Полное описание", GroupId = 1, IsHidden = false, Name = "Подарочный набор 2", Price = 300m, PublishData = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), ShortDescript = "Подарочный набор 2. Описание" },
-                        new { Id = 3, Amount = (short)2, Code = 100002, Descript = "Подарочный набор 3. Полное описание", GroupId = 1, IsHidden = false, Name = "Подарочный набор 3", Price = 450m, PublishData = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), ShortDescript = "Подарочный набор 3. Описание" },
-                        new { Id = 4, Amount = (short)15, Code = 200000, Descript = "Конфеты Raffaello. Полное описание", GroupId = 2, IsHidden = false, Name = "Конфеты Raffaello", Price = 120m, PublishData = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), ShortDescript = "Конфеты Raffaello 240г" }
-                    );
                 });
 
             modelBuilder.Entity("DAL.Models.GoodsImage", b =>
@@ -342,22 +354,33 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Models.Order", b =>
                 {
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("BranchNumber");
+
+                    b.Property<string>("City");
+
+                    b.Property<string>("Email");
 
                     b.Property<DateTime?>("OrdCloseDate")
                         .HasColumnType("datetime");
 
                     b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int>("OrderNum")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<int>("OrderNum");
+
+                    b.Property<string>("Phone");
+
+                    b.Property<string>("RecipientName");
 
                     b.Property<int>("Sum");
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
@@ -391,6 +414,8 @@ namespace DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("GroupId");
+
                     b.Property<bool>("IsFilter");
 
                     b.Property<string>("Name")
@@ -399,6 +424,8 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GroupId");
+
                     b.HasIndex("Id")
                         .IsUnique()
                         .HasName("UK_property_name");
@@ -406,8 +433,8 @@ namespace DAL.Migrations
                     b.ToTable("Property");
 
                     b.HasData(
-                        new { Id = 1, IsFilter = false, Name = "Вес" },
-                        new { Id = 2, IsFilter = true, Name = "Категория людей" }
+                        new { Id = 1, GroupId = 0, IsFilter = false, Name = "Вес" },
+                        new { Id = 2, GroupId = 0, IsFilter = true, Name = "Категория людей" }
                     );
                 });
 
@@ -453,6 +480,14 @@ namespace DAL.Migrations
                     b.HasOne("DAL.Models.AspNetUsers", "User")
                         .WithMany("AspNetUserTokens")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("DAL.Models.CartItem", b =>
+                {
+                    b.HasOne("DAL.Models.Goods", "Goods")
+                        .WithMany()
+                        .HasForeignKey("GoodsId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -512,6 +547,14 @@ namespace DAL.Migrations
                         .WithMany("OrderGoods")
                         .HasForeignKey("OrderId")
                         .HasConstraintName("FK_order_goods_order");
+                });
+
+            modelBuilder.Entity("DAL.Models.Property", b =>
+                {
+                    b.HasOne("DAL.Models.Group", "Group")
+                        .WithMany("Properties")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

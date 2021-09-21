@@ -6,6 +6,7 @@ using DAL.Models;
 using BLL.Models;
 using BLL.Services;
 using DAL.Repositories;
+using BLL.Infrastructure;
 
 namespace BLL.Services
 {
@@ -38,15 +39,22 @@ namespace BLL.Services
             //List<Group> result = repo.GetAll().ToList();
             //Mapper m = new Mapper()
             //m.Map(result, List<Group>, List<GroupDTO>);
+
+            
             List<GroupDTO> result = dataManager.RepoGroup.GetAll().Select(x => new GroupDTO
             {
                 Id = x.Id,
                 Name = x.Name,
-                Icon = x.Icon,
+                Icon = x.Icon, 
                 Image = x.Image
             }).ToList();
-
+            
             return result;
+        }
+
+        public GroupDTO GetById(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

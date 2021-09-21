@@ -1,6 +1,7 @@
 ﻿using DAL.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DAL.Repositories
@@ -10,7 +11,7 @@ namespace DAL.Repositories
         GiftShopContext context = new GiftShopContext();
         public void Create(Image item)
         {
-            context.Image.Add(item);
+          context.Image.Add(item);
         }
 
         public void Delete(int id)
@@ -28,6 +29,10 @@ namespace DAL.Repositories
             return context.Image;
         }
 
+        public IEnumerable<Image> Find(Func<Image, bool> predicate)
+        {
+            return context.Image.Where(predicate);
+        }
         public void Save()
         {
             context.SaveChangesAsync();

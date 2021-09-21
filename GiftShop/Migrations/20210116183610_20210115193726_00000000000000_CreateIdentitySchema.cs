@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace GiftShop.Data.Migrations
+namespace GiftShop.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class _20210115193726_00000000000000_CreateIdentitySchema : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

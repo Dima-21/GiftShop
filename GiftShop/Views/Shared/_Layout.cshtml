@@ -15,6 +15,7 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
+    @RenderSection("Styles", false)
 </head>
 <body>
     <div class="bg-dark">
@@ -27,7 +28,7 @@
             </li>
         </ul>
     </div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-info" >
+    <nav class="navbar navbar-expand-lg navbar-light bg-info cd-header">
         <a class="navbar-brand" href="~/Home/Index">
             <img src="~/images/icons/gift_logo.png" width="30" class="d-inline-block align-top" alt="">
             MAGIC-GIFT
@@ -47,6 +48,9 @@
                             <input class="form-control mr-sm-2" type="search" placeholder="Я ищу..." aria-label="Search">
                             <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Поиск</button>
                         </form>
+                    </div>
+                    <div class="col-sm-auto">
+                        <a asp-action="Index" asp-controller="Cart" asp-route-area="ProductList" class="btn btn-success col-sm">Корзина</a>
                     </div>
                 </div>
             </div>
@@ -85,9 +89,10 @@
             </div>
         </nav>*@
 
-    <partial name="_CookieConsentPartial" />
+    @*<partial name="_CookieConsentPartial" />*@
 
-    <div class="container-fluid body-content ">
+    @*<div class="container-fluid body-content ">*@
+    <div>
         @RenderBody()
         <hr />
         <footer>

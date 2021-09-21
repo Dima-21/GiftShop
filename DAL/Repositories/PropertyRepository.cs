@@ -1,6 +1,8 @@
 ﻿using DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DAL.Repositories
@@ -26,7 +28,12 @@ namespace DAL.Repositories
 
         public IEnumerable<Property> GetAll()
         {
-            return context.Property;
+            return context.Property.Include(x => x.Charact);
+        }
+
+        public IEnumerable<Property> Find(Func<Property, bool> predicate)
+        {
+            return context.Property.Where(predicate);
         }
 
         public void Save()

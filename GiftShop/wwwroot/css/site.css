@@ -27,3 +27,34 @@ for details on configuring this project to bundle and minify static web assets. 
 .mb-1 {
     margin-bottom: 10px;
 }
+
+.goods-img {
+    /*    position: relative;*/
+    
+    width: 30%;
+    min-width: 50px;
+}
+
+#picture-list > div {
+    position: relative;
+    width: 100%;
+}
+
+
+    #picture-list > div > button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%)
+    }
+
+.image-block {
+    margin: 10px;
+    display: inline;
+   
+}
+
+.image-block > .btn {
+        visibility:hidden;
+}

@@ -1,83 +1,28 @@
-﻿@model GoodsListViewModel
-
-<p class="mt-4 mx-2">
+﻿<p class="mt-4 mx-2">
     <a asp-action="Create" asp-controller="Goods" asp-route-area="StoreManage"><img src="~/images/icons/add-icon.png" width="32" height="32" /></a>
 </p>
-<table class="table table-hover ">
-    <thead class="thead-light">
-        <tr class="text-center">
-            <th>
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].Image)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].Code)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].Group)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].Descript)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].ShortDescript)
-            </th>
-            @*<th class="text-center">
-                @Html.DisplayNameFor(model => model.Goods[0].IsHidden)
-            </th>*@
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.Goods[0].Amount)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.Goods[0].Price)
-            </th>
 
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Goods)
-        {
-            <tr class="text-center">
-                <td class="align-middle">
-                    <input asp-for="@item.IsHidden" />
-                    @*@Html.DisplayFor(modelItem => item.IsHidden)*@
-                </td>
-                <td class="align-middle">
-                    <img src="~/goods_image/@Url.Content(item.Image)" height="40"/>
-                </td>
-                <td class="align-middle">
-                    @Html.DisplayFor(modelItem => item.Code)
-                </td>
-                <td class="align-middle">
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td class="align-middle">
-                    @Html.DisplayFor(modelItem => item.Group)
-                </td>
-                <td class="align-middle">
-                    @Html.DisplayFor(modelItem => item.Descript)
-                </td>
-                <td class="align-middle">
-                    @Html.DisplayFor(modelItem => item.ShortDescript)
-                </td>
+<div id="productTable">
+    <partial name="_ProductsTable" model="@Model" />
+</div>
 
-                <td class="align-middle">
-                    @Html.DisplayFor(modelItem => item.Amount)
-                </td>
-                <td class="align-middle">
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@item.Id" class="btn"><img src="~/images/icons/edit.png" /></a>
-                    <a asp-action="Details" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@item.Id" class="btn"><img src="~/images/icons/info.png" /></a>
-                    <a asp-action="Delete" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@item.Id" class="btn"><img src="~/images/icons/delete.png" /></a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+@section Scripts{
+
+    <script>
+        $(function () {
+            function interceptPaging() {
+                $("#productTable .pagination a").click(function (event) {
+                    event.preventDefault();
+
+                    $.get($(this).attr("href"),
+                        function (d) {
+                            $("#productTable").html(d);
+                            interceptPaging();
+                        });
+                });
+            }
+
+            interceptPaging();
+        });
+    </script>
+}

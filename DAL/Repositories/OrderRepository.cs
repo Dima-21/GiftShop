@@ -1,6 +1,7 @@
 ﻿using DAL.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DAL.Repositories
@@ -33,9 +34,13 @@ namespace DAL.Repositories
             return context.Order;
         }
 
+        public IEnumerable<Order> Find(Func<Order, bool> predicate)
+        {
+            return context.Order.Where(predicate);
+        }
         public void Save()
         {
-            context.SaveChangesAsync();
+            context.SaveChanges();
         }
 
         public void Update(Order item)

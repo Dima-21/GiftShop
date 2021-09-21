@@ -22,7 +22,12 @@ namespace BLL.Services
 
         public void Add(GoodsDTO item)
         {
+            //Image img = _mapper.Map<Image>(item.GoodsImage.First());
+            //dataManager.RepoImage.Create(img);
+            //dataManager.RepoImage.Save();
+
             Goods goods = _mapper.Map<Goods>(item);
+            //goods.Id = int.MinValue;
             dataManager.RepoGoods.Create(goods);
             dataManager.RepoGoods.Save();
         }
@@ -35,12 +40,15 @@ namespace BLL.Services
 
         public void Edit(GoodsDTO item)
         {
-            throw new NotImplementedException();
+            Goods goods = _mapper.Map<Goods>(item);
+            goods.PublishData = DateTime.Now;
+
+            dataManager.RepoGoods.Update(goods);
+            dataManager.RepoGoods.Save();
         }
 
         public IEnumerable<GoodsDTO> GetAll()
         {
-
             List<Goods> goods = dataManager.RepoGoods.GetAll().ToList();
             List<GoodsDTO> result =  _mapper.Map<List<GoodsDTO>>(goods);
 
@@ -73,11 +81,11 @@ namespace BLL.Services
             //        tmpGoods.GoodsImage.Add(new ImageDTO() { Name = "without-photo.png" });
             //    }
 
-            //    tmpGoods.PropCharact = new List<PropertyValueDTO>();
+            //    tmpGoods.PropCharact = new List<PropertyDTO>();
             //    List<Charact> tmpProp = dataManager.RepoCharact.GetAll().Where(x => x.GoodsId == goods.Id).ToList();
             //    tmpProp.ForEach(x =>
             //    {
-            //        PropertyValueDTO prop = _mapper.Map<PropertyValueDTO>(dataManager.RepoProperty.GetAll().FirstOrDefault(p => p.Id == x.PropId));
+            //        PropertyDTO prop = _mapper.Map<PropertyDTO>(dataManager.RepoProperty.GetAll().FirstOrDefault(p => p.Id == x.PropId));
             //        prop.Value = x.Value;
             //        tmpGoods.PropCharact.Add(prop);
             //    });
@@ -86,6 +94,12 @@ namespace BLL.Services
             //}
 
             return result;
+        }
+
+        public GoodsDTO GetById(int id)
+        {
+            GoodsDTO goods = _mapper.Map<GoodsDTO>(dataManager.RepoGoods.Get(id));
+            return goods;
         }
     }
 }

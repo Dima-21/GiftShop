@@ -19,6 +19,7 @@ namespace DAL.Repositories
         public void Create(Goods item)
         {
             context.Goods.Add(item);
+            //context.Entry<Goods>(item).State = EntityState.Detached;
         }
 
         public void Delete(int id)
@@ -26,9 +27,16 @@ namespace DAL.Repositories
             context.Goods.Remove(Get(id));
         }
 
+        public IEnumerable<Goods> Find(Func<Goods, bool> predicate)
+        {
+            return context.Goods.Where(predicate);
+        }
+
         public Goods Get(int id)
         {
-            return context.Goods.Find(id);
+            return context.Goods.Include(x => x.Group)
+                                .Include(x => x.GoodsImage).ThenInclude(x => x.Image)
+                                .Include(x => x.Charact).ThenInclude(x => x.Prop).FirstOrDefault(x=>x.Id == id);
         }
 
         public IEnumerable<Goods> GetAll()

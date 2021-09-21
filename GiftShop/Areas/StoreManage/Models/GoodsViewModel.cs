@@ -1,4 +1,5 @@
 ﻿using BLL.Models;
+using DAL.Models;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,9 @@ namespace GiftShop.Areas.StoreManage.Models
     public class GoodsListViewModel
     {
         public List<GoodsViewModel> Goods { get; set; }
-    }
 
+        public PageViewModel PageViewModel { get; set; }
+    }
     public class GoodsViewModel
     {
         private string shortDescript;
@@ -71,6 +73,9 @@ namespace GiftShop.Areas.StoreManage.Models
         public GoodsDTO Goods { get; set; }
         public IEnumerable<GroupDTO> Groups { get; set; }
         public IEnumerable<IFormFile> Images { get; set; }
+        public List<PropertyValueDTO> Properties { get; set; }
+
+
 
 
         //public int Id { get; set; }
@@ -102,7 +107,15 @@ namespace GiftShop.Areas.StoreManage.Models
         //[Display(Name = "Фото")]
         //public List<ImageDTO> Images { get; set; }
 
-        //public List<PropertyValueDTO> Properties { get; set; }
+        //public List<PropertyDTO> Properties { get; set; }
     }
+
+    public class CharacteristicViewModel
+    {
+        public long Id { get; set; }
+        public string Name { get; set; }
+        public string Value { get; set; }
+    }
+
 
 }
