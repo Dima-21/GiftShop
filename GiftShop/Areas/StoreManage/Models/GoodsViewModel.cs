@@ -58,7 +58,7 @@ namespace GiftShop.Areas.StoreManage.Models
         [Display(Name = "Цена")]
         public decimal Price { get; set; }
 
-        [Display(Name = "Показать на сайте")]
+        [Display(Name = "Скрыть товар")]
         public bool IsHidden { get; set; }
 
         [Display(Name = "Кол-во")]
@@ -74,6 +74,9 @@ namespace GiftShop.Areas.StoreManage.Models
         public IEnumerable<GroupDTO> Groups { get; set; }
         public IEnumerable<IFormFile> Images { get; set; }
         public List<PropertyValueDTO> Properties { get; set; }
+
+        //public PropertiesListViewModel Properties { get; set; }
+        //public List<PropertyDTO> Characts { get; set; }
 
 
 

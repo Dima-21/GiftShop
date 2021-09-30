@@ -1,4 +1,5 @@
 ﻿using DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,12 +27,12 @@ namespace DAL.Repositories
 
         public Order Get(int id)
         {
-            return context.Order.Find(id);
+            return context.Order.AsNoTracking().Include(x => x.OrderGoods).ThenInclude(x => x.Goods).ThenInclude(x => x.GoodsImage).ThenInclude(x => x.Image).FirstOrDefault(x=>x.Id == id);
         }
 
         public IEnumerable<Order> GetAll()
         {
-            return context.Order;
+            return context.Order.Include(x => x.OrderGoods).ThenInclude(x => x.Goods).ThenInclude(x=>x.GoodsImage).ThenInclude(x => x.Image);
         }
 
         public IEnumerable<Order> Find(Func<Order, bool> predicate)
@@ -46,6 +47,11 @@ namespace DAL.Repositories
         public void Update(Order item)
         {
             context.Order.Update(item);
+        }
+
+        public void Delete(Order id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

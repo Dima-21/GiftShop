@@ -1,0 +1,49 @@
+﻿@model OrderListViewModel
+
+<div class="list-group mt-3">
+
+    <ul class="nav nav-pills justify-content-center">
+        @foreach (OrderStatusDTO status in Model.OrderStatusList)
+        {
+            <li class="nav-item">
+                <a class="nav-link @(status.Id == Model.SelectedStatus.Id?"active":"")" asp-action="Index" asp-route-statusId="@status.Id">@status.StatusName <span class="badge badge-success badge-pill ml-2">@status.NumberOrders</span></a>
+            </li>
+        }
+
+
+    </ul>
+</div>
+
+
+<div id="productTable">
+    @if (Model.SelectedStatus.StatusCode == 1)
+    {
+        <partial name="_ProcessingOrdersTable" model="@Model" />
+    }
+    else
+    {
+        <partial name="_OtherStatusOrdersTable" model="@Model" />
+    }
+</div>
+
+
+@*@section Scripts{
+
+    <script>
+        $(function () {
+            function interceptPaging() {
+                $("#productTable .pagination a").click(function (event) {
+                    event.preventDefault();
+
+                    $.get($(this).attr("href"),
+                        function (d) {
+                            $("#productTable").html(d);
+                            interceptPaging();
+                        });
+                });
+            }
+
+            interceptPaging();
+        });
+    </script>
+}*@

@@ -44,13 +44,15 @@
                         <partial name="_CategoriesPartial" />
                     </div>
                     <div class="col-sm-auto">
-                        <form class="my-2 my-lg-0 d-flex form-inline">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Я ищу..." aria-label="Search">
-                            <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Поиск</button>
+                        <form class="my-2 my-lg-0 d-flex form-inline" method="post">
+                            <input class="form-control mr-sm-2" type="search" name="searchString" placeholder="Я ищу...">
+                            
+                            <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" asp-action="Index" asp-controller="Goods" asp-route-area="ProductList">Поиск</button>
+
                         </form>
                     </div>
                     <div class="col-sm-auto">
-                        <a asp-action="Index" asp-controller="Cart" asp-route-area="ProductList" class="btn btn-success col-sm">Корзина</a>
+                        <partial name="_CartPartial" />
                     </div>
                 </div>
             </div>

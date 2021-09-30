@@ -17,6 +17,7 @@ namespace BLL
         public IRepository<Order> RepoOrder { get; private set; }
         public IRepository<Property> RepoProperty { get; private set; }
         public IRepository<CartItem> RepoCartItem { get; private set; }
+        public IRepository<OrderStatus> RepoOrderStatus { get; private set; }
 
 
         public DataManager(IRepository<Goods> repoGoods,
@@ -27,6 +28,7 @@ namespace BLL
                            IRepository<OrderGoods> repoOrderGoods,
                            IRepository<Order> repoOrder,
                            IRepository<Property> repoProperty,
+                           IRepository<OrderStatus> repoOrderStatus,
                            IRepository<CartItem> repoCartItem)
         {
             RepoGoods = repoGoods;
@@ -38,6 +40,7 @@ namespace BLL
             RepoOrder = repoOrder;
             RepoProperty = repoProperty;
             RepoCartItem = repoCartItem;
+            RepoOrderStatus = repoOrderStatus;
         }
     }
 }

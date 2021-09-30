@@ -2,69 +2,73 @@
 @model ShopCartViewModel
 
 
-<div class="container">
-    <h1>Корзина</h1>
+<div class="container my-4">
+    <h3>Корзина</h3>
     <hr />
-
     @if (Model?.Cart != null)
     {
-        <table class="table table-hover ">
-            <thead class="thead-light">
-                <tr class="text-center">
-                    <th>
-                        @Html.DisplayNameFor(model => model.Cart.FirstOrDefault().Goods.GoodsImage)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Cart.FirstOrDefault().Goods.Code)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Cart.FirstOrDefault().Goods.Price)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Cart.FirstOrDefault().Goods.Name)
-                    </th>
-                    <th class="text-center">
-                        @Html.DisplayNameFor(model => model.Cart.FirstOrDefault().Amount)
-                    </th>
-                    <th class="text-center">
-                        @Html.DisplayNameFor(model => model.Cart.FirstOrDefault().Sum)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Cart)
-                {
+        @using (Html.BeginForm("Checkout", "Cart", FormMethod.Post))
+        {
+            <table class="table table-hover ">
+                <thead class="thead-light">
                     <tr class="text-center">
-                        <td hidden class="goods-id">@item.Goods.Id</td>
-                        <td class="align-middle">
-                            <img src="~/goods_image/@Url.Content(item.Goods.GoodsImage?.FirstOrDefault()?.Name)" height="40" />
-                        </td>
-                        <td class="align-middle">
-                            @Html.DisplayFor(modelItem => item.Goods.Code)
-                        </td>
-                        <td class="align-middle">
-                            @Html.DisplayFor(modelItem => item.Goods.Price)
-                        </td>
-                        <td class="align-middle">
-                            @Html.DisplayFor(modelItem => item.Goods.Name)
-                        </td>
-                        <td class="align-middle">
-                            @Html.DisplayFor(modelItem => item.Amount)
-                        </td>
-                        <td class="align-middle">
-                            @Html.DisplayFor(modelItem => item.Sum)
-                        </td>
-                        <td class="align-middle">
-                            <a asp-action="Remove" asp-controller="Cart" asp-route-area="ProductList" asp-route-goodsId="@item.Goods.Id" class="btn"><img src="~/images/icons/delete.png" /></a>
-
-                        </td>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Cart.FirstOrDefault().Goods.GoodsImage)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Cart.FirstOrDefault().Goods.Code)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Cart.FirstOrDefault().Goods.Price)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Cart.FirstOrDefault().Goods.Name)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.Cart.FirstOrDefault().Amount)
+                        </th>
+                        <th class="text-center">
+                            @Html.DisplayNameFor(model => model.Cart.FirstOrDefault().Sum)
+                        </th>
+                        <th></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Cart.Count; i++)
+                    {
 
-        @Html.ActionLink("Оформить заказ", "Checkout", null, new { cart = Model.Cart }, new { @class = "btn btn-primary" })
-    }
+                        <tr class="text-center">
+                            <td hidden class="goods-id">@Model.Cart[i].Goods.Id</td>
+                            <td class="align-middle">
+                                <img src="~/goods_image/@Url.Content(Model.Cart[i].Goods.GoodsImage?.FirstOrDefault()?.Name)" height="40" />
+                            </td>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => Model.Cart[i].Goods.Code)
+                            </td>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => Model.Cart[i].Goods.Price)
+                            </td>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => Model.Cart[i].Goods.Name)
+                            </td>
+                            <td class="align-middle col-1 text-center">
+                                <input asp-for="Cart[i].Amount" class="form-control" min="1" max="@Model.Cart[i].Goods.Amount"/>
+                                @*@Html.DisplayFor(modelItem => Model.Cart[i].Amount)*@
+                            </td>
+                            <td class="align-middle">
+                                @Html.DisplayFor(modelItem => Model.Cart[i].Sum)
+                            </td>
+                            <td class="align-middle">
+                                <a asp-action="Remove" asp-controller="Cart" asp-route-area="ProductList" asp-route-goodsId="@Model.Cart[i].Goods.Id" class="btn"><img src="~/images/icons/delete.png" /></a>
 
-</div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <input class="btn btn-primary" type="submit" asp-action="Checkout" value="Оформить заказ" />
+            @*@Html.ActionLink("Оформить заказ", "Checkout", null, new { cart = Model.Cart }, new { @class = "btn btn-primary" })*@
+        }
+        }
+
+    </div>

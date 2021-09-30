@@ -28,17 +28,20 @@ namespace GiftShop.Areas.ProductList.Controllers
 
         [Area("ProductList")]
         //public IActionResult Index(int? groupId)
-        public IActionResult Index(ProductListViewModel productVM)
+        public IActionResult Index(ProductListViewModel productVM, string searchString)
         {
             ProductListViewModel model = new ProductListViewModel();
+
+
+            List<GoodsDTO> filteredGoods = new List<GoodsDTO>();
+
+            // Creating a property list
             if (productVM.GroupId.HasValue)
             {
-                List<GoodsDTO> filteredGoods = goodsService.GetAll().GetGoodsByGroup(productVM.GroupId.Value).ToList();
+                filteredGoods = goodsService.GetAll().GetIsEnabled().GetGoodsByGroup(productVM.GroupId.Value).ToList();
 
                 // Упорядочение фильтра
-                IEnumerable<PropertyDTO> prop = propService.GetAll()
-                    .Where(x => x.GroupId == productVM.GroupId && x.IsFilter == true)
-                    .ToList();
+                IEnumerable<PropertyDTO> prop = propService.GetAll().GetListPropertyForFilterGoods(productVM.GroupId).ToList();
 
                 foreach (PropertyDTO property in prop)
                 {
@@ -48,33 +51,63 @@ namespace GiftShop.Areas.ProductList.Controllers
                 FilterViewModel groupedProp = _mapper.Map<FilterViewModel>(prop);
 
                 model.Filter = groupedProp;
+            }
 
-
+            // Filtering by name product
+            // If you have a searchString, search by name
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                filteredGoods = goodsService.GetAll().GetIsEnabled().ToList();
+                filteredGoods = filteredGoods.Where(x => x.Name.Contains(searchString) == true).ToList();
+            }
+            else if (productVM.GroupId.HasValue)
+            {
+                // Filtering goods by price
                 List<GoodsDTO> tmpFilteredGoods = new List<GoodsDTO>();
-                //Filtering goods
-                if (productVM?.Filter?.GroupedProperties != null)
+                if (productVM?.Filter != null)
                 {
-                    foreach (GroupedProperties property in productVM.Filter.GroupedProperties)
+                    if (productVM.Filter.MinPrice <= 0)
+                        productVM.Filter.MinPrice = decimal.ToInt32(filteredGoods.Min(x => x.Price));
+                    if (productVM.Filter.MaxPrice <= 0)
+                        productVM.Filter.MaxPrice = decimal.ToInt32(filteredGoods.Max(x => x.Price));
+
+                    filteredGoods = filteredGoods.Where(x => x.Price >= productVM.Filter.MinPrice && x.Price <= productVM.Filter.MaxPrice).ToList();
+
+                    // Filtering goods by properties
+                    if (productVM?.Filter?.GroupedProperties != null)
                     {
-                        List<CharactItem> checkedCharacts = property.Charact.Where(x => x.AreChecked == true).ToList();
-                        if (checkedCharacts != null && checkedCharacts.Count != 0)
+                        foreach (GroupedProperties property in productVM.Filter.GroupedProperties)
                         {
-                            foreach (CharactItem charact in checkedCharacts)
+                            // Select checked properties
+                            List<CharactItem> checkedCharacts = property.Charact.Where(x => x.AreChecked == true).ToList();
+
+                            if (checkedCharacts != null && checkedCharacts.Count != 0)
                             {
-                                tmpFilteredGoods.AddRange(filteredGoods
-                                    .Where(x => x.PropCharact?.FirstOrDefault(y => y.PropId == property.PropId)?.Value == charact?.Value).ToList());
+                                foreach (CharactItem charact in checkedCharacts)
+                                {
+                                    tmpFilteredGoods.AddRange(filteredGoods
+                                        .Where(x => x.PropCharact?.FirstOrDefault(y => y.PropId == property.PropId)?.Value == charact?.Value).ToList());
+                                }
+                                filteredGoods = tmpFilteredGoods;
                             }
-                            filteredGoods = tmpFilteredGoods;
                         }
                     }
+
                 }
-                model.Goods = filteredGoods;
+                else
+                {
+                    if (filteredGoods != null && filteredGoods.Count != 0)
+                    {
+                        if (productVM?.Filter == null || productVM.Filter.MinPrice <= 0)
+                            model.Filter.MinPrice = decimal.ToInt32(filteredGoods.Min(x => x.Price));
+                        if (productVM?.Filter == null || productVM.Filter.MaxPrice <= 0)
+                            model.Filter.MaxPrice = decimal.ToInt32(filteredGoods.Max(x => x.Price));
+                    }
+
+                }
             }
-            else
-                model.Goods = goodsService.GetAll().ToList();
 
-
-
+            model.Goods = filteredGoods;
 
             return View(model);
         }

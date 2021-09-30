@@ -1,0 +1,18 @@
+﻿@model List<PropertyDTO>
+
+
+<ul id="property-list" class="list-group">
+    @if (Model != null && Model.Count > 0)
+    {
+        @foreach (PropertyDTO prop in Model)
+        {
+    <li class="list-group-item">  <input class="check-isFilter align-middle" asp-for="@prop.IsFilter" data-propId="@prop.PropId"/> <span class="align-middle">@prop.Name</span> <button type="button" class="btn btn-sm btn-delete-property" data-groupId="@prop.GroupId" data-propId="@prop.PropId"><img src="~/images/icons/delete.png" /> </button> </li>
+        }
+    }
+</ul>
+
+@if (Model == null || Model.Count == 0)
+{
+    <h6>Характеристики для категории отсутствуют</h6>
+}
+

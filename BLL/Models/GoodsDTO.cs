@@ -29,7 +29,7 @@ namespace BLL.Models
         [Display(Name = "Цена")]
         public decimal Price { get; set; }
 
-        [Display(Name = "Показать на сайте")]
+        [Display(Name = "Скрыть товар")]
         public bool IsHidden { get; set; }
 
         [Display(Name = "Кол-во")]
@@ -39,6 +39,8 @@ namespace BLL.Models
 
         [Display(Name = "Фото")]
         public List<ImageDTO> GoodsImage { get; set; } // Фото товара
+
+        public DateTime PublishData { get; set; }
 
         //[Display(Name = "Фото")]
         //public ICollection<string> ImagePath { get; set; }

@@ -23,7 +23,7 @@ namespace DAL.Repositories
 
         public Property Get(int id)
         {
-            return context.Property.Find(id);
+            return context.Property.AsNoTracking().FirstOrDefault(x=>x.Id == id);
         }
 
         public IEnumerable<Property> GetAll()
@@ -33,17 +33,22 @@ namespace DAL.Repositories
 
         public IEnumerable<Property> Find(Func<Property, bool> predicate)
         {
-            return context.Property.Where(predicate);
+            return context.Property.AsNoTracking().Where(predicate);
         }
 
         public void Save()
         {
-            context.SaveChangesAsync();
+            context.SaveChanges();
         }
 
         public void Update(Property item)
         {
             context.Property.Update(item);
+        }
+
+        public void Delete(Property id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

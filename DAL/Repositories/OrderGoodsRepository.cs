@@ -21,7 +21,14 @@ namespace DAL.Repositories
 
         public void Delete(int id)
         {
-            context.OrderGoods.Remove(Get(id));
+            throw new NotImplementedException();
+        }
+
+        public void Delete(OrderGoods item)
+        {
+            //var order = context.Order.Find(item.OrderId);
+            //var goods = context.Goods.Find(item.GoodsId);
+            context.OrderGoods.Remove(item);
         }
 
         public IEnumerable<OrderGoods> Find(Func<OrderGoods, bool> predicate)
@@ -36,7 +43,7 @@ namespace DAL.Repositories
 
         public IEnumerable<OrderGoods> GetAll()
         {
-            return context.OrderGoods;
+            return context.OrderGoods.Include(x => x.Goods);
         }
 
         public void Save()

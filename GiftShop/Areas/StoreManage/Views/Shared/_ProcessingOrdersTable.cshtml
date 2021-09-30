@@ -1,0 +1,91 @@
+﻿<div class="accordion my-2 " id="accordionExample">
+    @if (Model?.Orders != null && Model.Orders.Count > 0)
+    {
+        @foreach (ListWithSelectOrderViewModel order in Model.Orders)
+        {
+
+            <div class="card ">
+                <div class="card-header bg-light" id="headingOne">
+
+                    <div class="row ml-1">
+                        <button class="col-10 col-md-11  btn btn-block text-left" type="button" data-toggle="collapse" data-target="#@("collapse" + order.Order.Id)" aria-expanded="true" aria-controls="@("collapse" + order.Order.Id)">
+                            <div class="row">
+                                <div class="col-4 col-sm-7 col-lg-9">
+                                    <span class="mt-1">@order.Order.OrderDate</span>
+                                    <h5 class="mt-1">№@order.Order.OrderNum</h5>
+                                </div>
+
+                                <div class="col-8 col-sm-5 col-lg-3">
+                                    <h5 class="text-monospace mt-1">Сумма заказа: @(order.Order.Sum) ГРН</h5>
+                                </div>
+
+                                @*<div class="col-8 col-sm-5 col-lg-4">
+                                        <h5 class="text-monospace mt-1">Сумма заказа: @(order.Sum) ГРН</h5>
+                                    </div>*@
+                            </div>
+                        </button>
+                        <div class="text-right col-2 col-md-1">
+                            <a asp-action="ConfirmOrder" asp-controller="Order" asp-route-area="StoreManage" asp-route-id="@order.Order.Id" class="btn my-1"><img src="~/images/icons/confirmOrder.png" width="32" /></a>
+                            @*<a asp-action="Delete" asp-controller="Order" asp-route-area="StoreManage" asp-route-id="@order.Id" class="btn"><img src="~/images/icons/delete.png" /></a>*@
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="@("collapse"+order.Order.Id)" class="collapse bg-light" aria-labelledby="headingOne">
+                    <div class="card-body">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Код</th>
+                                    <th scope="col">Название</th>
+                                    <th scope="col">К-во</th>
+                                    <th scope="col">Сумма</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            @if (order.Order.Goods != null && order.Order.Goods.Count > 0)
+                            {
+
+                                <tbody>
+                                    @foreach (CartGoodsDTO goods in order.Order.Goods)
+                                    {
+                                        <tr>
+                                            <td hidden class="goods-id">@goods.Id</td>
+                                            <td class="align-middle col-1">
+                                                @if (goods.Goods.GoodsImage != null && goods.Goods.GoodsImage.Count > 0)
+                                                {
+                                                    <img src="~/goods_image/@Url.Content(goods.Goods.GoodsImage.FirstOrDefault()?.Name)" height="40" />
+                                                }
+                                            </td>
+                                            <td class="align-middle">
+                                                @Html.DisplayFor(modelItem => goods.Goods.Code)
+                                            </td>
+                                            <td class="align-middle">
+                                                @Html.DisplayFor(modelItem => goods.Goods.Name)
+                                            </td>
+                                            <td class="align-middle">
+                                                @Html.DisplayFor(modelItem => goods.Amount)
+                                            </td>
+                                            <td class="align-middle">
+                                                @Html.DisplayFor(modelItem => goods.Sum)
+                                            </td>
+                                            <td>
+                                                <a asp-action="Details" asp-controller="Goods" asp-route-area="ProductList" asp-route-goodsId="@goods.Goods.Id" class="btn"><img src="~/images/icons/info.png" /></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        }
+
+    }
+</div>
+
+

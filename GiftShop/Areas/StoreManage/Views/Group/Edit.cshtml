@@ -1,0 +1,117 @@
+﻿@model CreateGroupViewModel
+
+
+<h4 class="mt-4 mb-2">Редактирование категории</h4>
+<hr />
+
+<div class="row ">
+    <div class="col-lg-6">
+        <form method="post" enctype="multipart/form-data">
+            <input hidden id="groupId" asp-for="Group.Id" />
+            <div class="form-group">
+                <label asp-for="Group.Name" class="control-label"></label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Скрыть категорию <input type="checkbox" asp-for="Group.IsHidden" class="ml-2 mt-1"></span>
+
+                    </div>
+                    <input asp-for="Group.Name" class="form-control" />
+                </div>
+            </div>
+
+
+            @*<div class="form-row ">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group col-sm-9 my-3">
+                        <label asp-for="Group.Name" class="control-label"></label>
+                        <input asp-for="Group.Name" class="form-control" />
+                        <span asp-validation-for="Group.Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-sm-3 my-3">
+                        <input asp-for="Group.IsHidden" type="checkbox" />
+                        <label asp-for="Group.IsHidden" class="control-label"></label>
+                        <span asp-validation-for="Group.IsHidden" class="text-danger"></span>
+                    </div>
+                </div>*@
+
+
+            <div class="form-group ">
+                <label asp-for="Group.ShortDescript" class="control-label"></label>
+                <textarea asp-for="Group.ShortDescript" class="form-control"></textarea>
+                <span asp-validation-for="Group.ShortDescript" class="text-danger"></span>
+            </div>
+
+
+            <h6 class="mt-5 mb-1">Картинка категории</h6>
+            <hr />
+
+            <div class="form-row">
+
+                <div>
+                    <img src="~/group_image/@Model.Group.Image" height="120" />
+                </div>
+                <div class="input-group my-3">
+                    <div class="custom-file">
+
+                        <input hidden asp-for="Group.Image" class="custom-file-input">
+                        <input asp-for="GroupImage" type="file" class="custom-file-input" id="groupimage">
+                        <label class="custom-file-label" for="inputImage" aria-describedby="inputImage">Загрузить...</label>
+
+                    </div>
+                </div>
+
+
+                <output id="group-image-preview">
+                </output>
+
+            </div>
+
+
+            <h6 class="mt-5 mb-1">Иконка категории</h6>
+            <hr />
+
+            <div class="form-row">
+                <div>
+                    <img src="~/group_icon/@Model.Group.Icon" height="120" />
+                </div>
+
+                <div class="input-group my-3">
+                    <div class="custom-file">
+                        <input hidden asp-for="Group.Icon" class="custom-file-input">
+
+                        <input asp-for="GroupIcon" type="file" class="custom-file-input" id="groupicon">
+                        <label class="custom-file-label" for="inputIcon" aria-describedby="inputIcon">Загрузить...</label>
+
+                    </div>
+                </div>
+
+                <output id="group-icon-preview">
+                </output>
+            </div>
+
+            <div class="form-group my-4">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+
+    </div>
+    <div id="property-list" class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Характеристики для товаров категории</h5>
+                <hr />
+                <div id="property-partial" >
+                    <partial name="_PropertiesListPartial" model="@Model?.Group?.Properties" />
+                </div>
+                <div class="input-group mt-3">
+                    <input id="input-property-name" type="text" class="form-control" placeholder="Название свойства">
+                    <div id="add-property-block" class="input-group-append">
+                        <button id="btn-add-property" class="btn btn-outline-primary" type="button">Добавить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

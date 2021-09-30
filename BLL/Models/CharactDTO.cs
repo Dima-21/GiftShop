@@ -27,7 +27,7 @@ namespace BLL.Models
         public override int GetHashCode()
         {
             //Get hash code for the Code field.
-            int hashValue = Value.GetHashCode();
+            int hashValue = Value?.GetHashCode()??int.MinValue;
 
             //Calculate the hash code for the product.
             return hashValue;

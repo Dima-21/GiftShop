@@ -1,0 +1,113 @@
+﻿@model OrderDetailsViewModel
+
+<h3 class="mt-4 mb-2">Заказ №@Model.Order.OrderNum</h3>
+<hr />
+@using (Html.BeginForm("ConfirmOrder", "Order", FormMethod.Post, new { Goods = Model.Order.Goods }))
+{
+    <h4 class="mt-4 mb-3 ml-2">Информация для отправки</h4>
+    <div class="card">
+        <div class="card-body">
+            <input hidden asp-for="Order.Id" class="form-control" />
+            <input hidden asp-for="Order.UserId" class="form-control" />
+            <input hidden asp-for="Order.OrderStatus" class="form-control" />
+            <input hidden asp-for="Order.OrderNum" class="form-control" />
+            <input hidden asp-for="Order.OrderDate" class="form-control" />
+            <div class="form-group">
+                <label asp-for="Order.RecipientName" class="control-label"></label>
+                <input asp-for="Order.RecipientName" class="form-control" />
+                <span asp-validation-for="Order.RecipientName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.Email" class="control-label"></label>
+                <input asp-for="Order.Email" class="form-control" />
+                <span asp-validation-for="Order.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.Phone" class="control-label"></label>
+                <input asp-for="Order.Phone" class="form-control" />
+                <span asp-validation-for="Order.Phone" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Order.City" class="control-label"></label>
+                <input asp-for="Order.City" class="form-control" />
+                <span asp-validation-for="Order.City" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Order.BranchNumber" class="control-label"></label>
+                <input asp-for="Order.BranchNumber" class="form-control" />
+                <span asp-validation-for="Order.BranchNumber" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="my-4 ml-2">Список товаров</h4>
+
+    <div>
+        <div class="card">
+            <div class="card-body">
+                @if (Model.Order.Goods != null && Model.Order.Goods.Count > 0)
+                {
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Код</th>
+                                <th scope="col">Название</th>
+                                <th class="text-center" scope="col">К-во</th>
+                                <th class="text-center" scope="col">Цена</th>
+                                <th class="text-center" scope="col">Сумма</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.Order.Goods.Count; i++)
+                            {
+                            <tr>
+                                <td hidden class="goods-id"><input hidden asp-for="@Model.Order.Goods[i].Goods.Id" /></td>
+                                <td class="align-middle col-1">
+                                    @if (Model.Order.Goods[i].Goods.GoodsImage == null && Model.Order.Goods[i].Goods.GoodsImage.Count > 0)
+                                    {
+                                        <img src="~/goods_image/@Url.Content(Model.Order.Goods[i].Goods.GoodsImage.FirstOrDefault()?.Name)" height="40" />
+                                    }
+                                </td>
+                                <td class="align-middle">
+                                    @Html.DisplayFor(modelItem => Model.Order.Goods[i].Goods.Code)
+                                </td>
+                                <td class="align-middle ">
+                                    @Html.DisplayFor(modelItem => Model.Order.Goods[i].Goods.Name)
+                                </td>
+                                <td class="align-middle col-1 text-center">
+                                    <input asp-for="Order.Goods[i].Amount" class="form-control" min="1" max="100" />
+
+                                </td>
+                                <td class="align-middle text-center">
+                                    @Html.DisplayFor(modelItem => Model.Order.Goods[i].Goods.Price)
+                                </td>
+                                <td class="align-middle text-center">
+                                    @Html.DisplayFor(modelItem => Model.Order.Goods[i].Sum)
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-controller="Goods" asp-route-area="ProductList" asp-route-goodsId="@Model.Order.Goods[i].Goods.Id" class="btn"><img src="~/images/icons/info.png" /></a>
+                                    <a asp-action="DeleteGoodsInOrder" asp-controller="Order" asp-route-area="StoreManage" asp-route-goodsId="@Model.Order.Goods[i].Goods.Id" asp-route-orderId="@Model.Order.Id" class="btn"><img src="~/images/icons/delete.png" /></a>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <h4 class="text-danger ml-2">Товары в заказе отсутствуют</h4>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="my-3">
+        <input type="submit" value="Подтвердить заказ" class="btn btn-primary" />
+        <a asp-action="DeleteOrder" asp-controller="Order" asp-route-area="StoreManage" asp-route-orderId="@Model.Order.Id" class="btn btn-danger">Удалить заказ</a>
+    </div>
+
+
+}

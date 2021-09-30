@@ -17,5 +17,16 @@ namespace BLL.Models
 
         [Display(Name = "Картинка категории")]
         public string Image { get; set; }
+
+        [Display(Name = "Количество товаров")]
+        public int NumberGoods { get; set; }
+
+        [Display(Name = "Описание")]
+        public string ShortDescript { get; set; }
+
+        [Display(Name = "Скрыть группу")]
+        public bool IsHidden { get; set; }
+
+        public List<PropertyDTO> Properties { get; set; }
     }
 }

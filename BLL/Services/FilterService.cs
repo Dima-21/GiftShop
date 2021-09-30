@@ -16,12 +16,17 @@ namespace BLL.Services
             this.dataManager = dataManager;
             this._mapper = _mapper;
         }
-        public void Add(PropertyDTO item)
+        public PropertyDTO Add(PropertyDTO item)
         {
             throw new NotImplementedException();
         }
 
         public void Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(PropertyDTO item)
         {
             throw new NotImplementedException();
         }

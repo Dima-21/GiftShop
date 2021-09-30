@@ -49,5 +49,10 @@ namespace DAL.Repositories
         {
             context.GoodsImage.Update(item);
         }
+
+        public void Delete(GoodsImage id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

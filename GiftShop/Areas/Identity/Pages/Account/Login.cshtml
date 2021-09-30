@@ -2,39 +2,34 @@
 @model LoginModel
 
 <div class="container-fluid my-4 ">
+    <div class="my-5">
+        <p class="h5 row justify-content-center font-weight-bolder">@ViewData["AdditionalInfoMessage"]</p>
+    </div>
     <div class="row justify-content-center">
         <div class="col-sm-auto card p-5 ">
             <section>
                 <form method="post">
                     <h4>Вход в личный кабинет</h4>
                     <hr />
-                    @*<div asp-validation-summary="All" class="text-danger"></div>*@
+                    <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="Input.Email" class=" col-form-label">Логин</label>
-                        <input asp-for="Input.Email" class="form-control" id="inputEmail3">
+                        <input asp-for="Input.Email" class="form-control">
                         <span asp-validation-for="Input.Email" class="form-text text-muted"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Input.Password" class="col-form-label">Пароль</label>
-                        <input asp-for="Input.Password" class="form-control" id="inputPassword3">
+                        <input asp-for="Input.Password" class="form-control">
                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                     </div>
-                    @*<div class="form-group">
-                            <label asp-for="Input.Email"></label>
-                            <input asp-for="Input.Email" class="form-control" />
-                            <span asp-validation-for="Input.Email" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Input.Password"></label>
-                            <input asp-for="Input.Password" class="form-control" />
-                            <span asp-validation-for="Input.Password" class="text-danger"></span>
-                        </div>*@
+
                     <div class="row justify-content-end align-content-lg-center">
                         <div class="col">
                             <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                <label class="form-check-label " asp-for="Input.RememberMe" >Запомнить меня</label>
-                                
+                                @*<input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <label class="form-check-label " asp-for="Input.RememberMe">Запомнить меня</label>*@
+                                <input asp-for="Input.RememberMe" />
+                                @Html.DisplayNameFor(m => m.Input.RememberMe)
                             </div>
                             @*<div class="form-group form-text">
                                             <div class="checkbox form">
@@ -58,7 +53,7 @@
 
                     <div class="form-group">
                         <p>
-                            <a asp-page="./ForgotPassword">Забыл пароль</a>
+                            <a asp-page="./ForgotPassword">Забыли пароль</a>
                         </p>
                     </div>
                 </form>

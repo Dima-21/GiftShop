@@ -12,5 +12,12 @@ namespace BLL.Filters
         {
             return goods.Where(x => x.Group.Id == idGroup);
         }
+
+        public static IEnumerable<GoodsDTO> GetIsEnabled(this IEnumerable<GoodsDTO> goods)
+        {
+            var result = goods.Where(x => x.IsHidden == false);
+
+            return result;
+        }
     }
 }

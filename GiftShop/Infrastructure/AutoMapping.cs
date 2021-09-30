@@ -37,14 +37,22 @@ namespace GiftShop.Infrastructure
 
             //CreateMap<Property, Charact>()
             //    .ForMember(dest => dest.Prop, opt => opt.MapFrom(src => src));
+            CreateMap<PropertyDTO, Property>()
+                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.PropId))
+                .ReverseMap();
+            CreateMap<PropertyDTO, PropertyValueDTO>().ReverseMap();
             CreateMap<Charact, PropertyDTO>().ReverseMap();
-            CreateMap<Charact, PropertyValueDTO>().ReverseMap();
+            CreateMap<Charact, PropertyValueDTO>()
+                .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Prop.Name));
+            CreateMap<PropertyValueDTO, Charact>();
 
             CreateMap<ImageDTO, GoodsImage>()
                   .ForMember(d => d.ImageId, opt => opt.MapFrom(s => s.Id))
                   .ForMember(d => d.Image, opt => opt.MapFrom(s => s));
 
-            CreateMap<Group, GroupDTO>().ReverseMap();
+            CreateMap<Group, GroupDTO>()
+                .ForMember(dto => dto.NumberGoods, opt => opt.MapFrom(x => x.Goods.Where(y=>y.IsHidden==false).ToList().Count));
+            CreateMap<GroupDTO, Group>();
             CreateMap<Image, ImageDTO>().ReverseMap();
 
 
@@ -66,9 +74,17 @@ namespace GiftShop.Infrastructure
 
 
             CreateMap<Order, OrderDTO>()
-                 .ForMember(dto => dto.Goods, opt => opt.MapFrom(x => x.OrderGoods.Select(y => y.Goods).ToList()));
+                 .ForMember(dto => dto.Goods, opt => opt.MapFrom(x => x.OrderGoods));
 
 
+            CreateMap<OrderGoods, CartGoodsDTO>()
+                .ForMember(dto => dto.Goods, opt => opt.MapFrom(x => x.Goods));
+
+            CreateMap<OrderGoods, OrderGoodsDTO>().ReverseMap();
+
+
+            CreateMap<OrderStatus, OrderStatusDTO>().ForMember(dto => dto.NumberOrders, opt => opt.MapFrom(x => x.Orders.Count));
+            CreateMap<OrderStatusDTO, OrderStatus>();
             //.ForMember(dest => dest.Goods, conf => conf.MapFrom(x => x.OrderGoods)).ReverseMap();
             //CreateMap<OrderGoods, OrderDTO>()
             //    .ForMember(dest => dest.Goods, conf => conf.MapFrom(x => x.Goods))

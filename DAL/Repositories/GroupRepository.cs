@@ -1,4 +1,5 @@
 ﻿using DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,12 +26,12 @@ namespace DAL.Repositories
 
         public Group Get(int id)
         {
-            return context.Group.Find(id);
+            return context.Group.Include(x=>x.Properties).FirstOrDefault(x=>x.Id == id);
         }
 
         public IEnumerable<Group> GetAll()
         {
-            return context.Group;
+            return context.Group.Include(x=>x.Goods);
         }
         public IEnumerable<Group> Find(Func<Group, bool> predicate)
         {
@@ -45,6 +46,11 @@ namespace DAL.Repositories
         public void Update(Group item)
         {
             context.Group.Update(item);
+        }
+
+        public void Delete(Group id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

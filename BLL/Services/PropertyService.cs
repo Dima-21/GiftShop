@@ -20,34 +20,62 @@ namespace BLL.Services
             this._mapper = _mapper;
         }
 
-        public void Add(PropertyDTO item)
+        public PropertyDTO Add(PropertyDTO item)
         {
-            //Goods goods = _mapper.Map<Goods>(item);
-            //dataManager.RepoGoods.Create(goods);
-            //dataManager.RepoGoods.Save();
+            Property prop = _mapper.Map<Property>(item);
+            dataManager.RepoProperty.Create(prop);
+            dataManager.RepoProperty.Save();
+            return _mapper.Map<PropertyDTO>(prop);
         }
 
         public void Delete(int id)
         {
-            //dataManager.RepoGoods.Delete(id);
-            //dataManager.RepoGoods.Save();
+            try
+            {
+                dataManager.RepoProperty.Delete(id);
+                dataManager.RepoProperty.Save();
+            }
+            catch
+            {
+            }
+        }
+
+        public void Delete(PropertyDTO item)
+        {
+            throw new NotImplementedException();
         }
 
         public void Edit(PropertyDTO item)
         {
-            throw new NotImplementedException();
+            Property prop = _mapper.Map<Property>(item);
+            dataManager.RepoProperty.Update(prop);
+            dataManager.RepoProperty.Save();
         }
 
         public IEnumerable<PropertyDTO> GetAll()
         {
-            IEnumerable<Property> properties = dataManager.RepoProperty.GetAll();
-            List<PropertyDTO> result = _mapper.Map<List<PropertyDTO>>(properties);
-            return result;
+            try
+            {
+                List<Property> properties = dataManager.RepoProperty.GetAll().ToList();
+                List<PropertyDTO> result = _mapper.Map<List<PropertyDTO>>(properties);
+                foreach (var prop in result)
+                {
+                    prop.Charact = prop.Charact.Where(x => !string.IsNullOrEmpty(x.Value)).ToList();
+                }
+                return result;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public PropertyDTO GetById(int id)
         {
-            throw new NotImplementedException();
+            Property order = dataManager.RepoProperty.Get(id);
+            PropertyDTO result = _mapper.Map<PropertyDTO>(order);
+
+            return result;
         }
     }
 }

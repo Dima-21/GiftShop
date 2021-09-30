@@ -10,9 +10,9 @@ namespace BLL.Models
         public long? Id { get; set; }
         public string ShopCardId { get; set; }
         [Display(Name = "Количество")]
-        public int Amount { get; set; }
+        public short Amount { get; set; }
         [Display(Name = "Сумма")]
-        public decimal Sum { get { return Amount * Goods.Price; } }
+        public decimal Sum { get { return Amount * Goods?.Price??0; } }
         public GoodsDTO Goods { get; set; }
     }
 }

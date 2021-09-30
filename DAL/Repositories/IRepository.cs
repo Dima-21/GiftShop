@@ -12,6 +12,7 @@ namespace DAL.Repositories
         void Create(T item);
         void Update(T item);
         void Delete(int id);
+        void Delete(T item);
         void Save();
     }
 }

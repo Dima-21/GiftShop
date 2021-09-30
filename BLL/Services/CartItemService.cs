@@ -17,18 +17,25 @@ namespace BLL.Services
             this.dataManager = dataManager;
             this._mapper = _mapper;
         }
-        public void Add(CartGoodsDTO item)
+        public CartGoodsDTO Add(CartGoodsDTO item)
         {
             CartItem cartItem = _mapper.Map<CartItem>(item);
             cartItem.Goods = null;
             dataManager.RepoCartItem.Create(cartItem);
             dataManager.RepoCartItem.Save();
+
+            return _mapper.Map<CartGoodsDTO>(cartItem);
         }
 
         public void Delete(int id)
         {
             dataManager.RepoCartItem.Delete(id);
             dataManager.RepoCartItem.Save();
+        }
+
+        public void Delete(CartGoodsDTO item)
+        {
+            throw new NotImplementedException();
         }
 
         public void Edit(CartGoodsDTO item)

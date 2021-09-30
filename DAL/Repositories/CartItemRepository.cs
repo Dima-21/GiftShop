@@ -26,6 +26,11 @@ namespace DAL.Repositories
             context.CartItem.Remove(Get(id));
         }
 
+        public void Delete(CartItem id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<CartItem> Find(Func<CartItem, bool> predicate)
         {
             return context.CartItem.Where(predicate);

@@ -1,0 +1,75 @@
+﻿@*@model List<PropertyDTO>*@
+@model List<PropertyValueDTO>
+@*@model CreateGoodsViewModel*@
+
+@if (Model.Count > 0)
+{
+    <h5 class="mt-5 mb-2">Характеристика</h5>
+    <hr />
+
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        <input type="hidden" name="Properties[@i].PropId" class="form-control" value="@Model[i].PropId" />
+        <input type="hidden" name="@Model[@i].Name" class="form-control" asp-for="@Model[i].Name" />
+        <label class="control-label">@Model[@i].Name</label>
+        @*<input asp-for="@prop.Value" class="form-control" />*@
+        @*<input type="text" name="Properties[@i].Value" class="form-control" />*@
+
+        <div class="input-group mb-3">
+            @if (Model[i].Charact != null)
+            {
+                <select class="custom-select inputCharactSelect">
+                    <option selected>Выбрать существующие значения</option>
+                    @for (int j = 0; j < Model[i].Charact.Count; j++)
+                    {
+                        <option value="@Model[i].Charact[j].Value" data-propTag="prop@(Model[i].PropId)"> @Model[i].Charact[j].Value</option>
+                    }
+                </select>
+            }
+            <input id="prop@(Model[i].PropId)" type="text" name="Properties[@i].Value" asp-for="@Model[@i].Value" class="form-control" placeholder="Новое значение..." />
+            @*<input type="text" class="form-control" placeholder="Новое значение...">*@
+
+        </div>
+
+    }
+}
+
+
+
+
+@*<div class="modal " id="charactModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Добавление свойства характеристики</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Значение свойства:</label>
+                            <input type="text" class="form-control" id="charact-value">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                    <button id="saveCharact" type="button" class="btn btn-primary" data-dismiss="modal">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<script type="text/javascript">
+    var elem = document.getElementsByClassName("inputCharactSelect");
+    for (var i = 0; i < elem.length; i++) {
+        elem[i].onchange = function (event) {
+            var valueOption = $(this).val();
+            var propTag = event.target.options[event.target.selectedIndex].dataset.proptag;
+            var propInput = $("#" + propTag);
+            propInput.val(valueOption);
+        };
+    }
+</script>

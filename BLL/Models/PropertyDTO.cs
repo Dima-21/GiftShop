@@ -15,8 +15,8 @@ namespace BLL.Models
         [Display(Name = "Название свойства")]
         public string Name { get; set; }
 
-        [Display(Name = "Значение")]
-        public ICollection<CharactDTO> Charact { get; set; }
+        public List<CharactDTO> Charact { get; set; }
+
 
         [Display(Name = "Участие в фильтрации")]
         public bool IsFilter { get; set; }

@@ -20,7 +20,7 @@ namespace BLL.Services
             this._mapper = _mapper;
         }
 
-        public void Add(OrderDTO item)
+        public OrderDTO Add(OrderDTO item)
         {
 
             Order order = _mapper.Map<Order>(item);
@@ -50,10 +50,16 @@ namespace BLL.Services
                     message.ToString());
             }
 
-
+            return _mapper.Map<OrderDTO>(order); ;
         }
 
         public void Delete(int id)
+        {
+            dataManager.RepoOrder.Delete(id);
+            dataManager.RepoOrder.Save();
+        }
+
+        public void Delete(OrderDTO item)
         {
             throw new NotImplementedException();
         }
@@ -62,18 +68,35 @@ namespace BLL.Services
         {
             Order order = _mapper.Map<Order>(item);
 
+            foreach (var goods in order.OrderGoods)
+            {
+                //goods.Goods = new Goods()
+                //{
+                //    Id = goods.GoodsId
+                //};
+                goods.OrderId = order.Id;
+            }
+
             dataManager.RepoOrder.Update(order);
             dataManager.RepoOrder.Save();
         }
 
-        public IEnumerable<OrderDTO> GetAll()
+        public virtual IEnumerable<OrderDTO> GetAll()
         {
-            throw new NotImplementedException();
+            List<Order> order = dataManager.RepoOrder.GetAll().ToList();
+            List<OrderDTO> result = _mapper.Map<List<OrderDTO>>(order);
+
+            return result;
         }
 
         public OrderDTO GetById(int id)
         {
-            throw new NotImplementedException();
+            Order order = dataManager.RepoOrder.Get(id);
+            OrderDTO result = _mapper.Map<OrderDTO>(order);
+
+            return result;
         }
     }
+
+
 }

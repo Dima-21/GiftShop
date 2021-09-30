@@ -14,6 +14,7 @@ namespace GiftShop.Areas.ProductList.Models
         public int MaxPrice { get; set; }
 
         public List<GroupedProperties> GroupedProperties { get; set; }
+        public string SearchString { get; set; }
     }
 
     public class GroupedProperties

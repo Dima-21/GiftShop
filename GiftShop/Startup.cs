@@ -21,6 +21,8 @@ using BLL;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using GiftShop.Areas.ProductList.Controllers;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using GiftShop.Infrastructure;
 
 namespace GiftShop
 {
@@ -45,10 +47,13 @@ namespace GiftShop
 
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IService<OrderDTO>, OrderService>();
+            services.AddScoped<IService<OrderStatusDTO>, OrderStatusService>();
+            services.AddScoped<IService<OrderGoodsDTO>, OrderGoodsService>();
             services.AddScoped<IService<GroupDTO>, GroupService>();
             services.AddScoped<IService<GoodsDTO>, GoodsService>();
             services.AddScoped<IService<PropertyDTO>, PropertyService>();
             services.AddScoped<IService<CartGoodsDTO>, CartItemService>();
+            services.AddScoped<IService<ImageDTO>, ImageService>();
             services.AddScoped<IRepository<Goods>, GoodsRepository>();
             services.AddScoped<IRepository<Group>, GroupRepository>();
             services.AddScoped<IRepository<GoodsImage>, GoodsImageRepository>();
@@ -58,15 +63,29 @@ namespace GiftShop
             services.AddScoped<IRepository<Order>, OrderRepository>();
             services.AddScoped<IRepository<Property>, PropertyRepository>();
             services.AddScoped<IRepository<CartItem>, CartItemRepository>();
+            services.AddScoped<IRepository<OrderStatus>, OrderStatusRepository>();
+
+            services.AddDbContext<GiftShopContext>( options =>
+            options.UseSqlServer(Configuration.GetConnectionString("GiftShopConnection")), ServiceLifetime.Transient);
 
             services.AddScoped<DataManager>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("GiftShopConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //services.AddDefaultIdentity<IdentityUser>()
+            //    .AddRoles<IdentityRole>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //        services.AddIdentity<IdentityUser, IdentityRole>()
+            //.AddRoleManager<RoleManager<IdentityRole>>()
+            //.AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                    .AddRoleManager<RoleManager<IdentityRole>>()
+                    .AddDefaultUI()
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
+
 
             //services.AddIdentity<IdentityUser, IdentityRole>()
             //      .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -74,6 +93,8 @@ namespace GiftShop
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             //services.AddHttpContextAccessor();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            //services.AddTransient<IEmailSender, DevEmailSender>();
+            services.AddTransient<IEmailSender, MailSender>();
             //services.AddScoped(sp => CartController.GetCart(sp));
             //services.AddScoped(sp => TestSession.GetCart(sp));
 

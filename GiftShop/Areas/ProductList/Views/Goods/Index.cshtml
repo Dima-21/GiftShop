@@ -2,14 +2,10 @@
 @model ProductListViewModel
 
 <main class="cd-main-content">
-    <div class="option-block-wrapper">
-        <div class="option-block">
 
-        </div> <!-- cd-tab-filter -->
-    </div> <!-- cd-tab-filter-wrapper -->
 
     <section class="cd-gallery">
-        <div class="row">
+        <div class=" row">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
             </div>
@@ -27,102 +23,129 @@
                     </nav>
                 </div>*@
             <div class="col">
-                <div class="row row-cols-2  row-cols-md-3 row-cols-lg-5 row-cols-xl-5">
+                <div class="row row-cols-2  row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
                     @*@for (int i = 0; i < 50; i++)
                         {*@
-                    @foreach (var goods in Model.Goods)
+                    @if (Model?.Goods != null)
                     {
-                        <div class="col p-2">
 
-                            <div class="card card-background">
-                                <div class="img">
+                        @foreach (var goods in Model.Goods)
+                        {
+                            <div class="col p-2">
+
+                                <div class="card card-background goods-card">
                                     <a asp-action="Details" asp-controller="Goods" asp-route-area="ProductList" asp-route-goodsId="@goods.Id">
-                                        <img src="~/goods_image/@(goods.GoodsImage.Count==0?"without-photo.png":Url.Content(goods.GoodsImage.FirstOrDefault().Name))" class="card-img-top" alt="...">
-                                        @*<img src="~/goods_image/@Url.Content(goods.GoodsImage.First().Name)" class="card-img-top" alt="...">*@
+                                        <div class="img-block-card">
+
+                                            <img src="~/goods_image/@(goods.GoodsImage.Count == 0 ? "without-photo.png" : Url.Content(goods.GoodsImage.FirstOrDefault().Name))" class="card-img-top img-goods" alt="...">
+
+                                            @*<img src="~/goods_image/@Url.Content(goods.GoodsImage.First().Name)" class="card-img-top" alt="...">*@
+                                        </div>
                                     </a>
-                                </div>
 
-                                <div class="card-body text-center mr-0 mt-2">
-                                    <div>
-                                        <a asp-action="Details" asp-controller="Goods" asp-route-area="ProductList" asp-route-goodsId="@goods.Id">
-                                            <h5 class="card-title">@goods.Name</h5>
-                                        </a>
-                                        @*<p class="card-text">@goods.ShortDescript</p>*@
+                                    <div class="card-body text-center mr-0 mt-2">
+                                        <div>
+                                            <div class="name-goods">
+                                                <a asp-action="Details" asp-controller="Goods" asp-route-area="ProductList" asp-route-goodsId="@goods.Id">
+                                                    <h5 class="card-title">@goods.Name</h5>
+                                                </a>
+                                            </div>
+                                            @*<p class="card-text">@goods.ShortDescript</p>*@
 
-                                        <span class="card-text h6 col-sm my-2">@goods.Price ₴</span>
-                                        <div class="row mt-4">
-                                            <a asp-action="AddToCart" asp-controller="Cart" asp-route-area="ProductList" asp-route-goodsId="@goods.Id" class="btn btn-success col-sm">Купить</a>
+                                            <span class="card-text h6 col-sm my-2">@goods.Price ₴</span>
+                                            <div class="row mt-4">
+                                                <a asp-action="AddToCart" asp-controller="Cart" asp-route-area="ProductList" asp-route-goodsId="@goods.Id" class="btn btn-success col-sm">Купить</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            @*<div class="card">
-                                    <a asp-action="Edit" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@goods.Id">
-                                        <img src="~/goods_image/@Url.Content(goods.GoodsImage.First().Name)" class="card-img-top" alt="...">
-                                    </a>
-                                    <div class="card-body ">
-                                        <h5 class="card-title">@goods.Name</h5>
-                                        <p class="card-text">@goods.ShortDescript</p>
-                                        <a asp-action="Edit" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@goods.Id" class="btn btn-success">Купить</a>
-                                        <span class="card-text">@goods.Price <span class="text-muted">₴</span></span>
-                                    </div>
-                                </div>*@
-                        </div>
-                    }
+                                @*<div class="card">
+                                        <a asp-action="Edit" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@goods.Id">
+                                            <img src="~/goods_image/@Url.Content(goods.GoodsImage.First().Name)" class="card-img-top" alt="...">
+                                        </a>
+                                        <div class="card-body ">
+                                            <h5 class="card-title">@goods.Name</h5>
+                                            <p class="card-text">@goods.ShortDescript</p>
+                                            <a asp-action="Edit" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@goods.Id" class="btn btn-success">Купить</a>
+                                            <span class="card-text">@goods.Price <span class="text-muted">₴</span></span>
+                                        </div>
+                                    </div>*@
+                            </div>
+                        }}
                 </div>
             </div>
         </div>
     </section> <!-- cd-gallery -->
 
-    <div class="cd-filter">
-        <form method="post">
-            <div class="cd-filter-block">
-                <h4>Цена</h4>
 
-                <div class="cd-filter-content">
-                    <input type="search" placeholder="Try color-1...">
-                </div> <!-- cd-filter-content -->
-            </div>
-            @*@for (var i = 1; i <= 10; i++)
-                {
-                    <input name="AreChecked" type="checkbox" value="@i" /> @i<br />
-                }*@
-            @for (var i = 0; i < Model.Filter.GroupedProperties.Count(); i++)
-            {
+    @if (Model.Filter != null)
+    {
+        <input type="hidden" asp-for="GroupId" />
+        <div class="cd-filter">
+            <form method="post">
+
                 <div class="cd-filter-block">
-                    <input type="hidden" asp-for="Filter.GroupedProperties[i].PropId" />
-                    <h4>@Model.Filter.GroupedProperties[i].Name</h4>
-                    @for (var j = 0; j < Model.Filter.GroupedProperties[i].Charact.Count(); j++)
-                    {
-                        <div>
-                            <input asp-for="Filter.GroupedProperties[i].Charact[j].AreChecked" />
-                            <input type="hidden" asp-for="Filter.GroupedProperties[i].Charact[j].Value" />
-                            @Model.Filter.GroupedProperties[i].Charact[j].Value
+                    <h4>Цена</h4>
+                    <div class="cd-filter-content">
+                        <div class="row">
+                            <div class="col">
+                                <input type="text" class="text-center form-control" placeholder="От" asp-for="Filter.MinPrice">
+                            </div>
+                            <div class="my-1">
+                                <label>-</label>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="text-center form-control" placeholder="До" asp-for="Filter.MaxPrice">
+                            </div>
                         </div>
-                    }
+                        @*<input asp-for="Filter.MinPrice" />
+                            <label>-</label>
+                            <input asp-for="Filter.MaxPrice" />*@
+                    </div> <!-- cd-filter-content -->
                 </div>
-            }
 
-            @*@foreach (GroupedProperties prop in Model.Filter.GroupedProperties)
+                @*@for (var i = 1; i <= 10; i++)
+                    {
+                        <input name="AreChecked" type="checkbox" value="@i" /> @i<br />
+                    }*@
+                @for (var i = 0; i < Model.Filter.GroupedProperties.Count(); i++)
                 {
                     <div class="cd-filter-block">
-                        <h4>@prop.Name</h4>
-                        <input type="hidden" asp-for="@prop.PropId" />
-                        @foreach (CharactItem charact in prop.Charact)
+                        <input type="hidden" asp-for="Filter.GroupedProperties[i].PropId" />
+                        <h4>@Model.Filter.GroupedProperties[i].Name</h4>
+                        @for (var j = 0; j < Model.Filter.GroupedProperties[i].Charact.Count(); j++)
                         {
                             <div class="cd-filter-content">
-                                <input type="checkbox" asp-for="@charact.AreChecked" />
-                                @charact.Value
+                                <input class="mx-1" id="@($"check_{i}{j}") " asp-for="Filter.GroupedProperties[i].Charact[j].AreChecked" />
+                                <input type="hidden" asp-for="Filter.GroupedProperties[i].Charact[j].Value" />
+                                <label class="form-check-label" for="@($"check_{i}{j}")">@Model.Filter.GroupedProperties[i].Charact[j].Value</label>
                             </div>
                         }
                     </div>
-                }*@
-            <button class="btn btn-success">Применить фильтр</button>
-        </form>
-        <a href="#0" class="cd-close"><</a>
-    </div> <!-- cd-filter -->
-    <a href="#0" class="cd-filter-trigger">Фильтр</a>
+                }
+
+                @*@foreach (GroupedProperties prop in Model.Filter.GroupedProperties)
+                    {
+                        <div class="cd-filter-block">
+                            <h4>@prop.Name</h4>
+                            <input type="hidden" asp-for="@prop.PropId" />
+                            @foreach (CharactItem charact in prop.Charact)
+                            {
+                                <div class="cd-filter-content">
+                                    <input type="checkbox" asp-for="@charact.AreChecked" />
+                                    @charact.Value
+                                </div>
+                            }
+                        </div>
+                    }*@
+                <button class="btn btn-success mx-5 mt-4">Применить фильтр</button>
+            </form>
+            <a href="#0" class="cd-close">&#60</a>
+        </div> <!-- cd-filter -->
+        <a href="#0" class="cd-filter-trigger">Фильтр</a>
+
+    }
 </main>
 @*<div class="container-fluid py-4 ">
 

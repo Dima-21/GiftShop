@@ -1,0 +1,105 @@
+﻿@model OrderListViewModel
+
+
+<form asp-controller="Order" asp-action="ChangeOrderStatus">
+    <input hidden asp-for="@Model.SelectedStatus.Id" />
+    <div class="dropdown">
+        <a class="btn btn-info btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Изменить статус заказа
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            @foreach (OrderStatusDTO status in Model.OrderStatusList)
+            {
+                <button type="submit" class="dropdown-item btn btn-link" name="statusId" value="@status.Id">@status.StatusName</button>
+            }
+        </div>
+    </div>
+
+
+    <div class="accordion my-2 " id="accordionExample">
+        @if (Model?.Orders != null && Model.Orders.Count > 0)
+        {
+            @for (int i = 0; i < Model.Orders.Count; i++)
+            {
+
+                <div class="card ">
+                    <div class="card-header bg-light" id="headingOne">
+
+                        <div class="row">
+                            <input class="col-2 col-md-1 my-3" type="checkbox" asp-for="@Model.Orders[i].AreChecked" />
+                            <input hidden asp-for="@Model.Orders[i].Order.Id" />
+                            <button class="col-10 col-md-11  btn btn-block text-left" type="button" data-toggle="collapse" data-target="#@("collapse" + Model.Orders[i].Order.Id)" aria-expanded="true" aria-controls="@("collapse" + Model.Orders[i].Order.Id)">
+                                <div class="row">
+                                    <div class="col-4 col-sm-7 col-lg-9">
+                                        <span class="mt-1">@Model.Orders[i].Order.OrderDate</span>
+
+                                        <h5 class="mt-1">№@Model.Orders[i].Order.OrderNum</h5>
+                                    </div>
+
+                                    <div class="col-8 col-sm-5 col-lg-3">
+                                        <h5 class="text-monospace mt-1">Сумма заказа: @(Model.Orders[i].Order.Sum) ГРН</h5>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <div id="@("collapse"+Model.Orders[i].Order.Id)" class="collapse bg-light" aria-labelledby="headingOne">
+                        <div class="card-body">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col">Код</th>
+                                        <th scope="col">Название</th>
+                                        <th scope="col">К-во</th>
+                                        <th scope="col">Сумма</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                @if (Model.Orders[i].Order.Goods != null && Model.Orders[i].Order.Goods.Count > 0)
+                                {
+
+                                    <tbody>
+                                        @foreach (CartGoodsDTO goods in Model.Orders[i].Order.Goods)
+                                        {
+                                            <tr>
+                                                <td hidden class="goods-id">@goods.Id</td>
+                                                <td class="align-middle col-1">
+                                                    @if (goods.Goods.GoodsImage != null && goods.Goods.GoodsImage.Count > 0)
+                                                    {
+                                                        <img src="~/goods_image/@Url.Content(goods.Goods.GoodsImage.FirstOrDefault()?.Name)" height="40" />
+                                                    }
+                                                </td>
+                                                <td class="align-middle">
+                                                    @Html.DisplayFor(modelItem => goods.Goods.Code)
+                                                </td>
+                                                <td class="align-middle">
+                                                    @Html.DisplayFor(modelItem => goods.Goods.Name)
+                                                </td>
+                                                <td class="align-middle">
+                                                    @Html.DisplayFor(modelItem => goods.Amount)
+                                                </td>
+                                                <td class="align-middle">
+                                                    @Html.DisplayFor(modelItem => goods.Sum)
+                                                </td>
+                                                <td>
+                                                    <a asp-action="Details" asp-controller="Goods" asp-route-area="ProductList" asp-route-goodsId="@goods.Goods.Id" class="btn"><img src="~/images/icons/info.png" /></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            }
+
+        }
+    </div>
+
+
+</form>

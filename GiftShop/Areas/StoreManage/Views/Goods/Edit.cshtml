@@ -1,11 +1,12 @@
 ﻿@model CreateGoodsViewModel
 
 
-<h4 class="mt-4 mb-2">Добавление товара</h4>
+<h4 class="mt-4 mb-2">Редактирование товара</h4>
 <hr />
 <div class="row ">
     <div class="col-lg-6">
         <form method="post" enctype="multipart/form-data">
+            <input hidden asp-for="Goods.PublishData" />
 
             <div class="form-row">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -52,33 +53,36 @@
                 <span asp-validation-for="Goods.Descript" class="text-danger"></span>
             </div>
 
-            <div id="charact-data"></div>
+            <div id="charact-data">
+                @await Html.PartialAsync("_GoodsPropertyPartial", Model.Properties)
+                @*<partial name="_PropertiesPartial" model="@Model.Properties" />*@
+            </div>
             @*<div class="form-group">
-            <label asp-for="Properties" class="control-label"></label>
-            <input asp-for="Properties" class="form-control" />
-            <span asp-validation-for="Properties" class="text-danger"></span>
-        </div>*@
+                    <label asp-for="Properties" class="control-label"></label>
+                    <input asp-for="Properties" class="form-control" />
+                    <span asp-validation-for="Properties" class="text-danger"></span>
+                </div>*@
 
 
 
             @*<div class="input-group mb-3">
-        <div class="custom-file">
-            <div class="mb-1">
-                <button type="button" class="btn btn-light" id="button">Обзор...</button>
-            </div>
+                <div class="custom-file">
+                    <div class="mb-1">
+                        <button type="button" class="btn btn-light" id="button">Обзор...</button>
+                    </div>
 
-            <input type="file" id="loader" multiple>
+                    <input type="file" id="loader" multiple>
 
-            <div>
-                Файлы:
-                <div id="list">
+                    <div>
+                        Файлы:
+                        <div id="list">
 
-                </div>
-            </div>*@
+                        </div>
+                    </div>*@
             @*<input asp-for="Images" type="file" class="custom-file-input" id="files">
-        <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Загрузить...</label>*@
+                <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Загрузить...</label>*@
             @*</div>
-        </div>*@
+                </div>*@
 
 
             <h5 class="mt-5 mb-2">Фото</h5>
@@ -89,22 +93,31 @@
                 <div class="input-group my-3">
                     <div class="custom-file">
                         @*<div class="mb-1">
-                        <button type="button" class="btn btn-light" id="button">Обзор...</button>
-                    </div>*@
+                                <button type="button" class="btn btn-light" id="button">Обзор...</button>
+                            </div>*@
 
                         @*<input type="file" id="loader" multiple>*@
-
                         <input asp-for="Images" type="file" multiple="multiple" class="custom-file-input" id="images">
                         <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Загрузить...</label>
-
                     </div>
+                </div>
+                <div>
+
+                    @for (int i = 0; i < Model.Goods.GoodsImage.Count; i++)
+                    {
+                        <div id="image@(Model.Goods.GoodsImage[i].Id)"  class="images-block d-inline">
+                            <input hidden asp-for="@Model.Goods.GoodsImage[i].Name" />
+                            <input hidden asp-for="@Model.Goods.GoodsImage[i].Id" />
+                            <button type="button" class="delete-btn btn btn-danger ml-3" data-imageId="@Model.Goods.GoodsImage[i].Id">X</button>
+                            <img class=" d-inline" src="~/goods_image/@Model.Goods.GoodsImage[i].Name" height="120"  />
+                        </div>
+                    }
                 </div>
             </div>
 
             <output id="picture-list">
             </output>
 
-            <div class="file-list"></div>
 
 
 
@@ -127,3 +140,26 @@
     @*<a asp-page="Index">Back to List</a>*@
 </div>
 
+<script>
+
+    var elem = document.getElementsByClassName("delete-btn");
+
+    for (var i = 0; i < elem.length; i++) {
+        elem[i].onclick = function (event) {
+            var imageId = $(this).attr("data-imageId");
+
+            $.ajax({
+                url: 'DeleteImage',
+                type: 'POST',
+                data: { imageId: imageId },
+                success: function (result) {
+                    var imageblock = "#image" + imageId;
+                    $(imageblock).remove();
+                },
+                error: function (err) {
+                    alert("Не удалось удалить изображение. Код ошибки: " + err.status);
+                }
+            });
+        };
+    }
+</script>

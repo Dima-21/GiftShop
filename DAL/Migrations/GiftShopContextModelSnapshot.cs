@@ -206,7 +206,6 @@ namespace DAL.Migrations
                     b.Property<int>("PropId");
 
                     b.Property<string>("Value")
-                        .IsRequired()
                         .HasMaxLength(100);
 
                     b.HasKey("GoodsId", "PropId");
@@ -374,15 +373,20 @@ namespace DAL.Migrations
 
                     b.Property<int>("OrderNum");
 
+                    b.Property<short>("OrderStatusId");
+
                     b.Property<string>("Phone");
 
                     b.Property<string>("RecipientName");
 
                     b.Property<int>("Sum");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired();
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderStatusId");
 
                     b.HasIndex("UserId");
 
@@ -406,6 +410,22 @@ namespace DAL.Migrations
                     b.HasIndex("GoodsId");
 
                     b.ToTable("Order_Goods");
+                });
+
+            modelBuilder.Entity("DAL.Models.OrderStatus", b =>
+                {
+                    b.Property<short>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<short>("StatusCode");
+
+                    b.Property<string>("StatusName")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderStatus");
                 });
 
             modelBuilder.Entity("DAL.Models.Property", b =>
@@ -502,7 +522,8 @@ namespace DAL.Migrations
                     b.HasOne("DAL.Models.Property", "Prop")
                         .WithMany("Charact")
                         .HasForeignKey("PropId")
-                        .HasConstraintName("FK_charact_property");
+                        .HasConstraintName("FK_charact_property")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("DAL.Models.Goods", b =>
@@ -530,6 +551,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Models.Order", b =>
                 {
+                    b.HasOne("DAL.Models.OrderStatus", "OrderStatus")
+                        .WithMany("Orders")
+                        .HasForeignKey("OrderStatusId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("DAL.Models.AspNetUsers", "User")
                         .WithMany("Order")
                         .HasForeignKey("UserId")
@@ -541,12 +567,14 @@ namespace DAL.Migrations
                     b.HasOne("DAL.Models.Goods", "Goods")
                         .WithMany("OrderGoods")
                         .HasForeignKey("GoodsId")
-                        .HasConstraintName("FK_order_goods_goods");
+                        .HasConstraintName("FK_order_goods_goods")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DAL.Models.Order", "Order")
                         .WithMany("OrderGoods")
                         .HasForeignKey("OrderId")
-                        .HasConstraintName("FK_order_goods_order");
+                        .HasConstraintName("FK_order_goods_order")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("DAL.Models.Property", b =>
@@ -554,7 +582,7 @@ namespace DAL.Migrations
                     b.HasOne("DAL.Models.Group", "Group")
                         .WithMany("Properties")
                         .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasConstraintName("FK_Property_Group");
                 });
 #pragma warning restore 612, 618
         }

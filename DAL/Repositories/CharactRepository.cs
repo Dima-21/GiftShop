@@ -31,7 +31,7 @@ namespace DAL.Repositories
 
         public IEnumerable<Charact> GetAll()
         {
-            return context.Charact;
+            return context.Charact.Where(x=>!string.IsNullOrEmpty(x.Value));
         }
         public IEnumerable<Charact> Find(Func<Charact, bool> predicate)
         {
@@ -40,12 +40,17 @@ namespace DAL.Repositories
 
         public void Save()
         {
-            context.SaveChangesAsync();
+            context.SaveChanges();
         }
 
         public void Update(Charact item)
         {
             context.Charact.Update(item);
+        }
+
+        public void Delete(Charact id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -15,6 +15,7 @@ namespace BLL.Models
 
         [Display(Name = "Характеристика")]
         public string Value { get; set; }
+        public List<CharactDTO> Charact { get; set; }
 
     }
 }

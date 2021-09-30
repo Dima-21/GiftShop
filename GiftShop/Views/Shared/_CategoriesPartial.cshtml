@@ -1,5 +1,9 @@
 ﻿@inject BLL.Services.IService<BLL.Models.GroupDTO> Groups
 
+@{
+    List<GroupDTO> categories = Groups.GetAll().Where(x => x.NumberGoods > 0 && x.IsHidden==false).ToList();
+}
+
 <div form-inline>
     <ul class="navbar-nav mr-auto bg-info">
         <li class="nav-item dropdown">
@@ -7,10 +11,11 @@
                 Категории
             </a>
             <div class="dropdown-menu bg-info" aria-labelledby="dropdownMenuButton">
-                @foreach (BLL.Models.GroupDTO group in Groups.GetAll().ToList())
+
+                @foreach (BLL.Models.GroupDTO group in categories)
                 {
                     <a class="dropdown-item nav-link px-3 category-list " asp-action="Index" asp-controller="Goods" asp-route-area="ProductList" asp-route-groupId="@group.Id">
-                        <img src="~/images/icons/@Url.Content(group.Icon)" width="20"/>
+                        <img src="~/group_icon/@Url.Content(group.Icon)" width="20" />
                         @group.Name
                     </a>
                 }

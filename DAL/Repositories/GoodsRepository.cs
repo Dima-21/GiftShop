@@ -27,6 +27,11 @@ namespace DAL.Repositories
             context.Goods.Remove(Get(id));
         }
 
+        public void Delete(Goods id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Goods> Find(Func<Goods, bool> predicate)
         {
             return context.Goods.Where(predicate);
@@ -34,7 +39,7 @@ namespace DAL.Repositories
 
         public Goods Get(int id)
         {
-            return context.Goods.Include(x => x.Group)
+            return context.Goods.AsNoTracking().Include(x => x.Group)
                                 .Include(x => x.GoodsImage).ThenInclude(x => x.Image)
                                 .Include(x => x.Charact).ThenInclude(x => x.Prop).FirstOrDefault(x=>x.Id == id);
         }

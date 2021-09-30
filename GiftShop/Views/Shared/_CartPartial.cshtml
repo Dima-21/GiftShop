@@ -1,0 +1,12 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    List<CartGoodsDTO> cart = GiftShop.Infrastructure.SessionExtensions.GetObjectFromJson<List<CartGoodsDTO>>(@HttpContextAccessor.HttpContext.Session, "cart");
+}
+
+<div form-inline>
+    <a asp-action="Index" asp-controller="Cart" asp-route-area="ProductList" class="btn btn-success col-sm">Корзина <span class="badge badge-light">@cart?.Count</span></a>
+
+    
+</div>

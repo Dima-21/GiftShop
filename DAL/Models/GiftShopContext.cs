@@ -29,6 +29,7 @@ namespace DAL.Models
         public virtual DbSet<Image> Image { get; set; }
         public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<OrderGoods> OrderGoods { get; set; }
+        public virtual DbSet<OrderStatus> OrderStatus { get; set; }
         public virtual DbSet<Property> Property { get; set; }
         public virtual DbSet<CartItem> CartItem { get; set; }
 
@@ -152,7 +153,7 @@ namespace DAL.Models
                 entity.HasIndex(e => e.PropId);
 
                 entity.Property(e => e.Value)
-                    .IsRequired()
+                    .IsRequired(false)
                     .HasMaxLength(100);
 
                 entity.HasOne(d => d.Goods)
@@ -172,7 +173,7 @@ namespace DAL.Models
                 entity.HasOne(d => d.Prop)
                     .WithMany(p => p.Charact)
                     .HasForeignKey(d => d.PropId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_charact_property");
             });
 
@@ -269,13 +270,21 @@ namespace DAL.Models
 
                 entity.Property(e => e.OrderNum).ValueGeneratedNever();
 
-                entity.Property(e => e.UserId).IsRequired(false);
+                entity.Property(e => e.OrderStatusId).IsRequired();
+
+                entity.Property(e => e.UserId).IsRequired();
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Order)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_order_AspNetUsers");
+            });
+
+            modelBuilder.Entity<OrderStatus>(entity =>
+            {
+                entity.Property(e => e.StatusName).IsRequired();
+                entity.Property(e => e.StatusCode).IsRequired();
             });
 
             modelBuilder.Entity<OrderGoods>(entity =>
@@ -291,13 +300,13 @@ namespace DAL.Models
                 entity.HasOne(d => d.Goods)
                     .WithMany(p => p.OrderGoods)
                     .HasForeignKey(d => d.GoodsId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_order_goods_goods");
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.OrderGoods)
                     .HasForeignKey(d => d.OrderId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_order_goods_order");
             });
 
@@ -315,11 +324,12 @@ namespace DAL.Models
                     .IsRequired()
                     .HasMaxLength(100);
 
-                //entity.HasOne(d => d.Group)
-                //  .WithMany(p => p.Properties)
-                //  .HasForeignKey(d => d.GroupId)
-                //  .OnDelete(DeleteBehavior.Cascade)
-                //  .HasConstraintName("FK_Property_Group");
+     
+                entity.HasOne(d => d.Group)
+                  .WithMany(p => p.Properties)
+                  .HasForeignKey(d => d.GroupId)
+                  .OnDelete(DeleteBehavior.ClientSetNull)
+                  .HasConstraintName("FK_Property_Group");
             });
 
             modelBuilder.Entity<Group>().HasData(new Group { Id = 1, Name = "Подарочные наборы", Icon = "group-icon-gift.png" });
