@@ -56,7 +56,20 @@ namespace GiftShop.Areas.StoreManage.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult UserList() => View(_userManager.Users.ToList());
+        public IActionResult UserList(string userName)
+        {
+            IQueryable<IdentityUser> users; 
+
+            if (!string.IsNullOrEmpty(userName))
+            {
+                users = _userManager.Users.Where(x => x.UserName.Contains(userName));
+            }
+            else
+            {
+                users = _userManager.Users.Take(10);
+            }
+            return View(users.ToList());
+        }
 
         public async Task<IActionResult> Edit(string userId)
         {
