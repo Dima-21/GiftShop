@@ -38,8 +38,10 @@ namespace GiftShop.Areas.ProductList.Controllers
             // Creating a property list
             if (productVM.GroupId.HasValue)
             {
-                filteredGoods = goodsService.GetAll().GetIsEnabled().GetGoodsByGroup(productVM.GroupId.Value).ToList();
-
+                filteredGoods = goodsService.GetAll()
+                   .GetIsEnabled()
+                   .GetGoodsByGroup(productVM.GroupId.Value).ToList();
+                
                 // Упорядочение фильтра
                 IEnumerable<PropertyDTO> prop = propService.GetAll().GetListPropertyForFilterGoods(productVM.GroupId).ToList();
 
@@ -58,7 +60,7 @@ namespace GiftShop.Areas.ProductList.Controllers
             if (!string.IsNullOrEmpty(searchString))
             {
                 filteredGoods = goodsService.GetAll().GetIsEnabled().ToList();
-                filteredGoods = filteredGoods.Where(x => x.Name.Contains(searchString) == true).ToList();
+                filteredGoods = filteredGoods.Where(x => x.Name.ToLower().Contains(searchString.ToLower()) == true).ToList();
             }
             else if (productVM.GroupId.HasValue)
             {
@@ -107,7 +109,7 @@ namespace GiftShop.Areas.ProductList.Controllers
                 }
             }
 
-            model.Goods = filteredGoods;
+            model.Goods = filteredGoods.OrderByDescending(x => x.Amount).ToList();
 
             return View(model);
         }

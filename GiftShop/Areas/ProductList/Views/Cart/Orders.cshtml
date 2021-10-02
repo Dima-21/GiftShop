@@ -15,7 +15,7 @@
                     <div class="card-header bg-light" id="headingOne">
 
                         <div class="row">
-                            <button class="col-10 col-md-11  btn btn-block text-left" type="button" data-toggle="collapse" data-target="#@("collapse" + Model[i].Id)" aria-expanded="true" aria-controls="@("collapse" + Model[i].Id)">
+                            <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#@("collapse" + Model[i].Id)" aria-expanded="true" aria-controls="@("collapse" + Model[i].Id)">
                                 <div class="row">
                                     <div class="col-6 col-sm-7 col-lg-9">
                                         <span class="mt-1">@Model[i].OrderDate</span>
@@ -92,7 +92,6 @@
                                                 <td class="align-middle">
                                                     @Html.DisplayFor(modelItem => goods.Sum)
                                                 </td>
-                                                <td>
                                             </tr>
                                         }
                                     </tbody>

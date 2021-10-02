@@ -36,6 +36,7 @@ namespace GiftShop.Areas.Identity.Pages.Account
             }
             else
             {
+
                 return Page();
             }
         }
