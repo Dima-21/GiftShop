@@ -75,7 +75,9 @@ namespace GiftShop.Infrastructure
 
 
             CreateMap<Order, OrderDTO>()
-                 .ForMember(dto => dto.Goods, opt => opt.MapFrom(x => x.OrderGoods));
+                 .ForMember(dto => dto.Goods, opt => opt.MapFrom(x => x.OrderGoods))
+                 .ForMember(dto => dto.OrderStatus, opt => opt.MapFrom(x => x.OrderStatus.StatusName))
+                 .ForMember(dto => dto.OrderStatusCode, opt => opt.MapFrom(x => x.OrderStatus.StatusCode));
 
 
             CreateMap<OrderGoods, CartGoodsDTO>()
@@ -113,6 +115,7 @@ namespace GiftShop.Infrastructure
 
             CreateMap<CharactItem, CharactDTO>();
             CreateMap<CharactDTO, CharactItem>();
+
             CreateMap<AspNetUsers, UserDTO>()
                  .ForMember(dest => dest.Orders, conf => conf.MapFrom(x => x.Order))
                 .ReverseMap();

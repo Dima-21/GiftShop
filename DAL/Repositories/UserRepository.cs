@@ -34,7 +34,10 @@ namespace DAL.Repositories
 
         public IEnumerable<AspNetUsers> Find(Func<AspNetUsers, bool> predicate)
         {
-            return context.AspNetUsers.Include(x => x.Order).ThenInclude(x=>x.OrderGoods).ThenInclude(x=>x.Goods).Where(predicate);
+            return context.AspNetUsers
+                .Include(x => x.Order).ThenInclude(x=>x.OrderGoods).ThenInclude(x=>x.Goods).ThenInclude(x=>x.GoodsImage).ThenInclude(x=>x.Image)
+                .Include(x => x.Order).ThenInclude(x=>x.OrderStatus)
+                .Where(predicate);
         }
 
         public AspNetUsers Get(int id)

@@ -27,6 +27,7 @@ namespace BLL.Models
         public string City { get; set; }
         [Display(Name = "Номер отделения")]
         public string BranchNumber { get; set; }
+        public short OrderStatusCode { get; set; }
         public short OrderStatusId { get; set; }
         [Display(Name = "Статус заказа")]
         public string OrderStatus { get; set; }

@@ -221,7 +221,7 @@ namespace GiftShop.Areas.ProductList.Controllers
 
             var userDTO = userService.GetById(user.Id);
 
-            List<OrderDTO> orderList = userDTO.Orders;
+            List<OrderDTO> orderList = userDTO.Orders.OrderBy(x=>x.OrderStatusCode).ToList();
 
             return View(orderList);
             //if (userId == null)
