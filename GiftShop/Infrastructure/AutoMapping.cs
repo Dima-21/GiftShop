@@ -51,7 +51,8 @@ namespace GiftShop.Infrastructure
                   .ForMember(d => d.Image, opt => opt.MapFrom(s => s));
 
             CreateMap<Group, GroupDTO>()
-                .ForMember(dto => dto.NumberGoods, opt => opt.MapFrom(x => x.Goods.Where(y=>y.IsHidden==false).ToList().Count));
+                .ForMember(dto => dto.NumberGoods, opt => opt.MapFrom(x => x.Goods.ToList().Count))
+                .ForMember(dto => dto.NumberAvailableGoods, opt => opt.MapFrom(x => x.Goods.Where(y=>y.IsHidden==false).ToList().Count));
             CreateMap<GroupDTO, Group>();
             CreateMap<Image, ImageDTO>().ReverseMap();
 
@@ -112,6 +113,9 @@ namespace GiftShop.Infrastructure
 
             CreateMap<CharactItem, CharactDTO>();
             CreateMap<CharactDTO, CharactItem>();
+            CreateMap<AspNetUsers, UserDTO>()
+                 .ForMember(dest => dest.Orders, conf => conf.MapFrom(x => x.Order))
+                .ReverseMap();
         }
     }
 }

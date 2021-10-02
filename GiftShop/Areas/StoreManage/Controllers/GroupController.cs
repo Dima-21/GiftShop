@@ -3,6 +3,7 @@ using BLL.Models;
 using BLL.Services;
 using GiftShop.Areas.StoreManage.Models;
 using GiftShop.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 namespace GiftShop.Areas.StoreManage.Controllers
 {
     [Area("StoreManage")]
+    [Authorize(Roles = "Админ, Модератор")]
     public class GroupController : Controller
     {
         private const string GroupImageFolderName = @"group_image";
@@ -77,11 +79,12 @@ namespace GiftShop.Areas.StoreManage.Controllers
         }
 
         // GET: GroupController/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int id, string errorMessage = null)
         {
             GroupDTO group = groupService.GetById(id);
             CreateGroupViewModel createModel = new CreateGroupViewModel();
             createModel.Group = group;
+            createModel.ErrorMessage = errorMessage;
             return View(createModel);
         }
 
@@ -137,17 +140,32 @@ namespace GiftShop.Areas.StoreManage.Controllers
         }
 
 
-        // POST: GroupController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
             try
             {
+                var group = groupService.GetById(id);
+
+                if(group.NumberGoods > 0)
+                {
+                    return RedirectToAction(nameof(Edit), new { id = id, errorMessage = "Невозможно удалить категорию, так как в ней имеются товары"});
+                }
+
                 groupService.Delete(id);
+
+                ImageFileManage.DeletePicture(
+                    group.Icon, 
+                    _appEnvironment.WebRootPath,
+                    GroupIconFolderName);
+
+                ImageFileManage.DeletePicture(
+                  group.Image,
+                  _appEnvironment.WebRootPath,
+                  GroupIconFolderName);
+
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(Exception e)
             {
                 return View();
             }

@@ -16,6 +16,7 @@ namespace GiftShop.Areas.ProductList.Models
         [Display(Name = "ФИО")]
         public string RecipientName { get; set; }
 
+        [EmailAddress(ErrorMessage = "Неверный формат email")]
         [Required(ErrorMessage = "Укажите Email")]
         [Display(Name = "Email")]
         public string Email { get; set; }

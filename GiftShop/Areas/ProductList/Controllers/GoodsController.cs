@@ -12,6 +12,7 @@ using AutoMapper;
 
 namespace GiftShop.Areas.ProductList.Controllers
 {
+    [Area("ProductList")]
     public class GoodsController : Controller
     {
         private readonly IMapper _mapper;
@@ -26,7 +27,6 @@ namespace GiftShop.Areas.ProductList.Controllers
             this._mapper = mapper;
         }
 
-        [Area("ProductList")]
         //public IActionResult Index(int? groupId)
         public IActionResult Index(ProductListViewModel productVM, string searchString)
         {
@@ -113,7 +113,6 @@ namespace GiftShop.Areas.ProductList.Controllers
         }
 
         [HttpGet]
-        [Area("ProductList")]
         public IActionResult Details(int goodsId)
         {
             GoodsDTO model = goodsService.GetById(goodsId);

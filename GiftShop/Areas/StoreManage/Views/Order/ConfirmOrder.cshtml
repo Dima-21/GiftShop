@@ -55,9 +55,8 @@
                                 <th scope="col"></th>
                                 <th scope="col">Код</th>
                                 <th scope="col">Название</th>
-                                <th class="text-center" scope="col">К-во</th>
+                                <th class="text-center" scope="col">Кол-во</th>
                                 <th class="text-center" scope="col">Цена</th>
-                                <th class="text-center" scope="col">Сумма</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
@@ -84,9 +83,6 @@
                                 </td>
                                 <td class="align-middle text-center">
                                     @Html.DisplayFor(modelItem => Model.Order.Goods[i].Goods.Price)
-                                </td>
-                                <td class="align-middle text-center">
-                                    @Html.DisplayFor(modelItem => Model.Order.Goods[i].Sum)
                                 </td>
                                 <td>
                                     <a asp-action="Details" asp-controller="Goods" asp-route-area="ProductList" asp-route-goodsId="@Model.Order.Goods[i].Goods.Id" class="btn"><img src="~/images/icons/info.png" /></a>

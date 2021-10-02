@@ -5,23 +5,32 @@
     <hr />
 
 
+    <p class="">
+        <em> <span class="text-danger">*</span> - поля обязательные для заполнения</em>
+</p>
+
     <h5 class="mt-5">Получатель</h5>
     <hr />
+
     @using (Html.BeginForm("OrderConfirmation", "Cart", FormMethod.Post))
     {
         <div class="form-row">
             <div class="form-group col-md-4">
-                <label>ФИО</label>
-                @Html.TextBoxFor(m => m.RecipientName, null, new { @class="form-control" })
+                <label>ФИО</label> <span class="text-danger">*</span>
+                @Html.TextBoxFor(m => m.RecipientName, null, new { @class = "form-control" })
+                <span asp-validation-for="RecipientName" class="text-danger"></span>
+
                 @*<input type="text" class="form-control" placeholder="Фамилия Имя Отчество">*@
             </div>
             <div class="form-group col-md-4">
-                <label>Електронная почта</label>
+                <label>Електронная почта</label><span class="text-danger">*</span>
                 @Html.TextBoxFor(m => m.Email, null, new { @class = "form-control" })
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group col-md-4">
-                <label>Мобильный телефон</label>
+                <label>Мобильный телефон</label><span class="text-danger">*</span>
                 @Html.TextBoxFor(m => m.Phone, null, new { @class = "form-control" })
+                <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
         </div>
 
@@ -30,16 +39,18 @@
         <hr />
         <div class="form-row">
             <div class="form-group col-md-4">
-                <label>Город</label>
+                <label>Город</label><span class="text-danger">*</span>
                 @Html.TextBoxFor(m => m.City, null, new { @class = "form-control" })
+                <span asp-validation-for="City" class="text-danger"></span>
             </div>
             <div class="form-group col-md-4">
-                <label>Отделение "Новой почты"</label>
+                <label>Отделение "Новой почты"</label><span class="text-danger">*</span>
                 @Html.TextBoxFor(m => m.BranchNumber, null, new { @class = "form-control" })
+                <span asp-validation-for="BranchNumber" class="text-danger"></span>
             </div>
 
         </div>
-        <div class="form-group">
+        <div class="form-group mt-3">
             <input type="submit" value="Подтвердить" class="btn btn-primary" />
         </div>
     }

@@ -21,6 +21,9 @@ namespace BLL.Models
         [Display(Name = "Количество товаров")]
         public int NumberGoods { get; set; }
 
+        [Display(Name = "Количество доступных товаров")]
+        public int NumberAvailableGoods { get; set; }
+
         [Display(Name = "Описание")]
         public string ShortDescript { get; set; }
 

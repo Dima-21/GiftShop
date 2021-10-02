@@ -2,10 +2,10 @@
 @model ShopCartViewModel
 
 
-<div class="container my-4">
+<div class="container-md my-4">
     <h3>Корзина</h3>
     <hr />
-    @if (Model?.Cart != null)
+    @if (Model?.Cart != null && Model.Cart.Count > 0)
     {
         @using (Html.BeginForm("Checkout", "Cart", FormMethod.Post))
         {
@@ -19,13 +19,13 @@
                             @Html.DisplayNameFor(model => model.Cart.FirstOrDefault().Goods.Code)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Cart.FirstOrDefault().Goods.Price)
-                        </th>
-                        <th>
                             @Html.DisplayNameFor(model => model.Cart.FirstOrDefault().Goods.Name)
                         </th>
                         <th class="text-center">
                             @Html.DisplayNameFor(model => model.Cart.FirstOrDefault().Amount)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Cart.FirstOrDefault().Goods.Price)
                         </th>
                         <th class="text-center">
                             @Html.DisplayNameFor(model => model.Cart.FirstOrDefault().Sum)
@@ -38,7 +38,7 @@
                     {
 
                         <tr class="text-center">
-                            <td hidden class="goods-id">@Model.Cart[i].Goods.Id</td>
+                            <td hidden class="goods-id"><input asp-for="@Model.Cart[i].Goods.Id" />@Model.Cart[i].Goods.Id</td>
                             <td class="align-middle">
                                 <img src="~/goods_image/@Url.Content(Model.Cart[i].Goods.GoodsImage?.FirstOrDefault()?.Name)" height="40" />
                             </td>
@@ -46,17 +46,17 @@
                                 @Html.DisplayFor(modelItem => Model.Cart[i].Goods.Code)
                             </td>
                             <td class="align-middle">
-                                @Html.DisplayFor(modelItem => Model.Cart[i].Goods.Price)
-                            </td>
-                            <td class="align-middle">
                                 @Html.DisplayFor(modelItem => Model.Cart[i].Goods.Name)
                             </td>
                             <td class="align-middle col-1 text-center">
-                                <input asp-for="Cart[i].Amount" class="form-control" min="1" max="@Model.Cart[i].Goods.Amount"/>
+                                <input asp-for="Cart[i].Amount" data-goodsId="@Model.Cart[i].Goods.Id" class="form-control amountLineCart" min="1" max="@Model.Cart[i].Goods.Amount" />
                                 @*@Html.DisplayFor(modelItem => Model.Cart[i].Amount)*@
                             </td>
                             <td class="align-middle">
-                                @Html.DisplayFor(modelItem => Model.Cart[i].Sum)
+                                @Html.DisplayFor(modelItem => Model.Cart[i].Goods.Price)
+                            </td>
+                            <td class="align-middle">
+                                <span id="sum-goods@(@Model.Cart[i].Goods.Id)">@Model.Cart[i].Sum</span>
                             </td>
                             <td class="align-middle">
                                 <a asp-action="Remove" asp-controller="Cart" asp-route-area="ProductList" asp-route-goodsId="@Model.Cart[i].Goods.Id" class="btn"><img src="~/images/icons/delete.png" /></a>
@@ -66,9 +66,24 @@
                     }
                 </tbody>
             </table>
-            <input class="btn btn-primary" type="submit" asp-action="Checkout" value="Оформить заказ" />
+
+            <hr class="mt-5" />
+            <div class="row">
+                <input class="col-sm-4 col-4 col-lg-3  btn btn-primary mx-3" type="submit" asp-action="Checkout" value="Оформить заказ" />
+                <h4 class="col text-right">Сумма: <span id="cartsum" class="h4">@Model.Cart.Sum(x => x.Sum)</span>  грн</h4>
+            </div>
+
+
             @*@Html.ActionLink("Оформить заказ", "Checkout", null, new { cart = Model.Cart }, new { @class = "btn btn-primary" })*@
         }
-        }
-
-    </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            Товары в корзине отсутствуют
+        </div>
+        <div class="text-center">
+            <a class="btn btn-primary" href="/Home/Index">Перейти к выбору товаров</a>
+        </div>
+    }
+</div>

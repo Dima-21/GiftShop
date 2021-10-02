@@ -55,8 +55,8 @@ namespace GiftShop.Areas.Identity.Pages.Account
 
                 await _emailSender.SendEmailAsync(
                     Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{callbackUrl}'>clicking here</a>.");
+                    "Сброс пароля",
+                    $"Для сброса пароля перейдите <a href='{callbackUrl}'>ссылке</a>.");
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

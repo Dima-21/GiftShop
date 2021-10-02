@@ -26,7 +26,7 @@ namespace DAL.Repositories
 
         public Group Get(int id)
         {
-            return context.Group.Include(x=>x.Properties).FirstOrDefault(x=>x.Id == id);
+            return context.Group.Include(x=>x.Properties).Include(x=>x.Goods).FirstOrDefault(x=>x.Id == id);
         }
 
         public IEnumerable<Group> GetAll()
@@ -40,7 +40,7 @@ namespace DAL.Repositories
 
         public void Save()
         {
-            context.SaveChangesAsync();
+            context.SaveChanges();
         }
 
         public void Update(Group item)

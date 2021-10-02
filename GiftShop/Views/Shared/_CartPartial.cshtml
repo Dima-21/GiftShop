@@ -6,7 +6,7 @@
 }
 
 <div form-inline>
-    <a asp-action="Index" asp-controller="Cart" asp-route-area="ProductList" class="btn btn-success col-sm">Корзина <span class="badge badge-light">@cart?.Count</span></a>
+    <a asp-action="Index" asp-controller="Cart" asp-route-area="ProductList"  class="btn btn-success col-sm">Корзина <span id="number-goods-in-cart" class="badge badge-light">@cart?.Count</span></a>
 
     
 </div>

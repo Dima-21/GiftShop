@@ -213,14 +213,6 @@ namespace DAL.Migrations
                     b.HasIndex("PropId");
 
                     b.ToTable("Charact");
-
-                    b.HasData(
-                        new { GoodsId = 1, PropId = 1, Value = "780г" },
-                        new { GoodsId = 2, PropId = 1, Value = "560г" },
-                        new { GoodsId = 1, PropId = 2, Value = "Для детей" },
-                        new { GoodsId = 2, PropId = 2, Value = "Для мужчин" },
-                        new { GoodsId = 3, PropId = 2, Value = "Для девушек" }
-                    );
                 });
 
             modelBuilder.Entity("DAL.Models.Goods", b =>
@@ -259,10 +251,6 @@ namespace DAL.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.HasIndex("Name")
-                        .IsUnique()
-                        .HasName("UK_goods_name");
-
                     b.ToTable("Goods");
                 });
 
@@ -281,16 +269,6 @@ namespace DAL.Migrations
                         .HasName("UK_goods_image");
 
                     b.ToTable("Goods_Image");
-
-                    b.HasData(
-                        new { GoodsId = 1, ImageId = 1 },
-                        new { GoodsId = 1, ImageId = 2 },
-                        new { GoodsId = 1, ImageId = 3 },
-                        new { GoodsId = 2, ImageId = 4 },
-                        new { GoodsId = 2, ImageId = 5 },
-                        new { GoodsId = 2, ImageId = 6 },
-                        new { GoodsId = 3, ImageId = 7 }
-                    );
                 });
 
             modelBuilder.Entity("DAL.Models.Group", b =>
@@ -310,7 +288,7 @@ namespace DAL.Migrations
                         .HasMaxLength(70);
 
                     b.Property<string>("ShortDescript")
-                        .HasMaxLength(200);
+                        .HasMaxLength(1000);
 
                     b.HasKey("Id");
 
@@ -319,12 +297,6 @@ namespace DAL.Migrations
                         .HasName("UK_group");
 
                     b.ToTable("Group");
-
-                    b.HasData(
-                        new { Id = 1, Icon = "group-icon-gift.png", IsHidden = false, Name = "Подарочные наборы" },
-                        new { Id = 2, Icon = "group-icon-sweets.png", IsHidden = false, Name = "Сладости" },
-                        new { Id = 3, Icon = "group-icon-allToParty.png", IsHidden = false, Name = "Всё для праздника" }
-                    );
                 });
 
             modelBuilder.Entity("DAL.Models.Image", b =>
@@ -339,16 +311,6 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Image");
-
-                    b.HasData(
-                        new { Id = 1, Name = "good1_001.jpg" },
-                        new { Id = 2, Name = "good1_002.jpg" },
-                        new { Id = 3, Name = "good1_003.jpg" },
-                        new { Id = 4, Name = "good2_001.jpg" },
-                        new { Id = 5, Name = "good2_002.jpg" },
-                        new { Id = 6, Name = "good2_003.jpg" },
-                        new { Id = 7, Name = "good3_001.jpg" }
-                    );
                 });
 
             modelBuilder.Entity("DAL.Models.Order", b =>
@@ -451,11 +413,6 @@ namespace DAL.Migrations
                         .HasName("UK_property_name");
 
                     b.ToTable("Property");
-
-                    b.HasData(
-                        new { Id = 1, GroupId = 0, IsFilter = false, Name = "Вес" },
-                        new { Id = 2, GroupId = 0, IsFilter = true, Name = "Категория людей" }
-                    );
                 });
 
             modelBuilder.Entity("DAL.Models.AspNetRoleClaims", b =>
@@ -582,7 +539,8 @@ namespace DAL.Migrations
                     b.HasOne("DAL.Models.Group", "Group")
                         .WithMany("Properties")
                         .HasForeignKey("GroupId")
-                        .HasConstraintName("FK_Property_Group");
+                        .HasConstraintName("FK_Property_Group")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

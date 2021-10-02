@@ -54,6 +54,7 @@ namespace GiftShop
             services.AddScoped<IService<PropertyDTO>, PropertyService>();
             services.AddScoped<IService<CartGoodsDTO>, CartItemService>();
             services.AddScoped<IService<ImageDTO>, ImageService>();
+            services.AddScoped<IServiceUsers<UserDTO>, UserService>();
             services.AddScoped<IRepository<Goods>, GoodsRepository>();
             services.AddScoped<IRepository<Group>, GroupRepository>();
             services.AddScoped<IRepository<GoodsImage>, GoodsImageRepository>();
@@ -64,6 +65,7 @@ namespace GiftShop
             services.AddScoped<IRepository<Property>, PropertyRepository>();
             services.AddScoped<IRepository<CartItem>, CartItemRepository>();
             services.AddScoped<IRepository<OrderStatus>, OrderStatusRepository>();
+            services.AddScoped<IRepository<AspNetUsers>, UserRepository>();
 
             services.AddDbContext<GiftShopContext>( options =>
             options.UseSqlServer(Configuration.GetConnectionString("GiftShopConnection")), ServiceLifetime.Transient);
@@ -81,10 +83,12 @@ namespace GiftShop
             //        services.AddIdentity<IdentityUser, IdentityRole>()
             //.AddRoleManager<RoleManager<IdentityRole>>()
             //.AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddIdentity<IdentityUser, IdentityRole>()
                     .AddRoleManager<RoleManager<IdentityRole>>()
                     .AddDefaultUI()
-                    .AddEntityFrameworkStores<ApplicationDbContext>();
+                    .AddEntityFrameworkStores<ApplicationDbContext>()
+                    .AddDefaultTokenProviders();
 
 
             //services.AddIdentity<IdentityUser, IdentityRole>()

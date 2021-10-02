@@ -1,38 +1,136 @@
 ﻿@model GoodsDTO
-@{
-    Layout = null;
-}
+@*<body>
+        <div>
+            <h1>@Model.Name</h1>
+            @foreach (ImageDTO image in Model.GoodsImage)
+            {
+                string pathToImage = "/goods_image/" + @image.Name;
+                <img width="300" src="@pathToImage" />
+            }
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
-</head>
-<body>
-    <div>
-        <h1>@Model.Name</h1>
-        @foreach (ImageDTO image in Model.GoodsImage)
+            <p>Цена: @Model.Price</p>
+            <p>Артикул: @Model.Code</p>
+            <p>Количество: @Model.Amount</p>
+            <p>Категория: @Model.Group.Name</p>
+            <p>Описание: @Model.Descript</p>
+        </div>
+
+
+        <div>
+            @foreach (PropertyValueDTO prop in Model.PropCharact)
+            {
+                <p>@prop.Name: @prop.Value</p>
+            }
+        </div>
+    </body>*@
+
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="main-picture-box col-lg-6">
+            <img src="~/goods_image/@(Model.GoodsImage.Count == 0 ? "without-photo.png" : Url.Content(Model.GoodsImage.FirstOrDefault().Name))" width="510" id="picture-preview" />
+        </div>
+        <div class="col-lg-6">
+            <h3 class="mt-3">
+                @Model.Name
+            </h3>
+            <hr />
+
+            <div class="row">
+                <div class="col">
+                    @if (Model.Amount > 0)
+                    {
+                    <span class="badge badge-success">В наличии</span>
+                    }
+                    else
+                    {
+                    <span class="badge badge-danger">Нет в наличии</span>
+                    }
+                </div>
+                <div class="col-6">
+                    <p class=" text-muted text-right"> <small>Код товара: @Model.Code</small></p>
+                </div>
+
+            </div>
+
+
+            <p class="blockquote mt-4"><strong>@Model.Price грн</strong></p>
+
+            <a id="btn-main-addtocart" class="btn btn-success @((@Model.Amount > 0)?"":"disabled")" data-goodsId="@Model.Id">Добавить в корзину</a>
+            @*<a asp-action="AddToCart" asp-controller="Cart" asp-route-area="ProductList" asp-route-goodsId="@Model.Id" class="btn btn-success">Добавить в корзину</a>*@
+
+            <h6 class="mt-5 mb-3">Доставка</h6>
+            <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Nova_Poshta_2014_logo.svg/1200px-Nova_Poshta_2014_logo.svg.png" width="80" /></p>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.Descript))
+    {
+        <div class="my-5">
+            <p class="h6">@Model.Descript</p>
+        </div>
+    }
+
+    <nav class=" mt-5">
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            @*<a class="nav-item nav-link active" id="nav-description-tab" data-toggle="tab" href="#nav-description" role="tab" aria-controls="nav-description" aria-selected="true">Описание</a>*@
+            @if (Model.PropCharact != null && Model.PropCharact.Count != 0)
+            {
+                <a class="nav-item nav-link active @((Model.GoodsImage == null || Model.GoodsImage.Count == 0)?"active":"")" id="nav-charact-tab" data-toggle="tab" href="#nav-charact" role="tab" aria-controls="nav-charact" aria-selected="true">Характеристика</a>
+            }
+
+            @if (Model.GoodsImage != null && Model.GoodsImage.Count != 0)
+            {
+                <a class="nav-item nav-link @((Model.PropCharact == null || Model.PropCharact.Count == 0)?"active":"")" id="nav-images-tab" data-toggle="tab" href="#nav-images" role="tab" aria-controls="nav-images" aria-selected="false">Фото</a>
+            }
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        @*<div class="tab-pane fade show active" id="nav-description" role="tabpanel" aria-labelledby="nav-description-tab">...</div>*@
+
+
+        @if (Model.PropCharact != null && Model.PropCharact.Count != 0)
         {
-            string pathToImage = "/goods_image/" + @image.Name;
-            <img width="300" src="@pathToImage" />
+            <div class="tab-pane fade show active" id="nav-charact" role="tabpanel" aria-labelledby="nav-charact-tab">
+                <div class="descript">
+                    @*<h4 class=" mt-5">Характеристика <span class="text-muted">@Model.Name</span></h4>
+                        <hr />*@
+
+                    <div>
+
+                        <table class="table table-striped">
+                            <tbody>
+                                @foreach (var prop in Model.PropCharact)
+                                {
+
+                                    <tr>
+                                        <td>@prop.Name</td>
+                                        <td>@prop.Value</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+        @if (Model.GoodsImage != null && Model.GoodsImage.Count != 0)
+        {
+            <div class="tab-pane fade @((Model.PropCharact == null || Model.PropCharact.Count == 0)?"show active":"") " id="nav-images" role="tabpanel" aria-labelledby="nav-images-tab">
+                <div class="text-center">
+                    @foreach (var image in Model.GoodsImage)
+                    {
+                        <img src="~/goods_image/@(image.Name)" class="my-2 img-in-details" alt="..." />
+                    }
+                </div>
+            </div>
         }
 
 
-        <p>Цена: @Model.Price</p>
-        <p>Артикул: @Model.Code</p>
-        <p>Количество: @Model.Amount</p>
-        <p>Категория: @Model.Group.Name</p>
-        <p>Описание: @Model.Descript</p>
+
     </div>
 
-
-    <div>
-        @foreach (PropertyValueDTO prop in Model.PropCharact)
-        {
-            <p>@prop.Name: @prop.Value</p>
-        }
-    </div>
-</body>
-</html>
+</div>

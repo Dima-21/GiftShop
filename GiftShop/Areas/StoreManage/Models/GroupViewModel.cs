@@ -17,6 +17,7 @@ namespace GiftShop.Areas.StoreManage.Models
         public GroupDTO Group { get; set; }
         public List<PropertyDTO> Properties { get; set; }
 
+        public string ErrorMessage { get; set; }
         public IFormFile GroupImage { get; set; }
 
         public IFormFile GroupIcon { get; set; }

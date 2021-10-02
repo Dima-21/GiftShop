@@ -2,6 +2,7 @@
 using BLL.Services;
 using GiftShop.Areas.ProductList.Models;
 using GiftShop.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,18 +15,21 @@ using System.Threading.Tasks;
 
 namespace GiftShop.Areas.ProductList.Controllers
 {
+    [Area("ProductList")]
     public class CartController : Controller
     {
         private IService<CartGoodsDTO> cartService;
         private IService<OrderDTO> orderService;
         private IService<OrderStatusDTO> orderStatusService;
         private IService<GoodsDTO> goodsService;
+        private IServiceUsers<UserDTO> userService;
         private IServiceProvider services;
         UserManager<IdentityUser> _userManager;
         public CartController(IService<CartGoodsDTO> cartService,
                               IService<GoodsDTO> goodsService,
                               IService<OrderDTO> orderService,
                               IService<OrderStatusDTO> orderStatusService,
+                              IServiceUsers<UserDTO> userService,
                               IServiceProvider services,
                               UserManager<IdentityUser> userManager)
         {
@@ -33,6 +37,7 @@ namespace GiftShop.Areas.ProductList.Controllers
             this.orderService = orderService;
             this.orderStatusService = orderStatusService;
             this.goodsService = goodsService;
+            this.userService = userService;
             this.services = services;
             this._userManager = userManager;
         }
@@ -49,25 +54,13 @@ namespace GiftShop.Areas.ProductList.Controllers
             return View(cartVM);
         }
 
-        [Area("ProductList")]
-        public IActionResult AddToCart(int goodsId)
+        [HttpGet]
+        public int AddToCart(int goodsId)
         {
             GoodsDTO goods = goodsService.GetById(goodsId);
 
-            ////Predicate<CartItemDTO> pr = new Predicate<CartItemDTO>();
-
-
-            ////cartService.
-            //if (goods != null)
-            //{
-            //    var cart = GetCart();
-            //    cartService.Add(new CartItemDTO()
-            //    {
-            //        ShopCardId = cart.ShopCardId,
-            //        Goods = goods,
-            //        Amount = 1
-            //    });
-            //}
+            if (goods is null)
+                return Infrastructure.SessionExtensions.GetObjectFromJson<List<CartGoodsDTO>>(HttpContext.Session, "cart").Count;
 
             if (Infrastructure.SessionExtensions.GetObjectFromJson<List<CartGoodsDTO>>(HttpContext.Session, "cart") == null)
             {
@@ -90,7 +83,7 @@ namespace GiftShop.Areas.ProductList.Controllers
                 Infrastructure.SessionExtensions.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
 
-            return RedirectToAction("Index");
+            return Infrastructure.SessionExtensions.GetObjectFromJson<List<CartGoodsDTO>>(HttpContext.Session, "cart").Count;
         }
         private int isExist(int id)
         {
@@ -104,8 +97,20 @@ namespace GiftShop.Areas.ProductList.Controllers
             }
             return -1;
         }
+        public decimal SetAmountGoods(int goodsId, short amount)
+        {
+            List<CartGoodsDTO> cart = Infrastructure.SessionExtensions.GetObjectFromJson<List<CartGoodsDTO>>(HttpContext.Session, "cart");
+            int index = isExist(goodsId);
+            if (index != -1)
+            {
+                cart[index].Amount = amount;
+            }
 
-        [Area("ProductList")]
+            Infrastructure.SessionExtensions.SetObjectAsJson(HttpContext.Session, "cart", cart);
+
+            return cart[index].Sum;
+        }
+
         public IActionResult Remove(int goodsId)
         {
             List<CartGoodsDTO> cart = Infrastructure.SessionExtensions.GetObjectFromJson<List<CartGoodsDTO>>(HttpContext.Session, "cart");
@@ -113,6 +118,14 @@ namespace GiftShop.Areas.ProductList.Controllers
             cart.RemoveAt(index);
             Infrastructure.SessionExtensions.SetObjectAsJson(HttpContext.Session, "cart", cart);
             return RedirectToAction("Index");
+        }
+
+        public decimal GetSumCart()
+        {
+            List<CartGoodsDTO> cart = Infrastructure.SessionExtensions.GetObjectFromJson<List<CartGoodsDTO>>(HttpContext.Session, "cart");
+            decimal sum = cart.Sum(x => x.Sum);
+
+            return sum;
         }
 
 
@@ -152,10 +165,14 @@ namespace GiftShop.Areas.ProductList.Controllers
             }
 
             List<CartGoodsDTO> cartSession = Infrastructure.SessionExtensions.GetObjectFromJson<List<CartGoodsDTO>>(HttpContext.Session, "cart");
-            cartSession.ForEach(x => x.Amount = cartVM.Cart.First(y => y.Id == x.Id).Amount);
+            cartSession.ForEach(x => x.Amount = cartVM.Cart.First(y => y.Goods.Id == x.Goods.Id).Amount);
             Infrastructure.SessionExtensions.SetObjectAsJson(HttpContext.Session, "cart", cartSession);
 
             ShippingDetails shippingDetails = new ShippingDetails();
+
+            var currUser = _userManager.GetUserAsync(HttpContext.User).Result;
+            shippingDetails.Email = currUser.Email;
+            shippingDetails.Phone = currUser.PhoneNumber;
 
             if (cartSession != null)
                 return View("Checkout", shippingDetails);
@@ -163,9 +180,13 @@ namespace GiftShop.Areas.ProductList.Controllers
             return RedirectToAction("Index");
         }
 
-        [Area("ProductList")]
         public IActionResult OrderConfirmation(ShippingDetails shippingDetails)
         {
+            if (!ModelState.IsValid)
+            {
+                return View("Checkout", shippingDetails);
+            }
+
             List<CartGoodsDTO> cart = Infrastructure.SessionExtensions.GetObjectFromJson<List<CartGoodsDTO>>(HttpContext.Session, "cart");
 
             List<OrderStatusDTO> statuses = orderStatusService.GetAll().ToList();
@@ -187,6 +208,28 @@ namespace GiftShop.Areas.ProductList.Controllers
             Infrastructure.SessionExtensions.SetObjectAsJson(HttpContext.Session, "cart", null);
             return View("CheckoutConfirmation", resultAddOrder.OrderNum);
             //return RedirectToAction("Index", "Goods");
+        }
+
+        [Authorize]
+        public IActionResult Orders(string returnUrl)
+        {
+            var user = _userManager.GetUserAsync(User).Result;
+            if (user == null)
+            {
+                return NotFound($"Пользователь не найден");
+            }
+
+            var userDTO = userService.GetById(user.Id);
+
+            List<OrderDTO> orderList = userDTO.Orders;
+
+            return View(orderList);
+            //if (userId == null)
+            //{
+            //    return View;
+            //}
+
+
         }
 
     }

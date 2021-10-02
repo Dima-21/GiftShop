@@ -1,0 +1,13 @@
+﻿@inject SignInManager<IdentityUser> SignInManager
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
+@*<ul class="nav nav-pills nav-stacked">
+    <li class="@ManageNavPages.IndexNavClass(ViewContext)"><a asp-page="./Index">Профиль</a></li>
+    <li class="@ManageNavPages.ChangePasswordNavClass(ViewContext)"><a id="change-password" asp-page="./ChangePassword">Пароль</a></li>
+</ul>*@
+
+<div class="list-group" >
+    <a class="list-group-item list-group-item-action" asp-page="./Index">Профиль</a>
+    <a class="list-group-item list-group-item-action" id="change-password" asp-page="./ChangePassword">Изменить пароль</a>
+</div>

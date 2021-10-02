@@ -1,10 +1,15 @@
 ﻿@page
 @model LogoutModel
 @{
-    ViewData["Title"] = "Log out";
+    ViewData["Title"] = "Выход";
 }
 
 <header>
-    <h1>@ViewData["Title"]</h1>
-    <p>You have successfully logged out of the application.</p>
+
+    <div class="container my-5 justify-content-center">
+        <div class="alert alert-success" role="alert">
+            <h1>@ViewData["Title"]</h1>
+            <p>Вы успешно вышли из аккаунта.</p>
+        </div>
+    </div>
 </header>

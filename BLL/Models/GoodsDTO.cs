@@ -11,27 +11,34 @@ namespace BLL.Models
     {
         public int? Id { get; set; }
 
+        [Required(ErrorMessage = "Поле должно содержать значение")]
         [Display(Name = "Код")]
         public int Code { get; set; }
 
+        [Required(ErrorMessage = "Поле должно содержать значение")]
+        [StringLength(100, ErrorMessage = "Наименование не может содержать больше 100 символов.")]
         [Display(Name = "Наименование")]
         public string Name { get; set; }
 
+        [StringLength(2000, ErrorMessage = "Описание не может содержать больше 2000 символов.")]
         [Display(Name = "Описание")]
         public string Descript { get; set; }
 
+        [StringLength(200, ErrorMessage = "Краткое описание не может содержать больше 300 символов.")]
         [Display(Name = "Краткое описание")]
         public string ShortDescript { get; set; }
 
         [Display(Name = "Категория")]
         public GroupDTO Group { get; set; }
 
+        [Range(0,100000, ErrorMessage ="Значение должно быть в диапазоне от 0 до 100000")]
         [Display(Name = "Цена")]
         public decimal Price { get; set; }
 
         [Display(Name = "Скрыть товар")]
         public bool IsHidden { get; set; }
 
+        [Range(0, 100000, ErrorMessage = "Значение должно быть в диапазоне от 0 до 100000")]
         [Display(Name = "Кол-во")]
         public short Amount { get; set; }
 

@@ -15,12 +15,17 @@
         <link href="~/css/dashboard.css" rel="stylesheet">
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        <link rel="stylesheet" href="~/lib/twitter-bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="https://transloadit.edgly.net/releases/uppy/v1.9.2/uppy.min.css">
+        <link href="~/css/dashboard.css" rel="stylesheet">
+
+        @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
               asp-fallback-href="~/lib/twitter-bootstrap/css/bootstrap.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="https://transloadit.edgly.net/releases/uppy/v1.9.2/uppy.min.css">
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-        <link href="~/css/dashboard.css" rel="stylesheet">
+        <link href="~/css/dashboard.css" rel="stylesheet">*@
     </environment>
 </head>
 <body>
@@ -70,6 +75,14 @@
     </environment>
     <environment exclude="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/js/goods_manage.js" asp-append-version="true"></script>
+        <script src="~/js/dashboard.js"></script>
+        <script src="https://transloadit.edgly.net/releases/uppy/v1.9.2/uppy.min.js"></script>
+        <script src="~/js/uppy.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+        @*<script src="~/lib/jquery/dist/jquery.js"></script>
 
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
                 asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
@@ -87,7 +100,7 @@
         <script src="https://transloadit.edgly.net/releases/uppy/v1.9.2/uppy.min.js"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
         <script src="~/js/dashboard.js"></script>
-        <script src="~/js/uppy.js"></script>
+        <script src="~/js/uppy.js"></script>*@
     </environment>
     @*<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>*@
     <script>window.jQuery || document.write('<script src="/docs/4.4/assets/js/vendor/jquery.min.js"><\/script>')</script>

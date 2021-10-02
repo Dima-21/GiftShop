@@ -3,7 +3,12 @@
 
 <h4 class="mt-4 mb-2">Редактирование категории</h4>
 <hr />
-
+@if(!string.IsNullOrEmpty(@Model.ErrorMessage))
+{
+<div class="alert alert-danger" role="alert">
+    @Model.ErrorMessage
+</div>
+}
 <div class="row ">
     <div class="col-lg-6">
         <form method="post" enctype="multipart/form-data">
@@ -91,6 +96,7 @@
 
             <div class="form-group my-4">
                 <input type="submit" value="Сохранить" class="btn btn-primary" />
+                <a class="btn btn-danger" asp-route-area="StoreManage" asp-controller="Group" asp-action="Delete" asp-route-id="@Model.Group.Id">Удалить</a>
             </div>
         </form>
 
@@ -100,7 +106,7 @@
             <div class="card-body">
                 <h5 class="card-title">Характеристики для товаров категории</h5>
                 <hr />
-                <div id="property-partial" >
+                <div id="property-partial">
                     <partial name="_PropertiesListPartial" model="@Model?.Group?.Properties" />
                 </div>
                 <div class="input-group mt-3">

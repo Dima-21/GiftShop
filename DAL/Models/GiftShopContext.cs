@@ -38,7 +38,8 @@ namespace DAL.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DIMA-PC\\SQLEXPRESS;Database=GiftShop;Trusted_Connection=True;");
+                //optionsBuilder.UseSqlServer("Data Source=DIMA-PC\\SQLEXPRESS; Initial Catalog=GiftShop;Integrated Security=True");
+                optionsBuilder.UseSqlServer("Data Source=SQL5052.site4now.net; Initial Catalog=db_a7a7c0_giftshop; User Id=db_a7a7c0_giftshop_admin;Password=!Zhmurchuk21");
             }
         }
 
@@ -179,9 +180,7 @@ namespace DAL.Models
 
             modelBuilder.Entity<Goods>(entity =>
             {
-                entity.HasIndex(e => e.Name)
-                    .HasName("UK_goods_name")
-                    .IsUnique();
+                
 
 
                 entity.HasIndex(e => e.GroupId);
@@ -248,7 +247,7 @@ namespace DAL.Models
                     .IsRequired()
                     .HasMaxLength(70);
 
-                entity.Property(e => e.ShortDescript).HasMaxLength(200);
+                entity.Property(e => e.ShortDescript).HasMaxLength(1000);
             });
 
             modelBuilder.Entity<Image>(entity =>
@@ -328,13 +327,13 @@ namespace DAL.Models
                 entity.HasOne(d => d.Group)
                   .WithMany(p => p.Properties)
                   .HasForeignKey(d => d.GroupId)
-                  .OnDelete(DeleteBehavior.ClientSetNull)
+                  .OnDelete(DeleteBehavior.Cascade)
                   .HasConstraintName("FK_Property_Group");
             });
 
-            modelBuilder.Entity<Group>().HasData(new Group { Id = 1, Name = "Подарочные наборы", Icon = "group-icon-gift.png" });
-            modelBuilder.Entity<Group>().HasData(new Group { Id = 2, Name = "Сладости", Icon = "group-icon-sweets.png" });
-            modelBuilder.Entity<Group>().HasData(new Group { Id = 3, Name = "Всё для праздника", Icon = "group-icon-allToParty.png" });
+            //modelBuilder.Entity<Group>().HasData(new Group { Id = 1, Name = "Подарочные наборы", Icon = "group-icon-gift.png" });
+            //modelBuilder.Entity<Group>().HasData(new Group { Id = 2, Name = "Сладости", Icon = "group-icon-sweets.png" });
+            //modelBuilder.Entity<Group>().HasData(new Group { Id = 3, Name = "Всё для праздника", Icon = "group-icon-allToParty.png" });
 
             //modelBuilder.Entity<Price>().HasData(new Models.Price { Id = 1, OrigPrice = 550, ValidFrom = DateTime.Now });
             //modelBuilder.Entity<Price>().HasData(new Models.Price { Id = 2, OrigPrice = 340, ValidFrom = DateTime.Now, PercentDisc = 20 });
@@ -398,32 +397,32 @@ namespace DAL.Models
             //    Price = 120,
             //});
 
-            modelBuilder.Entity<Property>().HasData(new Property { Id = 1, Name = "Вес", IsFilter = false });
-            modelBuilder.Entity<Property>().HasData(new Property { Id = 2, Name = "Категория людей", IsFilter = true });
+            //modelBuilder.Entity<Property>().HasData(new Property { Id = 1, Name = "Вес", IsFilter = false });
+            //modelBuilder.Entity<Property>().HasData(new Property { Id = 2, Name = "Категория людей", IsFilter = true });
 
-            modelBuilder.Entity<Charact>().HasData(new Charact { GoodsId = 1, PropId = 1, Value = "780г" });
-            modelBuilder.Entity<Charact>().HasData(new Charact { GoodsId = 2, PropId = 1, Value = "560г" });
-            modelBuilder.Entity<Charact>().HasData(new Charact { GoodsId = 1, PropId = 2, Value = "Для детей" });
-            modelBuilder.Entity<Charact>().HasData(new Charact { GoodsId = 2, PropId = 2, Value = "Для мужчин" });
-            modelBuilder.Entity<Charact>().HasData(new Charact { GoodsId = 3, PropId = 2, Value = "Для девушек" });
+            //modelBuilder.Entity<Charact>().HasData(new Charact { GoodsId = 1, PropId = 1, Value = "780г" });
+            //modelBuilder.Entity<Charact>().HasData(new Charact { GoodsId = 2, PropId = 1, Value = "560г" });
+            //modelBuilder.Entity<Charact>().HasData(new Charact { GoodsId = 1, PropId = 2, Value = "Для детей" });
+            //modelBuilder.Entity<Charact>().HasData(new Charact { GoodsId = 2, PropId = 2, Value = "Для мужчин" });
+            //modelBuilder.Entity<Charact>().HasData(new Charact { GoodsId = 3, PropId = 2, Value = "Для девушек" });
 
-            modelBuilder.Entity<Image>().HasData(new Image { Id = 1, Name = "good1_001.jpg" });
-            modelBuilder.Entity<Image>().HasData(new Image { Id = 2, Name = "good1_002.jpg" });
-            modelBuilder.Entity<Image>().HasData(new Image { Id = 3, Name = "good1_003.jpg" });
+            //modelBuilder.Entity<Image>().HasData(new Image { Id = 1, Name = "good1_001.jpg" });
+            //modelBuilder.Entity<Image>().HasData(new Image { Id = 2, Name = "good1_002.jpg" });
+            //modelBuilder.Entity<Image>().HasData(new Image { Id = 3, Name = "good1_003.jpg" });
 
-            modelBuilder.Entity<Image>().HasData(new Image { Id = 4, Name = "good2_001.jpg" });
-            modelBuilder.Entity<Image>().HasData(new Image { Id = 5, Name = "good2_002.jpg" });
-            modelBuilder.Entity<Image>().HasData(new Image { Id = 6, Name = "good2_003.jpg" });
+            //modelBuilder.Entity<Image>().HasData(new Image { Id = 4, Name = "good2_001.jpg" });
+            //modelBuilder.Entity<Image>().HasData(new Image { Id = 5, Name = "good2_002.jpg" });
+            //modelBuilder.Entity<Image>().HasData(new Image { Id = 6, Name = "good2_003.jpg" });
 
-            modelBuilder.Entity<Image>().HasData(new Image { Id = 7, Name = "good3_001.jpg" });
+            //modelBuilder.Entity<Image>().HasData(new Image { Id = 7, Name = "good3_001.jpg" });
 
-            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 1, ImageId = 1 });
-            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 1, ImageId = 2 });
-            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 1, ImageId = 3 });
-            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 2, ImageId = 4 });
-            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 2, ImageId = 5 });
-            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 2, ImageId = 6 });
-            modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 3, ImageId = 7 });
+            //modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 1, ImageId = 1 });
+            //modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 1, ImageId = 2 });
+            //modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 1, ImageId = 3 });
+            //modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 2, ImageId = 4 });
+            //modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 2, ImageId = 5 });
+            //modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 2, ImageId = 6 });
+            //modelBuilder.Entity<GoodsImage>().HasData(new GoodsImage { GoodsId = 3, ImageId = 7 });
 
 
         }

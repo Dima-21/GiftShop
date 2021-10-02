@@ -34,7 +34,9 @@ namespace BLL.Services
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            dataManager.RepoGroup.Delete(id);
+            dataManager.RepoGroup.Save();
+
         }
 
         public void Delete(GroupDTO item)

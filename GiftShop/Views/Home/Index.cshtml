@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Главная";
 
-    var groups = Model?.Where(x => x.IsHidden == false && x.NumberGoods > 0).ToList();
+    var groups = Model?.Where(x => x.IsHidden == false && x.NumberAvailableGoods > 0).ToList();
 }
 
 
@@ -20,23 +20,29 @@
                         {
                             <div class="col">
                                 <div class="card-body">
-                                    <h5 class="card-title">@Model[i].Name</h5>
-                                    <p class="card-text">@Model[i].ShortDescript</p>
+                                    <h5 class="card-title text-center">@groups[i].Name</h5>
+                                    <hr />
+                                    <p class="card-text text-center">@groups[i].ShortDescript</p>
                                 </div>
                             </div>
-                            <div class="col-md-auto">
-                                <img class="group-img" src="~/group_image/@(Model[i].Image)" height="300" alt="Image group">
+                            <div class="col-md-auto ">
+                                <div class="text-center">
+                                    <img class="group-img " src="~/group_image/@(groups[i].Image)" height="300" alt="Image group">
+                                </div>
                             </div>
                         }
                         else
                         {
                             <div class="col-md-auto">
-                                <img class="group-img" src="~/group_image/@(Model[i].Image)" height="300" alt="Image group">
+                                <div class="text-center">
+                                    <img class="group-img" src="~/group_image/@(groups[i].Image)" height="300" alt="Image group">
+                                </div>
                             </div>
                             <div class="col">
                                 <div class="card-body">
-                                    <h5 class="card-title">@Model[i].Name</h5>
-                                    <p class="card-text">@Model[i].ShortDescript</p>
+                                    <h5 class="card-title text-center">@groups[i].Name</h5>
+                                    <hr />
+                                    <p class="card-text text-center">@groups[i].ShortDescript</p>
                                 </div>
                             </div>
                         }

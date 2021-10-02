@@ -43,18 +43,43 @@
                                         </div>
                                     </a>
 
-                                    <div class="card-body text-center mr-0 mt-2">
+                                    <div class="card-body  mr-0 mt-2">
                                         <div>
-                                            <div class="name-goods">
+                                            <div class="name-goods text-center">
                                                 <a asp-action="Details" asp-controller="Goods" asp-route-area="ProductList" asp-route-goodsId="@goods.Id">
                                                     <h5 class="card-title">@goods.Name</h5>
                                                 </a>
                                             </div>
                                             @*<p class="card-text">@goods.ShortDescript</p>*@
 
-                                            <span class="card-text h6 col-sm my-2">@goods.Price ₴</span>
+                                            <div class="row mt-3">
+                                                <div class="col-sm-4">
+                                                    @if (goods.Amount > 0)
+                                                    {
+                                                        <p class="text-center my-2 my-sm-0">
+                                                            <span class="badge badge-success">В наличии</span>
+                                                        </p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p class="text-center my-2 my-sm-0">
+                                                            <span class="badge badge-danger">Нет в наличии</span>
+                                                        </p>
+
+                                                    }
+                                                </div>
+
+                                                <div class="col-sm px-2">
+                                                    <div>
+                                                        <p class="ml-2 text-muted text-center text-md-right"> <small>Код товара: @goods.Code</small></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <p class="text-center"><span class="card-text h6 col-sm-8 my-2">@goods.Price ₴</span></p>
+
                                             <div class="row mt-4">
-                                                <a asp-action="AddToCart" asp-controller="Cart" asp-route-area="ProductList" asp-route-goodsId="@goods.Id" class="btn btn-success col-sm">Купить</a>
+                                                <a class="btn btn-success btn-addtocart col-sm @((goods.Amount > 0)?"":"disabled")" data-goodsId="@goods.Id">Купить</a>
                                             </div>
                                         </div>
                                     </div>

@@ -1,7 +1,7 @@
 ﻿@inject BLL.Services.IService<BLL.Models.GroupDTO> Groups
 
 @{
-    List<GroupDTO> categories = Groups.GetAll().Where(x => x.NumberGoods > 0 && x.IsHidden==false).ToList();
+    List<GroupDTO> categories = Groups.GetAll().Where(x => x.NumberAvailableGoods > 0 && x.IsHidden==false).ToList();
 }
 
 <div form-inline>

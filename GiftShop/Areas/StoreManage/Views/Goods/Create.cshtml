@@ -3,15 +3,23 @@
 
 <h4 class="mt-4 mb-2">Добавление товара</h4>
 <hr />
+
+@*<div id="errorInputBlock" class="alert alert-danger fade" role="alert">
+    <span id="errorInputMessage"></span>
+</div>*@
+
 <div class="row ">
-    <div class="col-lg-6">
+    <div class="col-lg-7">
         <form method="post" enctype="multipart/form-data">
 
             <div class="form-row">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group col-sm-2 my-3">
                     <label asp-for="Goods.Code" class="control-label"></label>
-                    <input asp-for="Goods.Code" class="form-control" min="10" max="99999999" />
+                    <input id="inputCode" asp-for="Goods.Code" class="form-control" min="10" max="99999999" />
+                    <div id="inputCodeErrorMessage" class="fade">
+                        <p class="text-danger"><small>Товар с данным кодом уже имеется</small></p>
+                    </div>
                     <span asp-validation-for="Goods.Code" class="text-danger"></span>
                 </div>
                 <div class="form-group col-sm-2 my-3">
@@ -30,12 +38,15 @@
                     <span asp-validation-for="Goods.Price" class="text-danger"></span>
                 </div>
                 <div class="form-group col-sm-6 my-3">
-                    <label asp-for="Goods.Group" class="control-label"></label>
-                    <select class="custom-select" asp-for="Goods.Group.Id" asp-items='@new SelectList(Model.Groups, "Id", "Name")'></select>
-                    <span asp-validation-for="Goods.Group" class="text-danger"></span>
+                    @if (@Model?.Groups != null)
+                    {
+                        <label asp-for="Goods.Group" class="control-label"></label>
+                        <select class="custom-select" asp-for="Goods.Group.Id" asp-items='@new SelectList(Model.Groups, "Id", "Name")'></select>
+                        <span asp-validation-for="Goods.Group" class="text-danger"></span>
+                    }
                 </div>
             </div>
-            <div class="form-group my-3">
+            <div class="form-group mb-3">
                 <label asp-for="Goods.Name" class="control-label"></label>
                 <input asp-for="Goods.Name" class="form-control" />
                 <span asp-validation-for="Goods.Name" class="text-danger"></span>
@@ -57,16 +68,16 @@
             <div id="charact-data"></div>
 
             @*@for (int i=0; i< Model.Properties.Count; i++)
-        {
-            <label class="control-label">@Model.Properties[@i].Name</label>
-            <input type="text" name="Properties[@i].Value" class="form-control" />
-        }*@
+                {
+                    <label class="control-label">@Model.Properties[@i].Name</label>
+                    <input type="text" name="Properties[@i].Value" class="form-control" />
+                }*@
 
             @*<div class="form-group">
-            <label asp-for="Properties" class="control-label"></label>
-            <input asp-for="Properties" class="form-control" />
-            <span asp-validation-for="Properties" class="text-danger"></span>
-        </div>*@
+                    <label asp-for="Properties" class="control-label"></label>
+                    <input asp-for="Properties" class="form-control" />
+                    <span asp-validation-for="Properties" class="text-danger"></span>
+                </div>*@
 
             <h5 class="mt-5 mb-2">Фото</h5>
             <hr />
@@ -76,8 +87,8 @@
                 <div class="input-group my-3">
                     <div class="custom-file">
                         @*<div class="mb-1">
-                        <button type="button" class="btn btn-light" id="button">Обзор...</button>
-                    </div>*@
+                                <button type="button" class="btn btn-light" id="button">Обзор...</button>
+                            </div>*@
 
                         @*<input type="file" id="loader" multiple>*@
 

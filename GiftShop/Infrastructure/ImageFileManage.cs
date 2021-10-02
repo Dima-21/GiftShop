@@ -11,15 +11,18 @@ namespace GiftShop.Infrastructure
     {
         public static void AddPicture(IEnumerable<IFormFile> images, string folderPath, string targetFolderName)
         {
-            foreach (IFormFile image in images)
+            if (images != null)
             {
-                // путь к папке Files
-                string path = $"\\{targetFolderName}\\" + image.FileName;
-                // сохраняем файл в папку Files в каталоге wwwroot
-                using (var fileStream = new FileStream(folderPath + path, FileMode.Create))
+                foreach (IFormFile image in images)
                 {
-                    //await createModel.Images.First().CopyToAsync(fileStream);
-                    image.CopyTo(fileStream);
+                    // путь к папке Files
+                    string path = $"\\{targetFolderName}\\" + image.FileName;
+                    // сохраняем файл в папку Files в каталоге wwwroot
+                    using (var fileStream = new FileStream(folderPath + path, FileMode.Create))
+                    {
+                        //await createModel.Images.First().CopyToAsync(fileStream);
+                        image.CopyTo(fileStream);
+                    }
                 }
             }
         }

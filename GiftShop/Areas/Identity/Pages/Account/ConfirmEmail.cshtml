@@ -1,12 +1,16 @@
 ﻿@page
 @model ConfirmEmailModel
 @{
-    ViewData["Title"] = "Confirm email";
+    ViewData["Title"] = "Подтверждения email";
 }
 
-<h2>@ViewData["Title"]</h2>
-<div>
-    <p>
-        Thank you for confirming your email.
-    </p>
+<div class="container my-5 justify-content-center">
+    <div class="alert alert-success" role="alert">
+         <h2 class="text-center">@ViewData["Title"]</h2> 
+        <div>
+            <p class="h5 text-center">
+                Ваша почта была успешно подтверждена!
+            </p>
+        </div>
+    </div>
 </div>

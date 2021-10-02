@@ -1,121 +1,115 @@
 ﻿@model GoodsListViewModel
 
 
-<table class="table table-hover ">
-    <thead class="thead-light">
-        <tr class="text-center">
 
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].IsHidden)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].Image)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].Code)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].Group)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].Descript)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Goods[0].ShortDescript)
-            </th>
-            @*<th class="text-center">
-                    @Html.DisplayNameFor(model => model.Goods[0].IsHidden)
-                </th>*@
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.Goods[0].Amount)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.Goods[0].Price)
-            </th>
+    @*<select class="custom-select"  asp-for="SelectedGroupId" asp-items='@new SelectList(Model.Groups, "Id", "Name")'></select>
+        <a class="btn btn-primary" asp-action="Index" asp-route-groupId="@Model.SelectedGroupId">Применить фильтр</a>*@
+    @*<select class="custom-select" data-page="@Model.PageViewModel.PageNumber" asp-for="SelectedGroupId" asp-items='@new SelectList(Model.Groups, "Id", "Name")'></select>*@
 
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Goods)
-        {
+
+    <table class="table table-hover ">
+        <thead class="thead-light">
             <tr class="text-center">
-                <td hidden class="goods-id">@item.Id</td>
-                <td class="align-middle">
-                        <input class="check-isHidden" asp-for="@item.IsHidden"/>
-                    @*@Html.DisplayFor(modelItem => item.IsHidden)*@
-                </td>
-                <td class="align-middle">
-                    <img src="~/goods_image/@Url.Content(item.Image)" height="40" />
-                </td>
-                <td class="align-middle">
-                    @Html.DisplayFor(modelItem => item.Code)
-                </td>
-                <td class="align-middle">
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td class="align-middle">
-                    @Html.DisplayFor(modelItem => item.Group)
-                </td>
-                <td class="align-middle">
-                    @Html.DisplayFor(modelItem => item.Descript)
-                </td>
-                <td class="align-middle">
-                    @Html.DisplayFor(modelItem => item.ShortDescript)
-                </td>
 
-                <td class="align-middle">
-                    @Html.DisplayFor(modelItem => item.Amount)
-                </td>
-                <td class="align-middle">
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@item.Id" class="btn"><img src="~/images/icons/edit.png" /></a>
-                    <a asp-action="Details" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@item.Id" class="btn"><img src="~/images/icons/info.png" /></a>
-                    <a asp-action="Delete" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@item.Id" class="btn"><img src="~/images/icons/delete.png" /></a>
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Goods[0].IsHidden)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Goods[0].Image)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Goods[0].Code)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Goods[0].Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Goods[0].Group)
+                </th>
+                @*<th class="text-center">
+                        @Html.DisplayNameFor(model => model.Goods[0].IsHidden)
+                    </th>*@
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Goods[0].Amount)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Goods[0].Price)
+                </th>
+
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
-<div>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            @if (Model.PageViewModel.HasPreviousPage)
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Goods)
             {
-                <li class="page-item">
-                    <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageViewModel.PageNumber - 1)" aria-label="previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-            }
+                <tr class="text-center">
+                    <td hidden class="goods-id">@item.Id</td>
+                    <td class="align-middle">
+                        <input class="check-isHidden" asp-for="@item.IsHidden" />
+                        @*@Html.DisplayFor(modelItem => item.IsHidden)*@
+                    </td>
+                    <td class="align-middle">
+                        <img src="~/goods_image/@Url.Content(item.Image)" height="40" />
+                    </td>
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.Code)
+                    </td>
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.Group)
+                    </td>
 
-            @for (int i = 1; i <= Model.PageViewModel.TotalPages; i++)
-            {
-                if (Model.PageViewModel.PageNumber == i)
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@item.Id" class="btn"><img src="~/images/icons/edit.png" /></a>
+                        <a asp-action="Details" asp-controller="Goods" asp-route-area="ProductList" asp-route-goodsId="@item.Id" class="btn"><img src="~/images/icons/info.png" /></a>
+                        <a asp-action="Delete" asp-controller="Goods" asp-route-area="StoreManage" asp-route-id="@item.Id" asp-route-page="@Model.PageViewModel.PageNumber" class="btn"><img src="~/images/icons/delete.png" /></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                @if (Model.PageViewModel.HasPreviousPage)
                 {
-                    <li class="page-item active"><p class="page-link b-inline">@i</p></li>
+                    <li class="page-item">
+                        <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageViewModel.PageNumber - 1)" asp-route-groupId="@Model.SelectedGroupId" aria-label="previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
                 }
-                else
+
+                @for (int i = 1; i <= Model.PageViewModel.TotalPages; i++)
                 {
-                    <li class="page-item "><a class="page-link" asp-action="Index" asp-route-page="@i"> @i</a></li>
+                    if (Model.PageViewModel.PageNumber == i)
+                    {
+                        <li class="page-item active"><p class="page-link b-inline">@i</p></li>
+                    }
+                    else
+                    {
+                        <li class="page-item "><a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-groupId="@Model.SelectedGroupId"> @i</a></li>
+                    }
                 }
-            }
 
 
-            @if (Model.PageViewModel.HasNextPage)
-            {
-                <li class="page-item">
-                    <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageViewModel.PageNumber + 1)" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            }
-        </ul>
+                @if (Model.PageViewModel.HasNextPage)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageViewModel.PageNumber + 1)" asp-route-groupId="@Model.SelectedGroupId" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                }
+            </ul>
 
-    </nav>
-</div>
+        </nav>
+    </div>

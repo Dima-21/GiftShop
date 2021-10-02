@@ -12,6 +12,8 @@ namespace GiftShop.Areas.StoreManage.Models
     public class GoodsListViewModel
     {
         public List<GoodsViewModel> Goods { get; set; }
+        public List<GroupDTO> Groups { get; set; }
+        public int SelectedGroupId { get; set; }
 
         public PageViewModel PageViewModel { get; set; }
     }
@@ -71,7 +73,7 @@ namespace GiftShop.Areas.StoreManage.Models
     public class CreateGoodsViewModel
     {
         public GoodsDTO Goods { get; set; }
-        public IEnumerable<GroupDTO> Groups { get; set; }
+        public List<GroupDTO> Groups { get; set; }
         public IEnumerable<IFormFile> Images { get; set; }
         public List<PropertyValueDTO> Properties { get; set; }
 

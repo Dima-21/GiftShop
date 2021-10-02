@@ -91,7 +91,7 @@ namespace GiftShop.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Недопустимая попытка входа в систему.");
                     return Page();
                 }
             }

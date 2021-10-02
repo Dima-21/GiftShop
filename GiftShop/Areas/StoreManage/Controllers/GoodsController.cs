@@ -44,20 +44,31 @@ namespace GiftShop.Areas.StoreManage.Controllers
         }
 
 
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(int page = 1, int? groupId = null)
         {
             GoodsListViewModel goodsVM = new GoodsListViewModel();
 
+            goodsVM.Groups = groupService.GetAll().ToList();
 
             // Подсчёт пагинации
 
             var pageSize = 10; // количество элементов на странице
-            var count = goodsService.GetAll().Count(); // количество элементов на странице
+            int count;
+            IEnumerable<GoodsDTO> items = new List<GoodsDTO>();
+            if (groupId != null && groupId != 0)
+            {
+                goodsVM.SelectedGroupId = (int)groupId;
+
+                items = goodsService.GetAll().Where(x => x.Group.Id == groupId);
+            }
+            else
+            {
+                items = goodsService.GetAll();
+            }
 
             //var count = goodsService.GetAll().Count
 
 
-            IEnumerable<GoodsDTO> items = goodsService.GetAll();
 
 
             count = items.Count();
@@ -95,12 +106,12 @@ namespace GiftShop.Areas.StoreManage.Controllers
             CreateGoodsViewModel vm = new CreateGoodsViewModel();
             vm.Goods = new GoodsDTO();
             vm.Goods.Group = new GroupDTO();
-            vm.Groups = groupService.GetAll();
+            vm.Groups = groupService.GetAll().ToList();
             vm.Groups = vm.Groups.Prepend(new GroupDTO()
             {
                 Id = int.MinValue,
                 Name = "Выберите категорию"
-            });
+            }).ToList();
 
             return View(vm);
         }
@@ -110,14 +121,26 @@ namespace GiftShop.Areas.StoreManage.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(CreateGoodsViewModel createModel)
         {
-            if (createModel.Goods.Group.Id < 0)
+            if (!ModelState.IsValid)
             {
-                createModel.Groups = groupService.GetAll();
+                createModel.Goods = new GoodsDTO();
+                createModel.Goods.Group = new GroupDTO();
+                createModel.Groups = groupService.GetAll().ToList();
                 createModel.Groups = createModel.Groups.Prepend(new GroupDTO()
                 {
                     Id = int.MinValue,
                     Name = "Выберите категорию"
-                });
+                }).ToList();
+                return View(createModel);
+            }
+            if (createModel.Goods.Group?.Id < 0)
+            {
+                createModel.Groups = groupService.GetAll().ToList();
+                createModel.Groups = createModel.Groups?.Prepend(new GroupDTO()
+                {
+                    Id = int.MinValue,
+                    Name = "Выберите категорию"
+                }).ToList();
                 return View(createModel);
             }
             //goodsService.Add(createModel.Goods);
@@ -141,14 +164,16 @@ namespace GiftShop.Areas.StoreManage.Controllers
                     if (createModel.Images.Count() != 0 && createModel.Goods.GoodsImage is null)
                         createModel.Goods.GoodsImage = new List<ImageDTO>();
 
-                    foreach (var img in createModel.Images)
+                    if (createModel.Images != null)
                     {
-                        createModel.Goods.GoodsImage.Add(new ImageDTO()
+                        foreach (var img in createModel.Images)
                         {
-                            Name = img.FileName
-                        });
+                            createModel.Goods.GoodsImage.Add(new ImageDTO()
+                            {
+                                Name = img.FileName
+                            });
+                        }
                     }
-
                     //FileModel file = new FileModel { Name = createModel.Images.First().FileName, Path = path };
                     //_context.Files.Add(file);
                     //_context.SaveChanges();
@@ -168,8 +193,16 @@ namespace GiftShop.Areas.StoreManage.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception e)
             {
+                createModel.Goods = new GoodsDTO();
+                createModel.Goods.Group = new GroupDTO();
+                createModel.Groups = groupService.GetAll().ToList();
+                createModel.Groups = createModel.Groups.Prepend(new GroupDTO()
+                {
+                    Id = int.MinValue,
+                    Name = "Выберите категорию"
+                }).ToList();
                 return View(createModel);
             }
         }
@@ -178,25 +211,27 @@ namespace GiftShop.Areas.StoreManage.Controllers
         public ActionResult Edit(int id)
         {
             GoodsDTO goods = goodsService.GetById(id);
+
             CreateGoodsViewModel vm = new CreateGoodsViewModel();
             vm.Goods = goods;
             // TODO: Do download images
             //vm.Images = goods.GoodsImage;
 
-            vm.Groups = groupService.GetAll();
-            vm.Groups = vm.Groups.Prepend(vm.Groups.First(x => x.Id == goods.Group.Id));
+            vm.Groups = groupService.GetAll().ToList();
+            vm.Groups = vm.Groups.Prepend(vm.Groups.First(x => x.Id == goods.Group.Id)).ToList();
             var groups = vm.Groups.ToList();
             groups.Remove(vm.Groups.Last(x => x.Id == goods.Group.Id));
             vm.Groups = groups;
 
 
-           // Загрузка характеристик
+
+            // Загрузка характеристик
             vm.Properties = new List<PropertyValueDTO>();
-            IEnumerable<PropertyDTO> properties = propService.GetAll().GetPropertiesByGroup(groups.FirstOrDefault().Id).ToList();
+            IEnumerable<PropertyDTO> properties = propService.GetAll().GetPropertiesByGroup(goods.Group.Id).ToList();
 
             foreach (PropertyDTO property in properties)
             {
-                string charactValue = goods.PropCharact.FirstOrDefault(x=>x.PropId==property.PropId)?.Value;
+                string charactValue = goods.PropCharact.FirstOrDefault(x => x.PropId == property.PropId)?.Value;
                 vm.Properties.Add(new PropertyValueDTO()
                 {
                     PropId = property.PropId,
@@ -213,6 +248,19 @@ namespace GiftShop.Areas.StoreManage.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, CreateGoodsViewModel createModel)
         {
+            if (!ModelState.IsValid)
+            {
+                createModel.Goods = new GoodsDTO();
+                createModel.Goods.Group = new GroupDTO();
+                createModel.Groups = groupService.GetAll().ToList();
+                createModel.Groups = createModel.Groups.Prepend(new GroupDTO()
+                {
+                    Id = int.MinValue,
+                    Name = "Выберите категорию"
+                }).ToList();
+                return View(createModel);
+            }
+
             try
             {
                 // TODO: Add update logic here
@@ -238,7 +286,7 @@ namespace GiftShop.Areas.StoreManage.Controllers
                 }
 
 
-                    goodsService.Edit(createModel.Goods);
+                goodsService.Edit(createModel.Goods);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -248,10 +296,10 @@ namespace GiftShop.Areas.StoreManage.Controllers
         }
 
         // GET: Goods/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id, int page)
         {
             goodsService.Delete(id);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { page = page });
         }
 
         [HttpPost]
@@ -324,6 +372,16 @@ namespace GiftShop.Areas.StoreManage.Controllers
 
             imageService.Delete(imageId);
         }
+
+        [HttpPost]
+        public bool ExistGoodsCode(int code)
+        {
+            var goods = goodsService.GetAll();
+            bool result = goods.Any(x => x.Code == code);
+
+            return result;
+        }
+
 
         //// POST: Goods/Delete/5
         //[HttpPost]

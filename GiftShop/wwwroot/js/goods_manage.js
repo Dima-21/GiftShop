@@ -4,6 +4,7 @@
 
 
 
+
 //$(".btn-del-img").click(function (e) {
 //    deletePicture($(this));
 //    e.preventDefault();
@@ -158,11 +159,11 @@ function loadPicture(files, data, elemId) {
         var reader = new FileReader();
 
         reader.onload = function (e) {
-            var checkImageFormat = checkImage(value, e.target, 500, 500);
+            //var checkImageFormat = checkImage(value, e.target, 500, 500);
 
-            if (checkImageFormat == false) {
-                return;
-            }
+            //if (checkImageFormat == false) {
+            //    return;
+            //}
 
 
             var newElems = $('<div class="image-block">')
@@ -198,17 +199,17 @@ function checkImage(image, target, checkWidth, checkHeight) {
     }
 
     // Проверка на разрешение картинки
-    img = new Image();
-    img.onload = function () {
-        var imageWidth = this.width;
-        var imageHeight = this.height;
-        console.log(imageHeight + " " + imageWidth);
-        if (imageWidth < checkWidth || imageHeight < checkHeight) {
-            alert('Минимальное разрешение для картинки 500х500');
-            return false;
-        }
-    };
-    img.src = target.result;
+    //img = new Image();
+    //img.onload = function () {
+    //    var imageWidth = this.width;
+    //    var imageHeight = this.height;
+    //    console.log(imageHeight + " " + imageWidth);
+    //    if (imageWidth < checkWidth || imageHeight < checkHeight) {
+    //        alert('Минимальное разрешение для картинки 500х500');
+    //        return false;
+    //    }
+    //};
+    //img.src = target.result;
 
     //console.log("filename: " + image.name);
     //console.log(image);
@@ -284,3 +285,104 @@ $('#saveCharact').click(function (event) {
     modal.find('.modal-title').text(property)
     console.log("click");
 })
+
+
+// Проверка, существует ли товар с введенным в текстовое поле кодом
+$('#inputCode').blur(function (event) {
+    var code = $(this).val();
+
+    $.ajax({
+        url: 'ExistGoodsCode',
+        type: 'POST',
+        data: {
+            code: code,
+        },
+        success: function (result) {
+            if (result == true) {
+                $("#inputCodeErrorMessage").removeClass("fade");
+                $("#inputCode").addClass("is-invalid");
+            }
+            else {
+                $("#inputCodeErrorMessage").addClass("fade");
+                $("#inputCode").removeClass("is-invalid");
+            }
+        },
+        error: function (err) {
+            alert("Не удалось проверить существование товара с кодом " + code + ".  Код ошибки: " + err.status);
+        }
+    });
+})
+
+$(document).on("click", ".btn-addtocart", function () {
+    var goodsId = $(this).attr("data-goodsid");
+    addToCart(goodsId);
+});
+
+
+// Добавления в корзину
+$(document).on("click", "#btn-main-addtocart", function () {
+    var goods = $(this).attr("data-goodsid");
+    $.ajax({
+        url: '/ProductList/Cart/AddToCart',
+        type: 'GET',
+        data: {
+            goodsId: goods,
+        },
+        success: function (result) {
+            $("#number-goods-in-cart").text(result);
+        },
+        error: function (err) {
+            alert("Не удалось добавить товар в корзину. Код ошибки: " + err.status);
+        }
+    });
+});
+
+function addToCart(goodsId) {
+    $.ajax({
+        url: 'Cart/AddToCart',
+        type: 'GET',
+        data: {
+            goodsId: goodsId,
+        },
+        success: function (result) {
+            $("#number-goods-in-cart").text(result);
+        },
+        error: function (err) {
+            alert("Не удалось добавить товар в корзину. Код ошибки: " + err.status);
+        }
+    });
+}
+
+// Изменение количества товаров в корзине
+$(document).on("change", ".amountLineCart", function () {
+    var goodsId = $(this).attr("data-goodsId");
+    var newAmount = $(this).val();
+
+
+    $.ajax({
+        url: 'Cart/SetAmountGoods',
+        type: 'GET',
+        data: {
+            goodsId: goodsId,
+            amount: newAmount,
+        },
+        success: function (result) {
+            var elemId = '#sum-goods' + goodsId;
+            $(elemId).text(result);
+            setSumCart();
+        }
+    });
+
+
+ 
+});
+
+function setSumCart() {
+    $.ajax({
+        url: 'Cart/GetSumCart',
+        type: 'GET',
+        success: function (result) {
+            $("#cartsum").text(result);
+        }
+    });
+}

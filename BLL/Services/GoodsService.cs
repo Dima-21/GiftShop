@@ -25,7 +25,7 @@ namespace BLL.Services
             //Image img = _mapper.Map<Image>(item.GoodsImage.First());
             //dataManager.RepoImage.Create(img);
             //dataManager.RepoImage.Save();
-            item.PropCharact = item.PropCharact.Where(x => !string.IsNullOrEmpty(x.Value)).ToList();
+            item.PropCharact = item?.PropCharact?.Where(x => !string.IsNullOrEmpty(x.Value)).ToList();
             Goods goods = _mapper.Map<Goods>(item);
             //goods.Id = int.MinValue;
             dataManager.RepoGoods.Create(goods);
